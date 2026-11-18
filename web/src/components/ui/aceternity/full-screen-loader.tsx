@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { resolveEmbeddedAssetUrl } from "@/lib/embedded-runtime";
+import { PRODUCT_STARTUP_IMAGE_URL } from "@/lib/product-brand";
 import { cn } from "@/lib/utils";
 
 type FullScreenLoaderProps = {
@@ -17,7 +19,7 @@ export function FullScreenLoader({ label = "正在恢复工作区", detail = "�
             aria-label={`${label}，${detail}`}
             className={cn("full-screen-loader", className)}
         >
-            <span className="beeftv-loading-logo" aria-hidden="true" />
+            <img className="dofu-startup-art" src={resolveEmbeddedAssetUrl(PRODUCT_STARTUP_IMAGE_URL)} alt="" draggable={false} />
         </div>
     );
 }

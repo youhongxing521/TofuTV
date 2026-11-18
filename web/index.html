@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="DofuTV，面向 AI 影视与短剧创作的工作台。" />
         <link rel="icon" href="/dofutv-mark.png" type="image/png" />
+        <link rel="preload" href="/dofutv-startup.png" as="image" />
         <link rel="stylesheet" href="/src/styles/globals.css" />
         <title>DofuTV</title>
         <style>
@@ -19,17 +20,7 @@
                 inset: 0;
                 min-height: 100vh;
                 overflow: hidden;
-                background: #090909;
-            }
-            #root:empty::after {
-                content: "";
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                width: min(104px, 26vw);
-                aspect-ratio: 1;
-                transform: translate(-50%, -50%);
-                background: url('/dofutv-mark.png') center / contain no-repeat;
+                background: #0c0b19 url('/dofutv-startup.png') center / contain no-repeat;
             }
         </style>
         <script>

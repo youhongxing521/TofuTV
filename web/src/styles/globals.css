@@ -1528,11 +1528,11 @@
     }
 
     /* 原版顶栏正常同步只显示轻量图标；保存失败或版本冲突时露出文字提示，方便用户按报错指引点击处理。 */
-    .canvas-topbar [aria-label^="画布保存状态"]:not(.ant-btn-dangerous) .canvas-sync-status-label,
+    .canvas-topbar:not(.dofu-canvas-header) [data-canvas-save-tone]:not(.ant-btn-dangerous) .canvas-sync-status-label,
     .canvas-topbar .canvas-sync-external-notice .canvas-sync-status-label,
     .canvas-topbar [data-canvas-external-write-op] .canvas-sync-status-label { display: none; }
-    .canvas-topbar [aria-label^="画布保存状态"]:not(.ant-btn-dangerous) { width: 28px; min-width: 28px; padding-inline: 0; opacity: 0.72; }
-    .canvas-topbar [aria-label^="画布保存状态"].ant-btn-dangerous { width: auto; padding-inline: 8px; opacity: 1; }
+    .canvas-topbar:not(.dofu-canvas-header) [data-canvas-save-tone]:not(.ant-btn-dangerous) { width: 28px; min-width: 28px; padding-inline: 0; opacity: 0.72; }
+    .canvas-topbar [data-canvas-save-tone="failed"] { width: auto; padding-inline: 8px; opacity: 1; }
 
     .canvas-topbar-project-cluster {
         width: max-content;
@@ -2548,6 +2548,15 @@
     }
 
     .full-screen-loader::before { display: none; }
+
+    .dofu-startup-art {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #0c0b19;
+    }
 
     .beeftv-loading-logo {
         display: block;
@@ -7394,12 +7403,12 @@ html:not(.dark) .creation-studio-control:hover,
        视觉层级可见；只作用于画布浮层，不改变全局 workspace surface。 */
     .dark .canvas-topbar-cluster,
     .dark .libtv-main-dock {
-        background: rgb(34 34 34) !important;
-        border-color: rgb(54 54 54) !important;
+        background: var(--studio-toolbar-surface, rgb(34 34 34)) !important;
+        border-color: var(--studio-border, rgb(54 54 54)) !important;
     }
 
     .dark .libtv-main-dock {
-        background: rgb(38 38 38) !important;
+        background: var(--studio-toolbar-surface, rgb(38 38 38)) !important;
     }
 
     /* Bottom navigation follows the canvas theme while preserving equal

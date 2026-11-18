@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
-import { Focus, Grid3X3, LayoutTemplate, Link2, Map } from "lucide-react";
+import { Focus, Grid3X3, LayoutTemplate, Link2, Map, Minus, Plus } from "lucide-react";
 
 import { FloatingDock, type FloatingDockEntry } from "@/components/ui/aceternity/floating-dock";
 import { aceternityMotion } from "@/lib/aceternity-motion";
@@ -136,6 +136,7 @@ export function CanvasZoomControls({ scale, onScaleChange, onFitContent, onAutoA
         { id: "zoom-snap-grid", label: "网格吸附", icon: <Grid3X3 />, active: snapToGrid, onClick: () => onSnapToGridChange(!snapToGrid) },
         { id: "zoom-fit", label: "适合屏幕", icon: <Focus />, onClick: onFitContent },
         ...(onAutoArrange ? [{ id: "zoom-auto-arrange", label: "自动整理节点", icon: <LayoutTemplate />, onClick: onAutoArrange }] : []),
+        { id: "zoom-out", label: "缩小画布", icon: <Minus />, onClick: () => commitScale(liveScaleRef.current - ZOOM_STEP) },
         {
             id: "zoom-precision",
             label: "缩放画布",
@@ -146,6 +147,7 @@ export function CanvasZoomControls({ scale, onScaleChange, onFitContent, onAutoA
             active: precisionOpen,
             onClick: () => setPrecisionOpen((value) => !value),
         },
+        { id: "zoom-in", label: "放大画布", icon: <Plus />, onClick: () => commitScale(liveScaleRef.current + ZOOM_STEP) },
     ];
 
     return (

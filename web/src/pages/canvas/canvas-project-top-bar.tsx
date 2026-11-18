@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Link } from "react-router";
-import { Check, ChevronDown, ChevronUp, Clapperboard, CloudUpload, Columns2, CopyPlus, Focus, FolderKanban, Gauge, History, Home, LayoutGrid, MoreHorizontal, Pencil, Plus, Redo2, Save, Search, Sparkles, Trash2, Undo2, Upload, Workflow, X } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Clapperboard, CloudUpload, Columns2, CopyPlus, Focus, FolderKanban, Gauge, History, Home, LayoutGrid, MoreHorizontal, Pencil, Plus, Redo2, Save, Search, Sparkles, SquarePlay, Trash2, Undo2, Upload, Workflow, X } from "lucide-react";
 import { App, Button, Dropdown, Tooltip } from "antd";
 
 import { BrandLogoFrame } from "@/components/brand/brand-logo";
@@ -192,10 +192,11 @@ export function CanvasTopBar({
         return () => document.removeEventListener("pointerdown", close, true);
     }, [isTitleEditing, onFinishTitleEditing]);
 
+    const studioHeader = !libtvChrome && !readOnly;
     return (
         <>
-            <div className="canvas-topbar pointer-events-none absolute inset-x-0 top-0 z-[var(--z-toolbar)] flex h-[var(--canvas-topbar-h)] items-center justify-between px-2 sm:px-2">
-                <div className="pointer-events-none flex items-center gap-2">
+            <div className={`canvas-topbar pointer-events-none absolute inset-x-0 top-0 z-[var(--z-toolbar)] flex h-[var(--canvas-topbar-h)] items-center justify-between px-2 sm:px-2${studioHeader ? " dofu-canvas-header" : ""}`}>
+                <div className="dofu-canvas-breadcrumb pointer-events-none flex items-center gap-2">
                 <div className="canvas-topbar-cluster canvas-topbar-project-cluster pointer-events-auto flex min-w-0 items-center gap-2" style={dockStyle}>
                     <Dropdown
                             trigger={["click"]}
@@ -217,11 +218,12 @@ export function CanvasTopBar({
                             }}
                         >
                             <button type="button" className="canvas-topbar-project-menu-button canvas-topbar-action inline-flex size-9 items-center justify-center gap-0.5 rounded-full" style={{ color: theme.node.text }} aria-label="打开画布菜单">
-                                <BrandLogoFrame className="canvas-topbar-brand-mark" logoClassName="canvas-topbar-brand-mark-image" alt="" fallback={<span className="canvas-topbar-brand-mark-fallback" aria-hidden="true">{PRODUCT_NAME.charAt(0)}</span>} />
+                                {studioHeader ? <><SquarePlay className="dofu-canvas-wordmark-icon" aria-hidden="true" /><span className="dofu-canvas-wordmark">{PRODUCT_NAME}</span></> : <BrandLogoFrame className="canvas-topbar-brand-mark" logoClassName="canvas-topbar-brand-mark-image" alt="" fallback={<span className="canvas-topbar-brand-mark-fallback" aria-hidden="true">{PRODUCT_NAME.charAt(0)}</span>} />}
                                 <ChevronDown className="size-2.5 opacity-55" aria-hidden="true" />
                             </button>
                     </Dropdown>
 
+                    {studioHeader && <span className="dofu-canvas-title-divider" aria-hidden="true">/</span>}
                     <div ref={titleRef} className="canvas-topbar-title-block flex min-w-0 flex-auto flex-col items-start overflow-hidden">
                         {isTitleEditing ? (
                             <input
@@ -356,7 +358,7 @@ export function CanvasTopBar({
                             <span>{currentCanvasLabel}</span>{canvasMenuOpen ? <ChevronUp className="size-3" /> : <ChevronDown className="size-3" />}
                         </button>
                     </Dropdown>
-                    <span className="canvas-topbar-sync-status">{syncStatus}</span>
+                    {!studioHeader && <span className="canvas-topbar-sync-status">{syncStatus}</span>}
                 </div>
                 </div>
 
@@ -467,6 +469,7 @@ export function CanvasTopBar({
                         </Button>
                     </CanvasTopBarTooltip>
                 </div>
+                {studioHeader && <div className="dofu-canvas-save pointer-events-auto">{syncStatus}</div>}
             </div>
         </>
     );
