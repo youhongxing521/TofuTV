@@ -21,6 +21,18 @@
     --color-neutral-900: oklch(0.205 0 0);
     --color-neutral-950: oklch(0.145 0 0);
 
+    --brand-dark-page: #0e101a;
+    --brand-dark-surface: #151724;
+    --brand-dark-raised: #1b1d2d;
+    --brand-dark-control: #23243a;
+    --brand-dark-hover: #2c2b46;
+    --brand-dark-border: #2c2e46;
+    --brand-dark-accent: #c0afff;
+    --brand-dark-action: #6247db;
+    --brand-dark-action-hover: #6d51e8;
+    --brand-dark-action-active: #5138bf;
+    --brand-dark-orange: #ffab66;
+
     /* 节点类型语义色板（对应 #97 色带+图标徽章方案）
        注意：用 --palette- 前缀避免与 @theme 的 --color-* 命名空间冲突导致循环引用 */
     --palette-node-image: oklch(0.75 0.15 75);        /* 琥珀 300 — 图片 */

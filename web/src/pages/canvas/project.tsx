@@ -43,8 +43,6 @@ import { CanvasFileDropOverlay } from "@/components/canvas/canvas-file-drop-over
 import { InfiniteCanvas } from "@/components/canvas/infinite-canvas";
 import { Minimap } from "@/components/canvas/canvas-mini-map";
 import { CanvasToolbar } from "@/components/canvas/canvas-toolbar";
-import { CanvasQuickTools } from "@/components/canvas/canvas-quick-tools";
-import "./canvas-studio.css";
 import { useCanvasCreateCommands } from "@/components/canvas/use-canvas-create-commands";
 import { CanvasZoomControls } from "@/components/canvas/canvas-zoom-controls";
 import { buildCanvasAgentMentionReferences, getContextResourceNodes, type CanvasResourceReference } from "@/lib/canvas/canvas-resource-references";
@@ -229,7 +227,6 @@ function InfiniteCanvasPage() {
         setFocusDockRevealed,
     } = useCanvasPreferences();
     const workspaceMode: CanvasWorkspaceMode = "professional";
-    const showStudioChrome = !readOnly && !focusMode && searchParams.get("libtvChrome") !== "1" && searchParams.get("fixture") !== "libtv-readonly-dense";
     const dialogs = useCanvasProjectDialogs(pageUi);
     const {
         openTextNodeEditor,
@@ -1364,7 +1361,7 @@ function InfiniteCanvasPage() {
             >
                 跳转到画布主内容
             </a>
-            <main ref={canvasMainRef} id="canvas-main" data-canvas-studio={showStudioChrome ? resolvedCanvasAppearance.baseTheme : undefined} data-canvas-readonly={readOnly ? "true" : "false"} data-libtv-readonly-dense={searchParams.get("fixture") === "libtv-readonly-dense" ? "true" : "false"} tabIndex={-1} className="flex h-full min-h-0 overflow-hidden outline-none" style={{ background: resolvedCanvasAppearance.background, color: theme.node.text }}>
+            <main ref={canvasMainRef} id="canvas-main" data-canvas-readonly={readOnly ? "true" : "false"} data-libtv-readonly-dense={searchParams.get("fixture") === "libtv-readonly-dense" ? "true" : "false"} tabIndex={-1} className="flex h-full min-h-0 overflow-hidden outline-none" style={{ background: resolvedCanvasAppearance.background, color: theme.node.text }}>
                 {!focusMode && !versions.preview && shortDramaEnabled && currentProject?.projectId ? (
                     <CanvasProjectSidebar projectId={currentProject.projectId} detail={linkedProjectQuery.data} onAddChapter={handleProjectChapterInsert} onLocateStyle={locateProjectStyleNode} onOpenAssets={() => openProjectAssets()} />
                 ) : null}
@@ -1449,11 +1446,8 @@ function InfiniteCanvasPage() {
                             <CanvasShortDramaGuide progress={shortDramaGuide.progress} collapsed={shortDramaGuide.collapsed} onToggle={shortDramaGuide.onToggle} onSkip={skipShortDramaGuide} onStepClick={activateShortDramaStep} />
                         ) : null}
 
-                        {showStudioChrome && (
-                            <CanvasQuickTools tool={canvasTool} onToolChange={setCanvasTool} onAddNode={(type) => createNode(type)} />
-                        )}
                         <div className="relative flex min-h-0 min-w-0 flex-1">
-                            <div className="dofu-canvas-stage relative min-w-0 flex-1 overflow-hidden">
+                            <div className="relative min-w-0 flex-1 overflow-hidden">
                                 <InfiniteCanvas
                                     interactive={!versions.preview && !readOnly}
                                     containerRef={containerRef}

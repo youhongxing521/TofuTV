@@ -6,7 +6,7 @@ import type { ChangeEvent } from "react";
 
 import type { ChannelHeader } from "@/stores/use-config-store";
 
-const DEFAULT_USER_AGENT = "DofuTV/1.0 (+https://gitee.com/hongxingyou/beeftv)";
+const DEFAULT_USER_AGENT = "TofuTV/1.0 (+https://gitee.com/hongxingyou/beeftv)";
 const MAX_HEADER_COUNT = 32;
 const BLOCKED_HEADERS = new Set([
     "authorization",

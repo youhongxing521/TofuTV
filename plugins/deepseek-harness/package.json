@@ -1,7 +1,7 @@
 {
   "name": "dsh-beeftv",
   "version": "0.1.1",
-  "description": "AI 驱动的视频创作工作台，连接 DofuTV 画布、素材与创作生态。",
+  "description": "AI 驱动的视频创作工作台，连接 TofuTV 画布、素材与创作生态。",
   "type": "module",
   "main": "host.js",
   "exports": {

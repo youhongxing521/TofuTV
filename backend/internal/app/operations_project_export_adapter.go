@@ -81,7 +81,7 @@ func (s *operationSession) ExportCanvasProjectArchive(ctx context.Context, userI
 		return nil, err
 	}
 	resources := localasset.NewService(localasset.Dependencies{Repository: localasset.NewRepository(s.repo), Blobs: localasset.NewFileStore(s.service.dataDir), LocalStorage: true})
-	resource, _, err := resources.Store(userID, "file", "DofuTV-project.zip", "application/zip", info.Size(), 0, 0, 0, file, &key)
+	resource, _, err := resources.Store(userID, "file", "TofuTV-project.zip", "application/zip", info.Size(), 0, 0, 0, file, &key)
 	return resource, err
 }
 

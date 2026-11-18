@@ -571,13 +571,12 @@
     .app-user-workspace .product-collection-card:hover { transform: none; }
 }
 
-/* DofuTV workspace shell — desktop geometry follows the LibTV home reference. */
+/* TofuTV workspace shell — desktop geometry follows the LibTV home reference. */
 .app-user-workspace.app-product-workspace {
     --workspace-reference-sidebar: 334px;
     --workspace-reference-collapsed: 74px;
     --workspace-reference-topbar: 89px;
     --workspace-reference-page-bg: var(--user-page-bg);
-    --user-accent: #57575b;
     background: var(--user-page-bg);
     color-scheme: inherit;
 }
@@ -661,7 +660,6 @@
 }
 
 
-.dark .app-user-workspace.app-product-workspace { --user-accent: #c1c1c5; }
 /* ========================================================================
    Product interaction contract
    ------------------------------------------------------------------------

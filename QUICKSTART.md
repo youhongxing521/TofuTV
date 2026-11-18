@@ -1,6 +1,6 @@
-# DofuTV 本地桌面版快速开始
+# TofuTV 本地桌面版快速开始
 
-DofuTV 桌面版是无需登录的本地优先工作区。项目、画布、素材、任务记录和模型配置默认保存在本机；只有执行生成时，才会按你配置的渠道请求外部模型服务。
+TofuTV 桌面版是无需登录的本地优先工作区。项目、画布、素材、任务记录和模型配置默认保存在本机；只有执行生成时，才会按你配置的渠道请求外部模型服务。
 
 ## 运行工作台
 
@@ -32,7 +32,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-beeftv-windo
 
 打开“模型配置”。上游算力使用「连接上游算力」，在系统浏览器中完成授权后即可拉取模型。其他渠道仍填写 Base URL 和密钥。密钥保存在本地工作区，不会写入画布、素材或任务列表。
 
-模型请求可能访问外部供应商，但 DofuTV 不会把项目数据同步到 SaaS 存储。素材会先写入本地资源目录，再作为本地资源引用提交给模型渠道。
+模型请求可能访问外部供应商，但 TofuTV 不会把项目数据同步到 SaaS 存储。素材会先写入本地资源目录，再作为本地资源引用提交给模型渠道。
 
 ## 本地开发与验证
 
@@ -46,10 +46,10 @@ BEEFTV_GO_DIR=/path/to/go ./scripts/verify-beeftv-local-release.sh
 
 安装包自带 `beeftv` 命令行工具，可以直接用 shell 脚本批量读取和整理画布、素材与任务，不需要经过助手，也不需要启动 MCP 服务。macOS 的路径是 `/Applications/BeefTV.app/Contents/MacOS/cli/beeftv`，Windows 是 `BeefTV.exe` 同级的 `cli\beeftv.exe`。
 
-在侧栏的「DofuTV MCP」页选一个工具并「生成连接配置」，配置里已经包含 `BEEFTV_DATA_DIR`、`BEEFTV_CLIENT_ID` 与 `BEEFTV_CLIENT_TOKEN`，把它们抽出来放进环境变量即可；只读凭据只能读。纯命令行批量跑不需要启动 MCP。完整用法见 [beeftv 命令行基础使用](docs/content/docs/backend/beeftv-cli.mdx)。
+在侧栏的「TofuTV MCP」页选一个工具并「生成连接配置」，配置里已经包含 `BEEFTV_DATA_DIR`、`BEEFTV_CLIENT_ID` 与 `BEEFTV_CLIENT_TOKEN`，把它们抽出来放进环境变量即可；只读凭据只能读。纯命令行批量跑不需要启动 MCP。完整用法见 [beeftv 命令行基础使用](docs/content/docs/backend/beeftv-cli.mdx)。
 
 ## 数据位置与备份
 
-桌面运行时会在本地工作区保存 SQLite 数据库、资源文件、模型配置和迁移备份。升级迁移前会自动创建数据库备份；如需迁移或恢复，请先退出 DofuTV 并完整复制工作区数据目录。
+桌面运行时会在本地工作区保存 SQLite 数据库、资源文件、模型配置和迁移备份。升级迁移前会自动创建数据库备份；如需迁移或恢复，请先退出 TofuTV 并完整复制工作区数据目录。
 
-登录、云存储、团队同步和计费不属于 DofuTV 本地版。以本地能力契约、精简 schema 和发行门禁为准，详见 `docs/local-first-architecture.md`。
+登录、云存储、团队同步和计费不属于 TofuTV 本地版。以本地能力契约、精简 schema 和发行门禁为准，详见 `docs/local-first-architecture.md`。

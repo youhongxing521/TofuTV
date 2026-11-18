@@ -1,6 +1,6 @@
 import { http } from "@/services/api/request";
 
-/** 外部编辑器/CLI 接入 DofuTV 画布的客户端类型。 */
+/** 外部编辑器/CLI 接入 TofuTV 画布的客户端类型。 */
 export type AgentClientKind = "codex" | "claude" | "claude-desktop" | "cursor" | "other";
 
 /** 授予外部客户端的画布权限。 */
@@ -78,7 +78,7 @@ export function connectAgentIntegration(kind: AgentIntegrationKind) {
     return http.post<{ integration: AgentIntegration }>("/agent-clients/integrations", { kind });
 }
 
-/** 桌面版一键断开：先切断访问，再尽量移除对方里的 DofuTV 条目。 */
+/** 桌面版一键断开：先切断访问，再尽量移除对方里的 TofuTV 条目。 */
 export function disconnectAgentIntegration(kind: AgentIntegrationKind) {
     return http.delete<{ integration: AgentIntegration; warning?: string }>(`/agent-clients/integrations/${encodeURIComponent(kind)}`);
 }

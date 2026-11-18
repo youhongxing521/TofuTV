@@ -1,6 +1,6 @@
-# DofuTV
+# TofuTV
 
-<img src="assets/app-icon.png" width="96" height="96" alt="DofuTV 应用图标">
+<img src="assets/app-icon.png" width="96" height="96" alt="TofuTV 应用图标">
 
 AI 视频创作工作台。写剧本、做分镜、生成镜头，在一张画布上完成。
 
@@ -26,6 +26,6 @@ Windows 在仓库根目录运行以下命令。脚本需要 Go 和 Bun。
 
 ## 上游与许可
 
-DofuTV 基于 [glanderness/BeefTV](https://github.com/glanderness/BeefTV) 修改。此版本更换了工作台品牌、应用图标、桌面窗口标题及项目入口。上游文档中的 BeefTV 名称、安装包和发行记录指向原项目。
+TofuTV 基于 [glanderness/BeefTV](https://github.com/glanderness/BeefTV) 修改。此版本更换了工作台品牌、应用图标、桌面窗口标题及项目入口。上游文档中的 BeefTV 名称、安装包和发行记录指向原项目。
 
 上游新增原创内容适用 [BeefTV Source Available License 1.0](LICENSE) 的相应条款。历史 MIT 内容及第三方组件仍适用各自许可。商业分发、向第三方提供托管服务等活动请查阅许可第 5 节。版权和来源见 [NOTICE](NOTICE) 和[第三方许可](THIRD_PARTY_NOTICES.md)。

@@ -490,7 +490,7 @@ func TestDisconnectRemoveFailureSucceedsWithWarning(t *testing.T) {
 	if integration["connected"] != false || integration["needsRetry"] != false {
 		t.Fatalf("integration = %+v", integration)
 	}
-	if warning != "DofuTV 已停止接受 Claude Code 的访问。Claude Code 里的画布连接没能自动移除，可以在它的 MCP 设置里手动删除。" {
+	if warning != "TofuTV 已停止接受 Claude Code 的访问。Claude Code 里的画布连接没能自动移除，可以在它的 MCP 设置里手动删除。" {
 		t.Fatalf("warning = %q", warning)
 	}
 	if len(registry.List()) != 0 {

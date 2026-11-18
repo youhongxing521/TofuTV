@@ -89,7 +89,7 @@ export async function saveOwnedOrBrowserVideoBlob(fileName: string, blob: Blob):
 
 /**
  * Eagle 原文件在桌面端由 Go 直接从本机 Eagle 素材库流式复制到保存位置，
- * 不写入 DofuTV 工作区资源表，也不经过 WebView base64 内存缓冲。
+ * 不写入 TofuTV 工作区资源表，也不经过 WebView base64 内存缓冲。
  */
 export async function saveEagleOrBrowserMedia(options: {
     fileName: string;

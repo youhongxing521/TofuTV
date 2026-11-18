@@ -108,7 +108,7 @@ func runPluginTry(args []string) error {
 		return &cliError{code: exitBadRequest, reason: "plugin_interface_not_found", msg: "这个插件里没有该接口；有多个接口时用 --interface 指定"}
 	}
 	if strings.TrimSpace(provider.Module) != "" {
-		return &cliError{code: exitBadRequest, reason: "plugin_module_interface", msg: "这个接口由插件 JS 实现，不能离线试跑；请装进 DofuTV 后用「生成测试」"}
+		return &cliError{code: exitBadRequest, reason: "plugin_module_interface", msg: "这个接口由插件 JS 实现，不能离线试跑；请装进 TofuTV 后用「生成测试」"}
 	}
 	capability := protocol.CapabilityText
 	if categories := adapter.Metadata().Categories; len(categories) > 0 {

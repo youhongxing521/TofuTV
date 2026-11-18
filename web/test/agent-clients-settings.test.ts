@@ -89,7 +89,7 @@ describe("外部 Agent 接入 API", () => {
 
     test("断开成功后把无法自动移除的说明一并解包", async () => {
         const integration = { kind: "codex", name: "Codex", detected: true, connected: false, skillInstalled: false, needsRetry: false } as const;
-        const warning = "DofuTV 已停止接受 Codex 的访问。Codex 里的 上游算力连接没能自动移除，可以在它的 MCP 设置里手动删除。";
+        const warning = "TofuTV 已停止接受 Codex 的访问。Codex 里的 上游算力连接没能自动移除，可以在它的 MCP 设置里手动删除。";
         await withStubbedApi({ code: 0, data: { integration, warning }, msg: "ok" }, 200, async () => {
             await expect(disconnectAgentIntegration("codex")).resolves.toEqual({ integration, warning });
         });
@@ -165,7 +165,7 @@ describe("一键接入的按钮状态", () => {
         const integration = { ...base, connected: true, skillInstalled: true };
         expect(agentIntegrationStatusLabel(integration)).toBe("已接入");
         expect(agentIntegrationAction(integration)).toBe("disconnect");
-        expect(agentIntegrationHint(integration)).toBe("已接入。打开 Claude Code 就能使用 DofuTV 画布。");
+        expect(agentIntegrationHint(integration)).toBe("已接入。打开 Claude Code 就能使用 TofuTV 画布。");
     });
 
     test("配置写入了但使用说明缺失时如实提示，不假装完成", () => {

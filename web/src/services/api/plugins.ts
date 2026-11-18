@@ -54,7 +54,7 @@ export async function uploadPlugin(file: File) {
     return result.plugin;
 }
 
-/** source is an npm spec, a local package directory or a sample name shipped with DofuTV. */
+/** source is an npm spec, a local package directory or a sample name shipped with TofuTV. */
 export async function installPluginPackage(payload: { source: string; registry?: string }) {
     const result = await http.post<{ plugin: BackendPlugin }>("/plugins/install", payload, { timeout: PACKAGE_INSTALL_TIMEOUT_MS });
     return result.plugin;

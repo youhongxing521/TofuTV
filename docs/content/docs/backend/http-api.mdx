@@ -282,7 +282,7 @@ MiniMax speech 的 OpenAI 音频兼容目录通过 `audioOptions` 提供官方�
 
 ### 外部客户端连接
 
-桌面设置的「外部 Agent」提供 Codex、Claude Code、Claude Desktop、Cursor 及其他 MCP 客户端的接入配置。桌面原生形态对 Claude Code 和 Codex 提供一键接入：`POST /agent-clients/integrations` 签发客户端凭据，把 token 写到 `<数据目录>/agent-clients/<kind>.token`（0600；Windows 放在当前用户数据目录并沿用其访问控制），再调用本机已安装的官方命令行（`claude mcp add ... --scope user`、`codex mcp add ...`）写入配置和 DofuTV 画布技能。传给对方的是 `BEEFTV_CLIENT_TOKEN_FILE`，token 不进入命令行参数。`DELETE /agent-clients/integrations/:kind` 先吊销凭据、删除 token 文件，再尝试移除对方条目；remove 失败时仍返回成功并附带 `warning`。后端不直接改写 Agent 配置文件；找不到可用命令行或预检不通过时返回明确的未检测/不可接入状态，手动配置仍可从页面取得。`GET /agent-clients` 在桌面形态额外返回 `integrations` 状态（含 `needsRetry`），状态以凭据登记里未吊销的 `origin = one-click:<kind>` 凭据为准；接入记录（`agent-clients/integrations.json`）只保存 token 路径和接入时间等辅助信息，读不出或与登记不符时显示需要重试，但不会让有效凭据从界面消失。这两个写路由只在桌面组合根注册，Web/服务端形态不提供。同一客户端的接入与断开串行执行；凭据来源记录在登记表的 `origin` 字段，显示名称不参与识别。Claude Desktop 使用开发者设置中的 `mcpServers` JSON；手动配置的 Claude Code 使用终端命令，Windows 命令需在 PowerShell 运行。保留其他 MCP 服务配置，连接时保持 DofuTV 开启。
+桌面设置的「外部 Agent」提供 Codex、Claude Code、Claude Desktop、Cursor 及其他 MCP 客户端的接入配置。桌面原生形态对 Claude Code 和 Codex 提供一键接入：`POST /agent-clients/integrations` 签发客户端凭据，把 token 写到 `<数据目录>/agent-clients/<kind>.token`（0600；Windows 放在当前用户数据目录并沿用其访问控制），再调用本机已安装的官方命令行（`claude mcp add ... --scope user`、`codex mcp add ...`）写入配置和 TofuTV 画布技能。传给对方的是 `BEEFTV_CLIENT_TOKEN_FILE`，token 不进入命令行参数。`DELETE /agent-clients/integrations/:kind` 先吊销凭据、删除 token 文件，再尝试移除对方条目；remove 失败时仍返回成功并附带 `warning`。后端不直接改写 Agent 配置文件；找不到可用命令行或预检不通过时返回明确的未检测/不可接入状态，手动配置仍可从页面取得。`GET /agent-clients` 在桌面形态额外返回 `integrations` 状态（含 `needsRetry`），状态以凭据登记里未吊销的 `origin = one-click:<kind>` 凭据为准；接入记录（`agent-clients/integrations.json`）只保存 token 路径和接入时间等辅助信息，读不出或与登记不符时显示需要重试，但不会让有效凭据从界面消失。这两个写路由只在桌面组合根注册，Web/服务端形态不提供。同一客户端的接入与断开串行执行；凭据来源记录在登记表的 `origin` 字段，显示名称不参与识别。Claude Desktop 使用开发者设置中的 `mcpServers` JSON；手动配置的 Claude Code 使用终端命令，Windows 命令需在 PowerShell 运行。保留其他 MCP 服务配置，连接时保持 TofuTV 开启。
 
 配置固定使用随包 CLI 的绝对路径和 `BEEFTV_DATA_DIR`，避免客户端继承的环境选错工作区。Windows CLI 为主程序旁的 `cli/beeftv.exe`，不要把桌面主程序 `BeefTV.exe` 用作 MCP 命令。安装文件不完整时，`POST /agent-clients` 返回 412 / `cli_unavailable`，不签发凭据；重新下载并完整解压后重试。
 
@@ -290,7 +290,7 @@ MCP 使用官方 Go SDK 的 stdio transport；stdout 只写协议消息，启动
 
 使用运行时发现地址的 CLI/MCP 会在每次调用前重新读取当前实例，桌面重启换端口后，下一次调用连接新实例。显式设置 `BEEFTV_BASE_URL` 时保持固定地址。连接失败不会自动重发写操作，以免重复执行已送达的请求。
 
-Windows 的运行地址描述文件位于用户目录的 `.beeftv/runtime/`，按数据目录的规范化路径摘要分开保存，并校验工作区身份。该位置在 AppData 外，客户端不再读取 AppData 中旧的 `runtime.json`，避免 Microsoft Store/MSIX 客户端的私有副本遮住真实实例。数据库和素材仍留在原工作区。升级后保持 DofuTV 开启，并在「外部 Agent」重新生成连接配置。
+Windows 的运行地址描述文件位于用户目录的 `.beeftv/runtime/`，按数据目录的规范化路径摘要分开保存，并校验工作区身份。该位置在 AppData 外，客户端不再读取 AppData 中旧的 `runtime.json`，避免 Microsoft Store/MSIX 客户端的私有副本遮住真实实例。数据库和素材仍留在原工作区。升级后保持 TofuTV 开启，并在「外部 Agent」重新生成连接配置。
 
 ### 只读边界
 
@@ -343,7 +343,7 @@ Windows 的运行地址描述文件位于用户目录的 `.beeftv/runtime/`，�
 
 任务提交前无法读取或解密本地算力凭据时，返回 HTTP 500、`reason=local_credential_failed`，不创建生成任务。安全摘要区分密钥文件缺失、读取权限不足、密钥长度异常和解密失败，不返回密钥、密文或本地路径。客户端将其显示为本地算力连接错误，禁止自动重试；复制排查信息保留响应的 `X-Request-ID`、HTTP 状态及凭据读取阶段，不归类为模型参数错误。
 
-本地生成结果写入遇到 Windows 磁盘空间不足、POSIX `ENOSPC` 或 SQLite 磁盘写满时，生成错误分类为 `local_disk_full`。提示清理 DofuTV 数据目录所在磁盘，并优先取回原任务结果，避免重复生成。上游返回的磁盘错误不据此推断为用户电脑磁盘不足。
+本地生成结果写入遇到 Windows 磁盘空间不足、POSIX `ENOSPC` 或 SQLite 磁盘写满时，生成错误分类为 `local_disk_full`。提示清理 TofuTV 数据目录所在磁盘，并优先取回原任务结果，避免重复生成。上游返回的磁盘错误不据此推断为用户电脑磁盘不足。
 
 诊断包的 `client/events.jsonl` 保留业务错误 `reason`；`backend/tasks.jsonl` 导出经过脱敏的 `failureDiagnostics`，包括已采集的失败阶段、请求 ID、上游任务 ID、执行结果和错误摘要。历史记录缺失的信息不会补造。
 
@@ -376,7 +376,7 @@ schema 3 另包含以下证据：
 
 视频暂时下载断连会保留原任务 ID 并继续查询。上游算力不用本地 24 小时或查询 404 判定任务无法取回、未扣费；BYOK 保留原恢复窗口。任务日志接口提供脱敏的 `summary`，不返回原始 `message` / `payload` 内容；摘要不写回数据库。
 
-任务列表与详情中的 `errorCode` 是 DofuTV 归类后的错误类别，不能当作上游原始代码。已识别的 SQLite 缺表/列、锁定、只读、I/O 和约束失败使用 `local_storage`，提示本地数据库无法读写、不自动重试；不能因为外层 HTTP 400 把它归为模型参数错误。判断只读取实际错误消息，不读取请求或提示词回显。新记录的失败任务可包含 `failureDiagnostics`：`source` 区分本地校验、上游 HTTP / 业务响应、本地结果处理及未知来源；`summary` 保存脱敏后的错误摘要，另带实际记录到的 `providerCode`、`httpStatus`、`param`、`requestId`、`providerTaskId`、`stage` 和 `capturedAt`。缺失信息不推断或补造。`createdAt` 是任务创建时间，`completedAt` 是结束时间，均不等于错误记录时间。
+任务列表与详情中的 `errorCode` 是 TofuTV 归类后的错误类别，不能当作上游原始代码。已识别的 SQLite 缺表/列、锁定、只读、I/O 和约束失败使用 `local_storage`，提示本地数据库无法读写、不自动重试；不能因为外层 HTTP 400 把它归为模型参数错误。判断只读取实际错误消息，不读取请求或提示词回显。新记录的失败任务可包含 `failureDiagnostics`：`source` 区分本地校验、上游 HTTP / 业务响应、本地结果处理及未知来源；`summary` 保存脱敏后的错误摘要，另带实际记录到的 `providerCode`、`httpStatus`、`param`、`requestId`、`providerTaskId`、`stage` 和 `capturedAt`。缺失信息不推断或补造。`createdAt` 是任务创建时间，`completedAt` 是结束时间，均不等于错误记录时间。
 
 诊断字段在本地 schema v3 中以可空文本列保存，旧任务不补写原始错误，重试会清除上一轮诊断。任务列表、详情和画布的“复制排查信息”使用同一份诊断；复制内容不包含请求正文、提示词、凭据、素材 URL 或本地文件路径。`providerRequestId` 可能是供应商任务标识，在复制内容中标作“服务端关联 ID”，与 HTTP 请求 ID 分开。
 
@@ -396,7 +396,7 @@ schema 3 另包含以下证据：
 
 生成结果正在取回时，任务详情与列表的 `delivery.outputs[]` 给出该任务每个输出的 `downloadedBytes`、`totalBytes`（未知为 -1）、`bytesPerSecond`、`updatedAt`（Unix 毫秒采样时间）和 `state`（`downloading` / `retrying` / `waiting`），供页面显示进度。页面在采样超过 3 秒后隐藏速度与剩余时间。它只存在进程内存中，不写数据库，取回结束即消失，重启后不保留；没有取回中的下载时该字段省略。
 
-生成前正在上传参考素材时，任务详情和列表可返回临时的 `referenceProgress`：`label` 标识当前素材，`phase` 为 `preparing`、`transferring` 或 `processing`，并提供 `loadedBytes`、`totalBytes`、`bytesPerSecond`、`startedAt` 和 `updatedAt`（Unix 毫秒）。字节传完后仍需等待上传回执与可用性确认；只有确认完成才进入生成提交阶段。进度绑定 DofuTV 自己的任务 ID，不包含上传地址、票据或本地路径，不写数据库；准备结束或任务退出后清除。
+生成前正在上传参考素材时，任务详情和列表可返回临时的 `referenceProgress`：`label` 标识当前素材，`phase` 为 `preparing`、`transferring` 或 `processing`，并提供 `loadedBytes`、`totalBytes`、`bytesPerSecond`、`startedAt` 和 `updatedAt`（Unix 毫秒）。字节传完后仍需等待上传回执与可用性确认；只有确认完成才进入生成提交阶段。进度绑定 TofuTV 自己的任务 ID，不包含上传地址、票据或本地路径，不写数据库；准备结束或任务退出后清除。
 
 生成成功后仍在下载的结果，可用 `POST /tasks/:id/cancel` 停止取回：生成状态保持 `succeeded`，`stage=delivery_paused`；单次下载满 15 分钟则停止并记为 `delivery_timed_out`。尚未取回的输出使用相同的 `materializationErrorCode`。暂停跨应用重启保留，后台不会自动重启；`POST /tasks/:id/retry` 对这两种成功任务只解除暂停，由交付 worker 继续取回原结果，不重新生成或取消上游任务。应用关闭会停止当前下载，未手动暂停或超时的任务在下次启动后恢复。全部输出取回后清除下载阶段；任务详情和列表也依据已就绪输出将历史残留的下载阶段显示为“生成完成”，不修改旧任务记录或重新提交生成。成功绑定到画布时清除节点的旧任务阶段。
 

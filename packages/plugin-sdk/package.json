@@ -1,7 +1,7 @@
 {
   "name": "@beeftv/plugin-sdk",
   "version": "0.1.0",
-  "description": "DofuTV 插件开发 SDK：提供插件清单、宿主接口、界面挂点、宿主事件与助手扩展工具的类型定义与辅助函数。",
+  "description": "TofuTV 插件开发 SDK：提供插件清单、宿主接口、界面挂点、宿主事件与助手扩展工具的类型定义与辅助函数。",
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",

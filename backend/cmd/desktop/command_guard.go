@@ -30,7 +30,7 @@ func validateDesktopArgs(args []string) error {
 		case "--harness-attach-only":
 			return fmt.Errorf("--harness-attach-only 需要同时指定 --harness-runtime")
 		case "mcp", "ops", "canvas", "asset", "task", "client", "help", "--help", "-h", "--version", "--json", "-json":
-			return fmt.Errorf("此程序是 DofuTV 桌面应用。CLI/MCP 请使用 beeftv 命令行程序；在 DofuTV 设置中重新复制客户端配置")
+			return fmt.Errorf("此程序是 TofuTV 桌面应用。CLI/MCP 请使用 beeftv 命令行程序；在 TofuTV 设置中重新复制客户端配置")
 		}
 		// Cocoa also accepts preference overrides as flag/value pairs.
 		if (strings.HasPrefix(arg, "-NS") || strings.HasPrefix(arg, "-Apple")) && i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
@@ -38,7 +38,7 @@ func validateDesktopArgs(args []string) error {
 			continue
 		}
 		if !strings.HasPrefix(arg, "-") {
-			return fmt.Errorf("DofuTV 桌面应用不支持命令 %q；CLI/MCP 请使用 beeftv 命令行程序", arg)
+			return fmt.Errorf("TofuTV 桌面应用不支持命令 %q；CLI/MCP 请使用 beeftv 命令行程序", arg)
 		}
 	}
 	return nil

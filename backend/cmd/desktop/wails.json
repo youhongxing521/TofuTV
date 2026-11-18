@@ -2,7 +2,7 @@
   "$schema": "https://wails.io/schemas/config.v2.json",
   "name": "BeefTV",
   "outputfilename": "BeefTV",
-  "info": { "productName": "DofuTV", "protocols": [{ "scheme": "beeftv", "description": "DofuTV skill link", "role": "Viewer" }] },
+  "info": { "productName": "TofuTV", "protocols": [{ "scheme": "beeftv", "description": "TofuTV skill link", "role": "Viewer" }] },
   "frontend:dir": "../../../web",
   "frontend:install": "bun install --frozen-lockfile",
   "frontend:build": "bun run build:desktop",

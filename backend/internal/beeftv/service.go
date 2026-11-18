@@ -82,7 +82,7 @@ func New(opts Options) (*Service, error) {
 		hostname, _ = os.Hostname()
 	}
 	if hostname == "" {
-		hostname = "DofuTV"
+		hostname = "TofuTV"
 	}
 	clientVersion := strings.TrimSpace(opts.ClientVersion)
 	if clientVersion == "" {

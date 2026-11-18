@@ -211,7 +211,7 @@ describe('模拟能力默认关闭，打开后才出现', () => {
 describe('agent.guide 只在夹具包含描述符时暴露', () => {
   const descriptor = {
     id: 'agent.guide',
-    summary: '读取 DofuTV 外部 Agent 使用说明（与一键接入安装的技能同一份）',
+    summary: '读取 TofuTV 外部 Agent 使用说明（与一键接入安装的技能同一份）',
     readOnly: true,
     scope: 'workspace_read',
     params: { type: 'object', properties: {}, additionalProperties: false },

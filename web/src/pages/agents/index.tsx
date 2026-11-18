@@ -213,7 +213,7 @@ export default function AgentsPage() {
                     </div>
                     {cli && !cli.available ? (
                         <p role="alert" className="mt-4 text-sm text-foreground/60">
-                            安装文件不完整，无法连接外部工具。请重新下载并完整解压 DofuTV。
+                            安装文件不完整，无法连接外部工具。请重新下载并完整解压 TofuTV。
                         </p>
                     ) : null}
                     {cli?.available ? (

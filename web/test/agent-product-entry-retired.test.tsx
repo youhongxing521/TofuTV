@@ -103,7 +103,7 @@ describe("旧内置 Agent 页面入口退场", () => {
         expect(markup).not.toContain('data-mode="agent"');
         expect(markup).toContain("新建画布创作");
         for (const [label, href] of [
-            ["DofuTV Agent", "/canvas?mode=new&amp;start=agent"],
+            ["TofuTV Agent", "/canvas?mode=new&amp;start=agent"],
             ["自由画布", "/canvas?mode=new"],
             ["视频生成", "/canvas?mode=new&amp;add=video"],
             ["图片生成", "/canvas?mode=new&amp;add=image"],

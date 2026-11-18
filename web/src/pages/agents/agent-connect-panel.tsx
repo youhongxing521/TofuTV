@@ -42,7 +42,7 @@ export function AgentConnectPanel({ kind, onClose, onConfigured, verifiedClientI
         <div className="agent-connect-panel" aria-label={`连接 ${agentClientKindLabel(kind || "other")}`}>
             {registration && setup ? (
                 <div className="flex flex-col gap-3 py-1">
-                    <p role="status" className="text-sm">{verified ? "已检测到该工具访问 DofuTV，连接验证成功。" : "等待工具连接。请运行下方命令或添加配置，再在工具中启用 DofuTV。"}</p>
+                    <p role="status" className="text-sm">{verified ? "已检测到该工具访问 TofuTV，连接验证成功。" : "等待工具连接。请运行下方命令或添加配置，再在工具中启用 TofuTV。"}</p>
                     <p className="text-xs leading-5 text-foreground/60">{setup.instruction}</p>
                     <pre className="max-h-64 overflow-auto rounded-md bg-surface-active px-3.5 py-3 text-[12px] leading-5 font-mono whitespace-pre-wrap break-all text-foreground/85">{setup.text}</pre>
                     <div className="flex items-center justify-between gap-3">

@@ -185,7 +185,7 @@ func (c *client) currentBaseURL() string {
 func (c *client) do(ctx context.Context, method, path string, body any) (json.RawMessage, error) {
 	base, pipe := c.currentEndpoint()
 	if base == "" {
-		return nil, &cliError{code: exitTransportFailure, reason: "runtime_not_found", msg: "未发现运行中的 DofuTV 工作区。请先打开 DofuTV；若使用自定义目录，请检查 BEEFTV_DATA_DIR；独立服务请显式设置 BEEFTV_BASE_URL"}
+		return nil, &cliError{code: exitTransportFailure, reason: "runtime_not_found", msg: "未发现运行中的 TofuTV 工作区。请先打开 TofuTV；若使用自定义目录，请检查 BEEFTV_DATA_DIR；独立服务请显式设置 BEEFTV_BASE_URL"}
 	}
 	if pipe != "" {
 		ctx = localipc.WithRequiredEndpoint(ctx, pipe)
@@ -441,7 +441,7 @@ func run(args []string) error {
 }
 
 func usage() {
-	fmt.Fprint(os.Stderr, `beeftv — DofuTV 业务操作命令行（连接正在运行的本地工作区）
+	fmt.Fprint(os.Stderr, `beeftv — TofuTV 业务操作命令行（连接正在运行的本地工作区）
 
   beeftv skills help  （远程技能市场，无需运行桌面应用）
   beeftv diagnostics analyze --file <diagnostics.zip>  （离线分析，无需运行桌面应用）
@@ -467,12 +467,12 @@ func usage() {
   beeftv client register --label <label> [--kind codex|claude|cursor|other] [--mode read-only|read-write] [--approval ask|caller|auto]
   beeftv mcp serve [--read-only] [--all-business-tools]
 
-连接哪个工作区：不设 BEEFTV_BASE_URL 时自动连正在运行的 DofuTV 桌面应用，端口是动态的。
+连接哪个工作区：不设 BEEFTV_BASE_URL 时自动连正在运行的 TofuTV 桌面应用，端口是动态的。
 BEEFTV_DATA_DIR 可以指向非默认数据目录。Windows 从用户目录下 .beeftv/runtime 读取对应
-工作区的运行信息，其他平台读取数据目录里的 runtime.json。升级后请重新打开 DofuTV。
+工作区的运行信息，其他平台读取数据目录里的 runtime.json。升级后请重新打开 TofuTV。
 
-凭据：在 DofuTV 的设置里新建一个客户端，把它给出的 BEEFTV_CLIENT_ID 与 BEEFTV_CLIENT_TOKEN
-填进环境变量即可，不需要桌面令牌。一键接入改用 BEEFTV_CLIENT_TOKEN_FILE 指向 DofuTV 数据目录里的
+凭据：在 TofuTV 的设置里新建一个客户端，把它给出的 BEEFTV_CLIENT_ID 与 BEEFTV_CLIENT_TOKEN
+填进环境变量即可，不需要桌面令牌。一键接入改用 BEEFTV_CLIENT_TOKEN_FILE 指向 TofuTV 数据目录里的
 凭据文件，令牌不会出现在进程参数里；两者都给时以文件为准，文件不存在或为空按未授权处理。
 新连接默认开放全部业务工具，操作审批由外部 Agent 管理。
 MCP 默认只列出画布、素材、媒体与技能操作，底层业务接口通过 business.list 查找、business.call 调用；
@@ -960,7 +960,7 @@ func runMCP(c *client, args []string) error {
 	timedOut := errors.Is(startupCtx.Err(), context.DeadlineExceeded)
 	cancel()
 	if timedOut {
-		return &cliError{code: exitTransportFailure, reason: "mcp_startup_timeout", msg: "连接 DofuTV 工作区超过 5 秒，请确认 DofuTV 已启动且工作区可以访问"}
+		return &cliError{code: exitTransportFailure, reason: "mcp_startup_timeout", msg: "连接 TofuTV 工作区超过 5 秒，请确认 TofuTV 已启动且工作区可以访问"}
 	}
 	if err != nil {
 		return err

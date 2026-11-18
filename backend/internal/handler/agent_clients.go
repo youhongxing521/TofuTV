@@ -75,7 +75,7 @@ func RegisterAgentClientRoutes(r gin.IRouter, svc ownerCredentialDirs, clients a
 		kind := agentops.NormalizeClientKind(req.Kind)
 		cliPath, available := bundledCLIPath()
 		if !available {
-			failAgentOps(c, agentops.PreconditionFailed("cli_unavailable", "安装文件不完整，无法连接外部工具。请重新下载并完整解压 DofuTV。", nil))
+			failAgentOps(c, agentops.PreconditionFailed("cli_unavailable", "安装文件不完整，无法连接外部工具。请重新下载并完整解压 TofuTV。", nil))
 			return
 		}
 		dataDir, err := filepath.Abs(svc.DataDir())
@@ -219,14 +219,14 @@ func clientSetup(kind agentops.ClientKind, cliPath, dataDir string, reg agentops
 			" --env BEEFTV_CLIENT_ID=" + shellQuote(reg.ID) +
 			" --env BEEFTV_CLIENT_TOKEN=" + shellQuote(token) +
 			" -- " + shellQuote(launch.Command) + " " + serveArgs
-		return gin.H{"kind": string(kind), "title": "在 Codex 里加上 DofuTV", "command": command}
+		return gin.H{"kind": string(kind), "title": "在 Codex 里加上 TofuTV", "command": command}
 	case agentops.ClientKindClaude:
 		command := "claude mcp add beeftv --scope user" +
 			" -e BEEFTV_DATA_DIR=" + shellQuote(dataDir) +
 			" -e BEEFTV_CLIENT_ID=" + shellQuote(reg.ID) +
 			" -e BEEFTV_CLIENT_TOKEN=" + shellQuote(token) +
 			" -- " + shellQuote(launch.Command) + " " + serveArgs
-		return gin.H{"kind": string(kind), "title": "在 Claude Code 里加上 DofuTV", "command": command}
+		return gin.H{"kind": string(kind), "title": "在 Claude Code 里加上 TofuTV", "command": command}
 	case agentops.ClientKindClaudeDesktop:
 		return gin.H{"kind": string(kind), "title": "在 Claude Desktop 的开发者设置中编辑配置",
 			"json": mcpServersJSON(launch)}

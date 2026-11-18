@@ -273,7 +273,7 @@ export function resolveImageResponseFormat(profile: ImageCapabilityConfig | unde
 /**
  * 能力编辑器里是否允许选择 response_format 的取值。
  * 只有走通用 OpenAI 兼容图片请求的渠道会按配置发出这个参数：
- * 本体自营的 DofuTV 图片契约固定接受内联 base64，grok / seedream / 火山等协议各自写死请求体，
+ * 本体自营的 TofuTV 图片契约固定接受内联 base64，grok / seedream / 火山等协议各自写死请求体，
  * 给出选项却发不出去，等于又造一个「设置了不生效」。
  */
 export function imageResponseFormatSelectable(protocol: ModelProtocol | undefined, model: string) {

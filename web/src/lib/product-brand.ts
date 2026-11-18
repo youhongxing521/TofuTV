@@ -1,6 +1,6 @@
-export const PRODUCT_NAME = "DofuTV";
-export const PRODUCT_SLUG = "dofutv";
-export const PRODUCT_STARTUP_IMAGE_URL = "/dofutv-startup.png";
-export const PRODUCT_MARK_URL = "/dofutv-mark.png";
+export const PRODUCT_NAME = "TofuTV";
+export const PRODUCT_SLUG = "tofutv";
+export const PRODUCT_STARTUP_IMAGE_URL = "/tofutv-startup.png";
+export const PRODUCT_MARK_URL = "/tofutv-mark.png";
 export const PRODUCT_REPOSITORY_URL = "https://gitee.com/hongxingyou/beeftv";
 export const PRODUCT_AGENT_NAME = PRODUCT_NAME + " Agent";

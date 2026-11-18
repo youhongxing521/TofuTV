@@ -102,7 +102,7 @@ export function publishEmbeddedContext(context: EmbeddedWorkspaceContext): void 
 
 /**
  * 把选中节点交给右侧对话。返回是否已按嵌入模式接管；
- * 单独打开 DofuTV 时返回 false，由页面继续走内置助手。
+ * 单独打开 TofuTV 时返回 false，由页面继续走内置助手。
  */
 export function publishSelectionAsk(input: {
     canvasId: string;

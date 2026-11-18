@@ -74,7 +74,7 @@ export const canvasThemes = {
     dark: {
         canvas: {
             // 深色画布使用微紫底色，点阵保持低对比度。
-            background: "#151522",
+            background: "#11131d",
             dot: "rgba(175,175,175,.24)",
             line: "rgba(175,175,175,.24)",
             selectionFill: "rgba(255,255,255,.12)",
@@ -82,13 +82,13 @@ export const canvasThemes = {
         node: {
             label: "#b9afcd",
             agentUserMessage: "#182b40",
-            fill: "#29223f",
-            panel: "#211b33",
-            stroke: "rgba(175,145,246,.26)",
-            edge: "rgba(175,145,246,.26)",
+            fill: "#202136",
+            panel: "#191b2b",
+            stroke: "rgba(163,143,246,.30)",
+            edge: "rgba(163,143,246,.30)",
             shadow: "0 8px 24px rgba(0,0,0,.34)",
             hoverShadow: "0 12px 30px rgba(0,0,0,.46)",
-            activeStroke: "#b79ffe",
+            activeStroke: "#a68cff",
             placeholder: "#9b90ad",
             text: "#ededed",
             muted: "#b9afcd",
@@ -99,11 +99,11 @@ export const canvasThemes = {
             stroke: "rgba(190,198,210,.15)",
             activeFill: "rgba(255,255,255,.08)",
             activeStroke: "#f5f5f5",
-            preview: "rgba(24,23,38,.94)",
+            preview: "rgba(23,24,38,.94)",
         },
         toolbar: {
-            panel: "rgba(28,27,43,.97)",
-            border: "rgba(174,152,223,.19)",
+            panel: "rgba(25,26,42,.97)",
+            border: "rgba(168,152,230,.22)",
             item: "#d4d4d4",
             itemHover: "rgba(184,157,250,.12)",
             activeBg: "rgba(184,157,250,.18)",
@@ -111,7 +111,7 @@ export const canvasThemes = {
         },
         spatial: {
             surface: "rgba(22,22,22,.82)",
-            elevated: "rgba(26,24,39,.97)",
+            elevated: "rgba(24,25,39,.97)",
             dropzone: "rgba(8,8,8,.9)",
             glow: "rgba(255,255,255,.12)",
             glowStrong: "rgba(255,255,255,.36)",

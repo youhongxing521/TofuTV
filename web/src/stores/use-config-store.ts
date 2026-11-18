@@ -485,7 +485,7 @@ function protocolAllowsCapability(protocol: ModelProtocol | undefined, capabilit
     return !resolved || resolved === capability;
 }
 
-// Enforce capability ↔ protocol consistency for every channel. DofuTV media
+// Enforce capability ↔ protocol consistency for every channel. TofuTV media
 // profiles are already repaired from the shared contracts above; for other
 // channels the request protocol is what the user configured, so the
 // capability follows it instead of inventing a different wire protocol.
@@ -538,7 +538,7 @@ function beefTVSeedanceCapabilityConfig(model: string, current?: ModelCapability
         refs.maxVideoDurationSeconds === 0 && refs.maxAudioDurationSeconds === 0;
     const defaults = defaultModelCapabilityConfig("newapi", model);
     if (!current || !video) return defaults;
-    // The built-in DofuTV Seedance contract supports the audio switch even
+    // The built-in TofuTV Seedance contract supports the audio switch even
     // when an older saved profile advertised no control. Keep its default.
     const generateAudio = { ...video!.generateAudio, supported: true }, draftSupported = Boolean(video!.draft?.supported ?? defaults.video?.draft?.supported);
     const baseRes = Array.isArray(video!.resolutions) ? video!.resolutions : defaults.video?.resolutions ?? [], baseOps = Array.isArray(video!.operations) ? video!.operations : defaults.video?.operations ?? [];
@@ -557,7 +557,7 @@ function enrichBeefTVMediaChannel(channel: ModelChannel): ModelChannel {
     for (const model of models.filter(isImageModelName)) {
         const current = existing.get(model);
         if (current?.imageCapabilitiesVersion && current.capabilityConfig?.image) continue;
-        // These DofuTV models use Images, even when an older generic catalog
+        // These TofuTV models use Images, even when an older generic catalog
         // saved a text protocol. Do not rewrite arbitrary custom model routes.
         const contract = beefTVImageContract(model);
         const staleTextProtocol = (/^(gpt-image(?:-|$)|dall-e(?:-|$))/i.test(model) || Boolean(contract)) && modelProtocolCapability(current?.protocol) === "text";

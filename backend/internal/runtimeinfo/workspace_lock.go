@@ -18,7 +18,7 @@ func LockWorkspace(dataDir string) (*os.File, error) {
 	}
 	if legacyWorkspaceBusy(dataDir) {
 		_ = lock.Close()
-		return nil, errors.New("此数据目录正在被另一实例使用，请先关闭其他 DofuTV 窗口")
+		return nil, errors.New("此数据目录正在被另一实例使用，请先关闭其他 TofuTV 窗口")
 	}
 	if path, pathErr := Path(dataDir); pathErr == nil {
 		_ = os.Remove(path)

@@ -71,7 +71,7 @@ export function WorkspaceSidebarSocialLinks({ collapsed, onExpand }: { collapsed
                 <button ref={backRef} type="button" className="app-workspace-social-action" aria-label="收起项目与反馈" title="收起项目与反馈" onClick={close}>
                     <ArrowLeft aria-hidden="true" strokeWidth={1.8} />
                 </button>
-                <a className="app-workspace-social-action" href={PRODUCT_REPOSITORY_URL} target="_blank" rel="noopener noreferrer" aria-label="打开 DofuTV Gitee 仓库" title="DofuTV Gitee 仓库">
+                <a className="app-workspace-social-action" href={PRODUCT_REPOSITORY_URL} target="_blank" rel="noopener noreferrer" aria-label="打开 TofuTV Gitee 仓库" title="TofuTV Gitee 仓库">
                     <FolderGit2 aria-hidden="true" />
                 </a>
                 <Link className="app-workspace-social-action" to="/settings?section=diagnostics" onClick={close} aria-label="问题诊断" title="问题诊断">

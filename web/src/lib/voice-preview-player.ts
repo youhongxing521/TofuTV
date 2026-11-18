@@ -1,4 +1,4 @@
-export const VOICE_PREVIEW_SAMPLE_PHRASE = "你好，欢迎使用 DofuTV 创作画布，这是一段配音音色试听。";
+export const VOICE_PREVIEW_SAMPLE_PHRASE = "你好，欢迎使用 TofuTV 创作画布，这是一段配音音色试听。";
 
 export type VoicePreviewProfile = {
     voiceId: string;

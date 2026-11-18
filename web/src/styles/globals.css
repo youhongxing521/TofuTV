@@ -342,16 +342,16 @@
 }
 
 .dark {
-    --background: #0f0f0f;
-    --foreground: #ffffff;
-    --border: #222222;
-    --ring: oklch(0.556 0 0);
-    --card: #181818;
+    --background: var(--brand-dark-page);
+    --foreground: #f5f4ff;
+    --border: var(--brand-dark-border);
+    --ring: var(--brand-dark-accent);
+    --card: var(--brand-dark-surface);
     --card-foreground: #ffffff;
-    --popover: #222222;
-    --popover-foreground: #ffffff;
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
+    --popover: var(--brand-dark-raised);
+    --popover-foreground: var(--foreground);
+    --primary: var(--brand-dark-action);
+    --primary-foreground: #ffffff;
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
@@ -371,15 +371,15 @@
     --workspace-page: var(--workspace-canvas);
     --workspace-navigation: var(--workspace-page);
     --workspace-content: var(--workspace-page);
-    --workspace-surface: #181818;
-    --workspace-surface-strong: #2a2a2a; /* composio surface-strong（原 #222222 并入 elevated 语义）*/
-    --workspace-border: #222222;
-    --workspace-border-strong: #333333;
+    --workspace-surface: var(--brand-dark-surface);
+    --workspace-surface-strong: var(--brand-dark-control);
+    --workspace-border: var(--brand-dark-border);
+    --workspace-border-strong: #41405d;
     --workspace-grid-line: rgba(255, 255, 255, 0.038);
     --workspace-nav: var(--workspace-navigation);
     --workspace-sidebar: var(--workspace-navigation);
-    --workspace-accent: #f5f5f5;
-    --workspace-accent-soft: rgba(255, 255, 255, 0.09);
+    --workspace-accent: var(--brand-dark-accent);
+    --workspace-accent-soft: color-mix(in srgb, var(--workspace-accent) 15%, transparent);
     --workspace-nav-active-bg: color-mix(in srgb, var(--workspace-accent) 13%, transparent);
     --workspace-nav-active-hover-bg: color-mix(in srgb, var(--workspace-accent) 18%, transparent);
     --chart-1: oklch(0.87 0 0);
@@ -559,13 +559,13 @@
         rgba(255, 255, 255, 0.05) 100%
     );
 
-    --btn-solid-bg: #3b3b3e;
-    --btn-solid-hover-bg: #505054;
-    --btn-solid-active-bg: #303033;
-    --btn-solid-fg: #f5f5f5;
-    --control-selected-bg: rgba(255, 255, 255, 0.12);
-    --control-selected-hover-bg: rgba(255, 255, 255, 0.16);
-    --control-selected-fg: #f5f5f5;
+    --btn-solid-bg: var(--brand-dark-action);
+    --btn-solid-hover-bg: var(--brand-dark-action-hover);
+    --btn-solid-active-bg: var(--brand-dark-action-active);
+    --btn-solid-fg: #ffffff;
+    --control-selected-bg: var(--brand-dark-control);
+    --control-selected-hover-bg: var(--brand-dark-hover);
+    --control-selected-fg: var(--brand-dark-accent);
     --control-selected-border: rgba(255, 255, 255, 0.18);
     --control-check-bg: #f5f5f5; --control-check-hover-bg: #ffffff; --control-check-active-bg: #e5e5e5;
     --control-check-fg: #131313;
@@ -1249,20 +1249,20 @@
     }
 
     .dark .app-user-workspace {
-        --workspace-canvas: #101011;
+        --workspace-canvas: var(--brand-dark-page);
         --workspace-page: var(--workspace-canvas);
-        --workspace-navigation: #171718;
-        --workspace-content: #121213;
+        --workspace-navigation: var(--brand-dark-surface);
+        --workspace-content: var(--brand-dark-page);
         --workspace-sidebar: var(--workspace-navigation);
-        --workspace-surface: #1b1b1d;
-        --workspace-surface-strong: #222224;
-        --workspace-border: rgba(255, 255, 255, 0.09);
-        --workspace-border-strong: rgba(255, 255, 255, 0.16);
+        --workspace-surface: var(--brand-dark-surface);
+        --workspace-surface-strong: var(--brand-dark-control);
+        --workspace-border: var(--brand-dark-border);
+        --workspace-border-strong: #41405d;
         --workspace-nav: var(--workspace-navigation);
-        --workspace-accent: #f5f5f5;
-        --workspace-accent-soft: rgba(255, 255, 255, 0.08);
-        --workspace-nav-active-bg: rgba(255, 255, 255, 0.09);
-        --workspace-nav-active-hover-bg: rgba(255, 255, 255, 0.13);
+        --workspace-accent: var(--brand-dark-accent);
+        --workspace-accent-soft: color-mix(in srgb, var(--workspace-accent) 15%, transparent);
+        --workspace-nav-active-bg: color-mix(in srgb, var(--workspace-accent) 13%, transparent);
+        --workspace-nav-active-hover-bg: color-mix(in srgb, var(--workspace-accent) 18%, transparent);
     }
 
     /* 画布编辑器保持独立的全屏工作区，但沿用用户端的安全区和控件密度。 */
@@ -1528,11 +1528,11 @@
     }
 
     /* 原版顶栏正常同步只显示轻量图标；保存失败或版本冲突时露出文字提示，方便用户按报错指引点击处理。 */
-    .canvas-topbar:not(.dofu-canvas-header) [data-canvas-save-tone]:not(.ant-btn-dangerous) .canvas-sync-status-label,
+    .canvas-topbar [aria-label^="画布保存状态"]:not(.ant-btn-dangerous) .canvas-sync-status-label,
     .canvas-topbar .canvas-sync-external-notice .canvas-sync-status-label,
     .canvas-topbar [data-canvas-external-write-op] .canvas-sync-status-label { display: none; }
-    .canvas-topbar:not(.dofu-canvas-header) [data-canvas-save-tone]:not(.ant-btn-dangerous) { width: 28px; min-width: 28px; padding-inline: 0; opacity: 0.72; }
-    .canvas-topbar [data-canvas-save-tone="failed"] { width: auto; padding-inline: 8px; opacity: 1; }
+    .canvas-topbar [aria-label^="画布保存状态"]:not(.ant-btn-dangerous) { width: 28px; min-width: 28px; padding-inline: 0; opacity: 0.72; }
+    .canvas-topbar [aria-label^="画布保存状态"].ant-btn-dangerous { width: auto; padding-inline: 8px; opacity: 1; }
 
     .canvas-topbar-project-cluster {
         width: max-content;
@@ -2433,7 +2433,7 @@
     }
 
     .full-screen-loader-logo-image { width: 38px; height: 38px; }
-    .full-screen-loader-logo-fallback { display: block; width: 36px; height: 36px; background: url('/dofutv-mark.png') center / contain no-repeat; }
+    .full-screen-loader-logo-fallback { display: block; width: 36px; height: 36px; background: url('/tofutv-mark.png') center / contain no-repeat; }
     .workspace-route-loader-logo .full-screen-loader-logo-fallback { width: 16px; height: 16px; }
 
     .full-screen-loader-orbit {
@@ -2549,7 +2549,7 @@
 
     .full-screen-loader::before { display: none; }
 
-    .dofu-startup-art {
+    .tofutv-startup-art {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -2562,7 +2562,7 @@
         display: block;
         width: min(104px, 26vw);
         aspect-ratio: 1;
-        background: url('/dofutv-mark.png') center / contain no-repeat;
+        background: url('/tofutv-mark.png') center / contain no-repeat;
     }
 
     .beeftv-loading-logo.is-compact { width: 48px; }
@@ -7403,13 +7403,15 @@ html:not(.dark) .creation-studio-control:hover,
        视觉层级可见；只作用于画布浮层，不改变全局 workspace surface。 */
     .dark .canvas-topbar-cluster,
     .dark .libtv-main-dock {
-        background: var(--studio-toolbar-surface, rgb(34 34 34)) !important;
-        border-color: var(--studio-border, rgb(54 54 54)) !important;
+        background: var(--brand-dark-raised) !important;
+        border-color: var(--brand-dark-border) !important;
     }
 
     .dark .libtv-main-dock {
-        background: var(--studio-toolbar-surface, rgb(38 38 38)) !important;
+        background: var(--brand-dark-control) !important;
     }
+
+    .dark [data-canvas-node-type="video"] .canvas-node-title-type-icon { color: var(--brand-dark-orange); }
 
     /* Bottom navigation follows the canvas theme while preserving equal
        44px targets and the neutral active treatment. */
@@ -17721,12 +17723,12 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 }
 
 .dark .app-user-workspace .app-workspace-sidebar,
-.dark .app-user-workspace .app-workspace-sidebar-nav { background: #1b1b1d; }
+.dark .app-user-workspace .app-workspace-sidebar-nav { background: var(--user-surface); }
 .dark .app-user-workspace .app-workspace-topbar,
 .dark .app-user-workspace .creation-home,
 .dark .app-user-workspace .creation-composer,
 .dark .app-user-workspace .creation-empty-suggest .creation-hero-prompt,
-.dark .app-user-workspace .creation-empty-suggest .suggest-card { background: #18181a; }
+.dark .app-user-workspace .creation-empty-suggest .suggest-card { background: var(--user-surface); }
 .dark .app-user-workspace .app-workspace-sidebar-footer { border-top-color: rgba(255,255,255,.08); }
 .dark .app-user-workspace .app-workspace-topbar-credit-pill { border-color: rgba(255,255,255,.11); background: #202024; color: rgba(255,255,255,.72); }
 .dark .app-user-workspace .app-workspace-topbar-credit-pill strong { color: #fff; }
@@ -19488,19 +19490,19 @@ html:not(.dark) .creation-home .creation-user-message-copy-wrap { box-shadow: 0 
 
 .dark .app-user-workspace,
 .dark .app-user-overlays {
-    --user-page-bg: #101010;
-    --user-surface: #161616;
-    --user-surface-raised: #1b1b1b;
-    --user-surface-muted: #202020;
-    --user-surface-hover: #242424;
-    --user-control-pressed: #303030;
+    --user-page-bg: var(--workspace-page);
+    --user-surface: var(--workspace-surface);
+    --user-surface-raised: var(--brand-dark-raised);
+    --user-surface-muted: var(--brand-dark-control);
+    --user-surface-hover: var(--brand-dark-hover);
+    --user-control-pressed: var(--brand-dark-hover);
     --user-border: rgba(255, 255, 255, .09);
     --user-border-strong: rgba(255, 255, 255, .16);
-    --user-ink: #f3f3f5;
-    --user-ink-muted: #b4b4bc;
-    --user-ink-soft: #9797a1;
-    --user-accent: #c1c1c5;
-    --user-accent-soft: rgba(255, 255, 255, .11);
+    --user-ink: var(--foreground);
+    --user-ink-muted: #b9b8cc;
+    --user-ink-soft: #a6a4ba;
+    --user-accent: var(--workspace-accent);
+    --user-accent-soft: var(--workspace-accent-soft);
     --user-shadow-card: none;
     --user-shadow-hover: none;
 }

@@ -1,20 +1,20 @@
 ---
 title: 接入生成服务
-description: 用 JSON 或 JS 把图片、视频、音频和文本服务接进 DofuTV。
+description: 用 JSON 或 JS 把图片、视频、音频和文本服务接进 TofuTV。
 ---
 
 # 接入生成服务
 
-插件可以把一个模型服务接进 DofuTV，有两种写法：
+插件可以把一个模型服务接进 TofuTV，有两种写法：
 
 | 写法 | 适合 | 能力 |
 | --- | --- | --- |
 | [JSON](#用-json-接入) | 发一个请求，拿到结果，或者拿到任务号再查进度 | 文本、图片、视频、音频 |
 | [JS](#用-js-接入) | 要先上传素材、改写工作流，或者分几步调用 | 图片、视频、音频 |
 
-能用 JSON 写就用 JSON：DofuTV 替你发请求，不用运行插件代码。
+能用 JSON 写就用 JSON：TofuTV 替你发请求，不用运行插件代码。
 
-两种写法里，任务记录、重启后继续查询、不重复提交、把结果下载进工作区，都由 DofuTV 负责。
+两种写法里，任务记录、重启后继续查询、不重复提交、把结果下载进工作区，都由 TofuTV 负责。
 
 ## 用 JSON 接入
 
@@ -91,7 +91,7 @@ description: 用 JSON 或 JS 把图片、视频、音频和文本服务接进 Do
 
 `status` 的值按下表归类，大小写不限。读不出来或者不在表里的，都算还在排队。
 
-| DofuTV 的状态 | 服务返回的文字 |
+| TofuTV 的状态 | 服务返回的文字 |
 | --- | --- |
 | 排队中 | `queued`、`pending`、`created`、`submitted`、`in_queue`、`preparing`、`queueing` |
 | 运行中 | `running`、`processing`、`in_progress`、`executing` |
@@ -114,10 +114,10 @@ description: 用 JSON 或 JS 把图片、视频、音频和文本服务接进 Do
 | `response` | 怎么读返回内容 |
 | `variables` | 请求里要反复用到的值，见[变量](#变量) |
 | `validations` | 提交前的检查，见[提交前检查](#提交前检查) |
-| `parameters` | 这个协议支持哪些参数的说明，写给读插件的人看，DofuTV 不读取 |
+| `parameters` | 这个协议支持哪些参数的说明，写给读插件的人看，TofuTV 不读取 |
 | `requiresPublicMediaUrls` | 服务只接受公网素材地址时写 `true` |
 
-也可以写 `cancel`，但 DofuTV 目前不会发这个请求。
+也可以写 `cancel`，但 TofuTV 目前不会发这个请求。
 
 `auth.field` 选用哪把密钥：`apiKey` 或 `secretKey`。
 
@@ -154,12 +154,12 @@ description: 用 JSON 或 JS 把图片、视频、音频和文本服务接进 Do
 | `errorPaths` | 这些路径上有非零的值就算失败，比如 `["error.code"]` |
 | `successCodes` | 服务用非零的码表示成功时写在这里，比如 `[10000]` |
 | `messagePaths` | 失败时依次找这些路径上的文字，和 `message` 二选一即可 |
-| `resultEphemeral` | 结果地址很快失效时写 `true`，DofuTV 会在任务结束前下载 |
+| `resultEphemeral` | 结果地址很快失效时写 `true`，TofuTV 会在任务结束前下载 |
 | `binaryPayload` | 返回内容本身就是媒体文件时写 `true`，比如语音合成 |
 | `detectImageMime` | 按实际字节判断图片类型 |
 | `stream` | 图片用 SSE 流返回时的解析规则 |
 
-服务返回错误时，用户看到的是 DofuTV 按错误类型给出的提示，比如“模型服务鉴权失败”，`message` 不一定原样显示。想让用户看到自己写的原因，用 JS 接入。
+服务返回错误时，用户看到的是 TofuTV 按错误类型给出的提示，比如“模型服务鉴权失败”，`message` 不一定原样显示。想让用户看到自己写的原因，用 JS 接入。
 
 ### 表达式
 
@@ -250,7 +250,7 @@ JSON 里任何一个值都可以写成表达式。能读到的数据：
 
 在 `manifest.json` 开头加 `"$schema": "../interface-manifest.schema.json"`（或指向你本地的这份文件），编辑器就能提示字段和取值。
 
-装进 DofuTV 之前，先用命令行离线检查。两个命令都不发请求，也不需要 Key：
+装进 TofuTV 之前，先用命令行离线检查。两个命令都不发请求，也不需要 Key：
 
 ```bash
 beeftv plugin validate ./beeftv-plugin-my-image
@@ -260,7 +260,7 @@ beeftv plugin validate ./beeftv-plugin-my-image
 beeftv plugin try ./beeftv-plugin-my-image --model my-model --prompt "一只猫" --base-url https://api.example.com/v1
 ```
 
-`validate` 用的是 DofuTV 安装插件时同一个校验器，出错时会指出是哪个字段。`try` 按你的映射拼出将要发出的方法、完整地址和请求体，用来核对字段有没有放对位置。`--options` 可以传一段 JSON，作为这个接口命名空间下的 `providerOptions`。
+`validate` 用的是 TofuTV 安装插件时同一个校验器，出错时会指出是哪个字段。`try` 按你的映射拼出将要发出的方法、完整地址和请求体，用来核对字段有没有放对位置。`--options` 可以传一段 JSON，作为这个接口命名空间下的 `providerOptions`。
 
 接口改名或合并时，把旧 ID 写进 provider 的 `legacyAliases`：已保存的模型和未完成的任务照样能用。
 
@@ -327,23 +327,23 @@ export async function query(taskId, request, ctx) {
 | --- | --- |
 | `ctx.config` | 用户在模型服务里填的 `{ baseUrl, apiKey }` |
 | `ctx.signal` | 用户取消任务时触发，传给 `fetch` 就能中断请求 |
-| `ctx.log(message)` | 写进 DofuTV 日志。不要写密钥 |
+| `ctx.log(message)` | 写进 TofuTV 日志。不要写密钥 |
 
 用户这样用上它：在「模型配置」点「添加模型服务」，「选择服务商」里会多一项，标着「插件提供」。填好地址和 Key，点「读取模型」或手动添加模型 ID。
 
 ### 几条约定
 
-- **能确定失败就返回 `{ status: "failed", message }`**，比如缺 Key、服务明确拒绝，或者还没提交就连不上服务。`submit` 抛异常时，DofuTV 无法判断任务是否已经发出，会标为“提交结果不明”，不会自动重试，以免重复扣费。
+- **能确定失败就返回 `{ status: "failed", message }`**，比如缺 Key、服务明确拒绝，或者还没提交就连不上服务。`submit` 抛异常时，TofuTV 无法判断任务是否已经发出，会标为“提交结果不明”，不会自动重试，以免重复扣费。
 - **`message` 会显示给用户**，写清原因和怎么办。不要带网址或错误码：网址会被过滤掉，错误码可能让提示变成通用文案。
-- **`submit` 要返回 `taskId`**。DofuTV 先记下任务号再查询。应用重启后只调用 `query`，不会再次调用 `submit`。服务同步出结果时，也可以直接返回 `{ status: "succeeded", result }`。
-- **`query` 抛异常表示这次没查到**，DofuTV 过一会儿再查，连续 3 次才算失败，失败原因是最后一次异常的文字。任务确定失败时返回 `{ status: "failed", message }`。
-- **结果里写 `url` 或 `dataUrl` 就够了**，DofuTV 负责下载和保存。结果地址和服务地址同源时，下载会带上用户的密钥；其他地址不带。
-- **取消任务时**，DofuTV 停止查询并触发 `ctx.signal`，不会去服务那边取消任务。调用要在 5 秒内结束，否则 DofuTV 会结束运行插件的进程，下一次调用启动新的。
+- **`submit` 要返回 `taskId`**。TofuTV 先记下任务号再查询。应用重启后只调用 `query`，不会再次调用 `submit`。服务同步出结果时，也可以直接返回 `{ status: "succeeded", result }`。
+- **`query` 抛异常表示这次没查到**，TofuTV 过一会儿再查，连续 3 次才算失败，失败原因是最后一次异常的文字。任务确定失败时返回 `{ status: "failed", message }`。
+- **结果里写 `url` 或 `dataUrl` 就够了**，TofuTV 负责下载和保存。结果地址和服务地址同源时，下载会带上用户的密钥；其他地址不带。
+- **取消任务时**，TofuTV 停止查询并触发 `ctx.signal`，不会去服务那边取消任务。调用要在 5 秒内结束，否则 TofuTV 会结束运行插件的进程，下一次调用启动新的。
 - **一个服务可以同时出图、视频和音频**：`capabilities` 写上几种，`models` 给每个模型标上 `capability`。用户在「选择服务商」里只看到一项。
 
 ### 列出模型
 
-再导出一个 `models(ctx)`，用户点「读取模型」时 DofuTV 就会调用它，`ctx.config` 是用户刚填的地址和 Key：
+再导出一个 `models(ctx)`，用户点「读取模型」时 TofuTV 就会调用它，`ctx.config` 是用户刚填的地址和 Key：
 
 ```js
 export async function models(ctx) {
@@ -360,9 +360,9 @@ export async function models(ctx) {
 
 ### 运行环境
 
-插件代码运行在 DofuTV 自带 Node 的一个后台进程里，不经过浏览器，可以用 `fetch` 和 Node 内置模块。第一次用到时启动，`package.json` 的 `dependencies` 在安装时一起装好。
+插件代码运行在 TofuTV 自带 Node 的一个后台进程里，不经过浏览器，可以用 `fetch` 和 Node 内置模块。第一次用到时启动，`package.json` 的 `dependencies` 在安装时一起装好。
 
-改了代码，从本地目录安装的插件点「重新加载」就会换成新代码，不用重启 DofuTV。
+改了代码，从本地目录安装的插件点「重新加载」就会换成新代码，不用重启 TofuTV。
 
 ### 更多例子
 
