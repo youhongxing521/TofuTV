@@ -198,6 +198,12 @@ export function CanvasTopBar({
             <div className={`canvas-topbar pointer-events-none absolute inset-x-0 top-0 z-[var(--z-toolbar)] flex h-[var(--canvas-topbar-h)] items-center justify-between px-2 sm:px-2${studioHeader ? " tofu-canvas-header" : ""}`}>
                 <div className="tofu-canvas-breadcrumb pointer-events-none flex items-center gap-2">
                 <div className="canvas-topbar-cluster canvas-topbar-project-cluster pointer-events-auto flex min-w-0 items-center gap-2" style={dockStyle}>
+                    {studioHeader && (
+                        <Link to="/" className="tofu-canvas-home canvas-topbar-action" aria-label="回到主页" title="回到主页">
+                            <SquarePlay className="tofu-canvas-wordmark-icon" aria-hidden="true" />
+                            <span className="tofu-canvas-wordmark">{PRODUCT_NAME}</span>
+                        </Link>
+                    )}
                     <Dropdown
                             trigger={["click"]}
                             placement="bottomLeft"
@@ -217,8 +223,8 @@ export function CanvasTopBar({
                                 ],
                             }}
                         >
-                            <button type="button" className="canvas-topbar-project-menu-button canvas-topbar-action inline-flex size-9 items-center justify-center gap-0.5 rounded-full" style={{ color: theme.node.text }} aria-label="打开画布菜单">
-                                {studioHeader ? <><SquarePlay className="tofu-canvas-wordmark-icon" aria-hidden="true" /><span className="tofu-canvas-wordmark">{PRODUCT_NAME}</span></> : <BrandLogoFrame className="canvas-topbar-brand-mark" logoClassName="canvas-topbar-brand-mark-image" alt="" fallback={<span className="canvas-topbar-brand-mark-fallback" aria-hidden="true">{PRODUCT_NAME.charAt(0)}</span>} />}
+                            <button type="button" className="canvas-topbar-project-menu-button canvas-topbar-action inline-flex size-9 items-center justify-center gap-0.5 rounded-full" style={{ color: theme.node.text }} aria-label="打开画布菜单" title="打开画布菜单">
+                                {!studioHeader && <BrandLogoFrame className="canvas-topbar-brand-mark" logoClassName="canvas-topbar-brand-mark-image" alt="" fallback={<span className="canvas-topbar-brand-mark-fallback" aria-hidden="true">{PRODUCT_NAME.charAt(0)}</span>} />}
                                 <ChevronDown className="size-2.5 opacity-55" aria-hidden="true" />
                             </button>
                     </Dropdown>

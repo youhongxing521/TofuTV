@@ -1618,7 +1618,7 @@
         }
 
         /* Match LibTV's wider menu slot and tighter canvas-switch slot. */
-        .canvas-topbar-project-menu-button {
+        .canvas-topbar:not(.tofu-canvas-header) .canvas-topbar-project-menu-button {
             width: 52px !important;
             min-width: 52px !important;
         }

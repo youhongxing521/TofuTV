@@ -55,11 +55,22 @@
     font-weight: 650;
 }
 
-[data-canvas-studio] .tofu-canvas-header .canvas-topbar-project-menu-button {
-    width: auto;
+[data-canvas-studio] .tofu-canvas-home {
+    display: inline-flex;
+    min-height: 32px;
     flex: none;
+    align-items: center;
     gap: 6px;
     padding-inline: 4px;
+    border-radius: var(--r-sm);
+    color: inherit;
+}
+
+[data-canvas-studio] .tofu-canvas-header .canvas-topbar-project-menu-button {
+    flex: none;
+    width: 28px;
+    min-width: 28px;
+    padding-inline: 0;
 }
 
 [data-canvas-studio] .tofu-canvas-title-divider {
