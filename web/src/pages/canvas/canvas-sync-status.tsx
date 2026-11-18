@@ -329,9 +329,10 @@ export function CanvasSyncStatus({ projectId, onLoadLatest, onOpenVersions }: { 
                     size="small"
                     danger={view.tone === "failed"}
                     aria-label={`画布保存状态：${label}`}
+                    data-canvas-save-tone={view.tone}
                     icon={syncStatusIcon(localOnly, view.tone)}
                 >
-                    <span className="canvas-sync-status-label text-xs">{label}</span>
+                    <span className="canvas-sync-status-label text-xs">{localOnly && view.tone === "saved" ? "自动保存" : label}</span>
                 </Button>
             </Popover>
         </>

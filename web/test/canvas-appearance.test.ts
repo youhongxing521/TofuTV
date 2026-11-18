@@ -42,7 +42,7 @@ describe("canvas custom appearance", () => {
         expect(normalizeCanvasAppearance(undefined, "light")).toEqual({ mode: "follow" });
         expect(normalizeCanvasAppearance({ mode: "invalid" }, "dark")).toEqual({ mode: "follow" });
         expect(resolveCanvasAppearance({ mode: "follow" }, "light").background).toBe("#f0f0f0");
-        expect(resolveCanvasAppearance({ mode: "follow" }, "dark").background).toBe("#11131d");
+        expect(resolveCanvasAppearance({ mode: "follow" }, "dark").background).toBe("#151522");
     });
     test("following ignores remembered custom substrate but preserves it for later edits", () => {
         const custom = customCanvasAppearanceFromTheme("light").custom;
@@ -70,7 +70,7 @@ describe("canvas custom appearance", () => {
         });
 
         const dark = enterCustomCanvasAppearance(canvasAppearanceForTheme("dark"), "dark");
-        expect(dark.custom).toMatchObject({ baseTheme: "dark", backgroundColor: "#11131D", backgroundBrightness: 0, gridColor: "#AFAFAF", gridOpacity: 80 });
+        expect(dark.custom).toMatchObject({ baseTheme: "dark", backgroundColor: "#151522", backgroundBrightness: 0, gridColor: "#AFAFAF", gridOpacity: 80 });
     });
 
     test("preserves custom colors and their substrate when trying fixed themes", () => {

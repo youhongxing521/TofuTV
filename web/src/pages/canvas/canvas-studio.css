@@ -1,0 +1,156 @@
+[data-canvas-studio] {
+    --studio-shell: #f5f3f9;
+    --studio-toolbar-surface: #eeebf5;
+    --studio-border: #ded8e9;
+    --studio-ink: #251b36;
+    --studio-muted: #60566d;
+    --studio-hover: #e3dbee;
+    --studio-accent: #6b43b5;
+    --studio-video: #9a4117;
+    --studio-saved-bg: #e0f3e7;
+    --studio-saved-ink: #176338;
+    --studio-gutter: 12px;
+    --studio-rail-width: 46px;
+}
+
+[data-canvas-studio="dark"] {
+    --studio-shell: #12121e;
+    --studio-toolbar-surface: #1e1d2c;
+    --studio-border: #343148;
+    --studio-ink: #f4eefc;
+    --studio-muted: #b9afcd;
+    --studio-hover: #302642;
+    --studio-accent: #bda7ff;
+    --studio-video: #ff9b49;
+    --studio-saved-bg: #123024;
+    --studio-saved-ink: #70dda0;
+}
+
+[data-canvas-studio] [data-canvas-editor] {
+    padding: var(--canvas-topbar-h) var(--studio-gutter) var(--studio-gutter);
+    background: var(--studio-shell);
+}
+
+[data-canvas-studio] .tofu-canvas-header {
+    padding-inline: var(--studio-gutter);
+    gap: 8px;
+    border-bottom: 1px solid var(--studio-border);
+    color: var(--studio-ink);
+}
+
+[data-canvas-studio] .tofu-canvas-breadcrumb {
+    min-width: 0;
+    flex: 1;
+}
+
+[data-canvas-studio] .tofu-canvas-wordmark-icon {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: var(--studio-video);
+}
+
+[data-canvas-studio] .tofu-canvas-wordmark {
+    font-size: 15px;
+    font-weight: 650;
+}
+
+[data-canvas-studio] .tofu-canvas-header .canvas-topbar-project-menu-button {
+    width: auto;
+    flex: none;
+    gap: 6px;
+    padding-inline: 4px;
+}
+
+[data-canvas-studio] .tofu-canvas-title-divider {
+    flex: none;
+    color: var(--studio-muted);
+}
+
+[data-canvas-studio] .tofu-canvas-stage {
+    margin-top: var(--studio-gutter);
+    border: 1px solid var(--studio-border);
+    border-radius: var(--r-lg);
+}
+
+.tofu-canvas-quick-tools {
+    position: absolute;
+    top: calc(var(--canvas-topbar-h) + var(--studio-gutter));
+    left: var(--studio-gutter);
+    z-index: var(--z-toolbar);
+    display: none;
+    width: var(--studio-rail-width);
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 5px;
+    border: 1px solid var(--studio-border);
+    border-radius: var(--r-lg);
+    background: var(--studio-toolbar-surface);
+    color: var(--studio-ink);
+}
+
+.tofu-canvas-quick-tools button {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+}
+
+.tofu-canvas-quick-tools button:hover,
+.tofu-canvas-quick-tools button[aria-pressed="true"] {
+    background: var(--studio-hover);
+    color: var(--studio-accent);
+}
+
+.tofu-canvas-quick-tools button:focus-visible {
+    outline: 2px solid var(--studio-accent);
+    outline-offset: 1px;
+}
+
+.tofu-canvas-save {
+    flex: none;
+    white-space: nowrap;
+}
+
+.tofu-canvas-save [data-canvas-save-tone="saved"] {
+    padding-inline: 9px;
+    border-radius: var(--r-full);
+    background: var(--studio-saved-bg);
+    color: var(--studio-saved-ink);
+}
+
+[data-canvas-studio] [data-canvas-node-type="text"] .canvas-node-title-type-icon {
+    color: var(--studio-accent);
+}
+
+[data-canvas-studio] [data-canvas-node-type="video"] .canvas-node-title-type-icon {
+    color: var(--studio-video);
+}
+
+@container (min-width: 860px) {
+    [data-canvas-studio] .tofu-canvas-stage {
+        margin-inline-start: calc(var(--studio-rail-width) + var(--studio-gutter));
+    }
+
+    [data-canvas-studio] .tofu-canvas-quick-tools {
+        display: flex;
+    }
+
+    [data-canvas-studio] .canvas-main-toolbar {
+        justify-content: flex-end;
+    }
+
+    [data-canvas-studio] .canvas-libtv-overlay-toolbar {
+        left: calc(var(--studio-rail-width) + var(--studio-gutter) * 3);
+    }
+}
+
+@container (max-width: 660px) {
+    [data-canvas-studio] .tofu-canvas-wordmark,
+    [data-canvas-studio] .tofu-canvas-title-divider {
+        display: none;
+    }
+}

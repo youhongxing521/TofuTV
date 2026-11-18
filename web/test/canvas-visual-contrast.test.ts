@@ -14,7 +14,7 @@ describe("canvas visual contrast", () => {
         }
     });
 
-    test("uses the TofuTV palette for dark surfaces and retains light surfaces", () => {
+    test("uses the studio palette for dark surfaces and retains light surfaces", () => {
         expect(canvasThemes.light.canvas.background).toBe("#f0f0f0");
         expect(canvasThemes.light.node.fill).toBe("#ffffff");
         expect(canvasThemes.light.node.edge).toBe("rgba(15,23,42,.16)");
@@ -23,14 +23,14 @@ describe("canvas visual contrast", () => {
         expect(canvasThemes.light.toolbar.panel).toBe("rgba(255,255,255,.94)");
         expect(canvasThemes.light.spatial.elevated).toBe("rgba(255,255,255,.94)");
 
-        expect(canvasThemes.dark.canvas.background).toBe("#11131d");
-        expect(canvasThemes.dark.node.fill).toBe("#202136");
-        expect(canvasThemes.dark.node.edge).toBe("rgba(163,143,246,.30)");
+        expect(canvasThemes.dark.canvas.background).toBe("#151522");
+        expect(canvasThemes.dark.node.fill).toBe("#29223f");
+        expect(canvasThemes.dark.node.edge).toBe("rgba(175,145,246,.26)");
         expect(canvasThemes.dark.node.shadow).toBe("0 8px 24px rgba(0,0,0,.34)");
         expect(canvasThemes.dark.node.hoverShadow).toBe("0 12px 30px rgba(0,0,0,.46)");
-        expect(canvasThemes.dark.toolbar.panel).toBe("rgba(25,26,42,.97)");
-        expect(canvasThemes.dark.toolbar.border).toBe("rgba(168,152,230,.22)");
-        expect(canvasThemes.dark.spatial.elevated).toBe("rgba(24,25,39,.97)");
+        expect(canvasThemes.dark.toolbar.panel).toBe("rgba(28,27,43,.97)");
+        expect(canvasThemes.dark.toolbar.border).toBe("rgba(174,152,223,.19)");
+        expect(canvasThemes.dark.spatial.elevated).toBe("rgba(26,24,39,.97)");
     });
 
     test("pins intentional grid tokens while retaining canvas grid opacity", async () => {
