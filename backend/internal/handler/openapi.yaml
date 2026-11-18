@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: BeefTV HTTP API
+  title: DofuTV HTTP API
   version: "1.0.0"
   description: |
     路径前缀是 `/api`。前后端一起发布，不按路径做 API 版本。
@@ -138,7 +138,7 @@ paths:
   /beeftv/connection:
     get:
       tags: [beeftv]
-      summary: 读取内置 BeefTV 连接状态
+      summary: 读取上游算力连接状态
       description: 只返回账号和状态，不含密钥或 device_code；refresh=1 时向上游同步实时余额，上游失败时返回对应错误信封。
       parameters:
         - in: query
@@ -192,7 +192,7 @@ paths:
   /beeftv/connection/topup/info:
     get:
       tags: [beeftv]
-      summary: 读取内置 BeefTV 账户充值配置与实时余额
+      summary: 读取上游算力账户充值配置与实时余额
       responses:
         "200":
           description: 信封 data 为可用支付方式、充值限额与当前余额
@@ -205,7 +205,7 @@ paths:
   /beeftv/connection/topup/checkout:
     post:
       tags: [beeftv]
-      summary: 创建内置 BeefTV 账户充值订单并在系统浏览器打开收银台
+      summary: 创建上游算力账户充值订单并在系统浏览器打开收银台
       description: 订单已创建但本机未能自动拉起浏览器时仍返回 tradeNo，并带 opened=false 与 openError。
       responses:
         "200":
@@ -221,7 +221,7 @@ paths:
   /beeftv/connection/topup/reconcile:
     post:
       tags: [beeftv]
-      summary: 查询内置 BeefTV 账户充值订单支付结果并同步本地余额摘要
+      summary: 查询上游算力账户充值订单支付结果并同步本地余额摘要
       responses:
         "200":
           description: 信封 data 为订单状态、入账确认标记（settled / credited）与刷新后的连接摘要

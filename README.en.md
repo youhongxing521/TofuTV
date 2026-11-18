@@ -10,7 +10,7 @@ An AI video creation workspace. Write scripts, build storyboards, and generate s
 
 - Organize scripts, storyboards, and assets on a canvas and connect image, video, text, and audio models.
 - Manage content in projects and the asset library. Save repeatable steps as workflows.
-- Add your own providers in Model Configuration, such as local Ollama or Alibaba Cloud Model Studio. The official BeefTV compute channel is a separate service with its own accounts and billing.
+- Add your own providers in Model Configuration, such as local Ollama or Alibaba Cloud Model Studio. The upstream compute channel is a separate service with its own accounts and billing.
 
 ## Run locally
 

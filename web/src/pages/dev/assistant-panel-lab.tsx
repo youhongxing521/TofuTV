@@ -132,7 +132,7 @@ export default function AssistantPanelLab() {
               ? { available: false, reason: "host_starting" }
               : state === "no-model"
                 ? { available: false, reason: "model_not_configured" }
-                : { available: true, model: { id: "deepseek-v3", channelId: "beeftv", channelName: "BeefTV" } };
+                : { available: true, model: { id: "deepseek-v3", channelId: "beeftv", channelName: "上游算力" } };
 
     const assistant = stubController(open, setOpen, width, setWidth, status);
     // 实验室里让思考抽屉真的能点开，才能验收展开后的样子。

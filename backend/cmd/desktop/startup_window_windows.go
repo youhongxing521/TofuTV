@@ -121,7 +121,7 @@ func notifyBlockingWebViewProfileError(err error) {
 	if msg == "" {
 		return
 	}
-	title, err1 := windows.UTF16PtrFromString("BeefTV 启动受阻")
+	title, err1 := windows.UTF16PtrFromString("DofuTV 启动受阻")
 	body, err2 := windows.UTF16PtrFromString(msg)
 	if err1 != nil || err2 != nil {
 		return

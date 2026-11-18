@@ -11,9 +11,9 @@ export const fallbackSkillCategories: SkillCategory[] = [
 export function skillOrigin(skill: Pick<Skill, "sourceType" | "isOwner">) {
     if (skill.sourceType === "builtin" && !skill.isOwner) return { label: "官方", hint: "官方维护的原版，创建私人副本后可编辑。" };
     if (skill.sourceType === "market") return { label: "市场", hint: "通过技能市场安装，可检查更新、查看历史版本或创建私人副本。" };
-    if (skill.sourceType === "plugin") return { label: "插件", hint: "通过 BeefTV 插件安装的技能。" };
+    if (skill.sourceType === "plugin") return { label: "插件", hint: "通过 DofuTV 插件安装的技能。" };
     if (skill.isOwner) return { label: "我的", hint: "当前本地副本由你管理，可编辑、投稿和删除。" };
-    return { label: "已安装", hint: "通过 BeefTV 安装的技能。" };
+    return { label: "已安装", hint: "通过 DofuTV 安装的技能。" };
 }
 
 export function skillCategoryLabel(value: string, categories: SkillCategory[] = fallbackSkillCategories) {

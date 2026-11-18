@@ -52,7 +52,7 @@ func handleHarnessCommand(args []string) (bool, error) {
 	if !hasHarnessFlag(args) {
 		return false, nil
 	}
-	flags := flag.NewFlagSet("BeefTV harness runtime", flag.ContinueOnError)
+	flags := flag.NewFlagSet("DofuTV harness runtime", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Bool("harness-runtime", false, "run or attach the local workspace backend")
 	attachOnly := flags.Bool("harness-attach-only", false, "attach without opening a workspace backend")
@@ -77,7 +77,7 @@ func handleHarnessCommand(args []string) (bool, error) {
 		return true, json.NewEncoder(os.Stdout).Encode(config)
 	}
 	if *attachOnly {
-		return true, errors.New("本机 BeefTV 尚未就绪，请先启动桌面应用")
+		return true, errors.New("本机 DofuTV 尚未就绪，请先启动桌面应用")
 	}
 	// Readiness is the only stdout record. Backend diagnostics belong on stderr.
 	gin.DefaultWriter = os.Stderr

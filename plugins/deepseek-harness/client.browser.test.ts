@@ -170,12 +170,12 @@ async function refresh(page: Page) {
   await response
 }
 
-test('BeefTV Agent keeps the native conversation and sends the selected collaboration mode', async () => {
+test('DofuTV Agent keeps the native conversation and sends the selected collaboration mode', async () => {
   const state = await openWorkbench()
   const { page, contexts } = state
-  expect(await page.getByRole('heading', { name: 'BeefTV Agent' }).count()).toBe(1)
+  expect(await page.getByRole('heading', { name: 'DofuTV Agent' }).count()).toBe(1)
   expect(await page.getByText('当前会话', { exact: true }).count()).toBe(0)
-  expect(await page.getByRole('complementary', { name: 'BeefTV Agent' }).evaluate(element => element.getBoundingClientRect().width)).toBe(432)
+  expect(await page.getByRole('complementary', { name: 'DofuTV Agent' }).evaluate(element => element.getBoundingClientRect().width)).toBe(432)
   await page.getByRole('button', { name: '素材', exact: true }).click()
   await page.waitForFunction(() => document.querySelector('[title="整理与复用创作素材"]')?.getAttribute('aria-pressed') === 'true')
   await page.waitForTimeout(30)
@@ -280,8 +280,8 @@ test('the toolbar is removed and resizing preserves the workspace and native cha
   expect(await page.locator('.beeftv-harness-toolbar').count()).toBe(0)
   expect(await page.locator('.beeftv-harness-workspace').evaluate(element => element.getBoundingClientRect().top)).toBe(0)
   await page.locator('iframe').evaluate(element => { element.dataset.retained = 'yes' })
-  const separator = page.getByRole('separator', { name: '调整 BeefTV Agent 宽度' })
-  const pane = page.getByRole('complementary', { name: 'BeefTV Agent' })
+  const separator = page.getByRole('separator', { name: '调整 DofuTV Agent 宽度' })
+  const pane = page.getByRole('complementary', { name: 'DofuTV Agent' })
   const bounds = await separator.boundingBox()
   if (!bounds) throw new Error('Missing resize handle')
   const x = bounds.x + bounds.width / 2
@@ -303,7 +303,7 @@ test('the toolbar is removed and resizing preserves the workspace and native cha
   await page.mouse.up()
   expect(await page.locator('.beeftv-harness-workspace').evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThanOrEqual(280)
   await page.setViewportSize({ width: 600, height: 900 })
-  await page.waitForFunction(() => document.querySelector('[aria-label="BeefTV Agent"]')?.getBoundingClientRect().width === 320)
+  await page.waitForFunction(() => document.querySelector('[aria-label="DofuTV Agent"]')?.getBoundingClientRect().width === 320)
   expect(await page.locator('iframe').getAttribute('data-retained')).toBe('yes')
   expect(await page.evaluate(() => (window as any).nativeMounts)).toBe(1)
   await page.getByRole('button', { name: '工作台操作' }).click()
@@ -323,11 +323,11 @@ test('the workspace follows host window-control clearance across sidebar and ful
     expect(await page.frameLocator('iframe').getByRole('main').evaluate(element => element.getBoundingClientRect().left)).toBe(0)
     expect(await page.locator('iframe').evaluate(element => element.getBoundingClientRect().top)).toBe(0)
     expect(await page.locator('iframe').getAttribute('data-retained')).toBe('yes')
-    expect(await page.getByRole('complementary', { name: 'BeefTV Agent' }).evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThanOrEqual(320)
+    expect(await page.getByRole('complementary', { name: 'DofuTV Agent' }).evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThanOrEqual(320)
   }
   await page.setViewportSize({ width: 600, height: 900 })
   await page.evaluate(() => document.documentElement.style.setProperty('--dsh-frame-leading-clearance', '84px'))
-  await page.waitForFunction(() => document.querySelector('[aria-label="BeefTV Agent"]')?.getBoundingClientRect().width === 320)
+  await page.waitForFunction(() => document.querySelector('[aria-label="DofuTV Agent"]')?.getBoundingClientRect().width === 320)
   expect(await page.locator('iframe').evaluate(element => element.getBoundingClientRect().left)).toBe(0)
   expect(await page.locator('.beeftv-harness').evaluate(element => element.getBoundingClientRect().right)).toBe(600)
   expect(await page.evaluate(() => (window as any).nativeMounts)).toBe(1)
@@ -349,7 +349,7 @@ test('hidden mounts read status once and keep subsequent hidden polling idle', a
 
 test('an outdated local App shows its upgrade requirement and is connected only after it passes the check', async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
-  const upgrade = '本机 BeefTV 版本为 2.1.6，需要 2.2.0 或更高版本。请升级后重新连接。'
+  const upgrade = '本机 DofuTV 版本为 2.1.6，需要 2.2.0 或更高版本。请升级后重新连接。'
   let status: Record<string, any> = { connected: false, mode: null, switching: false, error: null, connectionId: null, localApp: { compatible: false, version: '2.1.6', message: upgrade } }
   const connects: Array<Record<string, any>> = []
   await page.route('**/beeftv/status', route => route.fulfill({ json: status }))
@@ -359,7 +359,7 @@ test('an outdated local App shows its upgrade requirement and is connected only 
   })
   await page.route('**/beeftv/context', route => route.fulfill({ json: { ok: true } }))
   await page.goto(server.url.href)
-  await page.getByRole('button', { name: /连接本机 BeefTV/ }).getByText(upgrade, { exact: true }).waitFor()
+  await page.getByRole('button', { name: /连接本机 DofuTV/ }).getByText(upgrade, { exact: true }).waitFor()
   await refresh(page)
   expect(connects).toEqual([])
   expect(await page.getByRole('alert').count()).toBe(0)
@@ -540,8 +540,8 @@ test('独立工作区常驻数据说明，本机可用时只提示一次并能�
     localPromptDismissed: false,
   } as any)
   await refresh(page)
-  const note = '独立工作区，和本机 BeefTV 不是同一份数据'
-  const offer = '本机 BeefTV 可以连接了，连接后用同一份画布和素材。'
+  const note = '独立工作区，和本机 DofuTV 不是同一份数据'
+  const offer = '本机 DofuTV 可以连接了，连接后用同一份画布和素材。'
   await page.getByText(note, { exact: true }).waitFor()
   await page.getByText(offer, { exact: true }).waitFor()
   await page.getByRole('button', { name: '暂不' }).click()
@@ -558,7 +558,7 @@ test('独立工作区常驻数据说明，本机可用时只提示一次并能�
 test('暂不 会丢弃还在路上的旧状态响应', async () => {
   const state = await openWorkbench()
   const { page } = state
-  const offer = '本机 BeefTV 可以连接了，连接后用同一份画布和素材。'
+  const offer = '本机 DofuTV 可以连接了，连接后用同一份画布和素材。'
   state.setStatus({
     ...state.status(),
     mode: 'standalone',
@@ -854,7 +854,7 @@ test('宿主与嵌入页明暗相反时，控件、JSON 树、计划/交付/日�
     delete document.body.dataset.dsDarkTheme
   })
 
-  // 方向 1：DSH 宿主浅色（无 data-ds-dark-theme）+ BeefTV 深色（带自定义暖橙色 #ff6600）。
+  // 方向 1：DSH 宿主浅色（无 data-ds-dark-theme）+ DofuTV 深色（带自定义暖橙色 #ff6600）。
   await workspace.evaluate(() => {
     const root = document.documentElement
     root.classList.add('dark')
@@ -1012,7 +1012,7 @@ test('宿主与嵌入页明暗相反时，控件、JSON 树、计划/交付/日�
   }
 
   // 从工作台内部触发挂到 document.body 的菜单、背板、气泡提示、对话框、轻提示与悬停卡时，都跟随嵌入页主题。
-  await page.getByRole('heading', { name: 'BeefTV Agent' }).click()
+  await page.getByRole('heading', { name: 'DofuTV Agent' }).click()
   const portalInWorkbench = await page.evaluate(() => {
     const backing = document.createElement('div')
     backing.setAttribute('data-menu-backing', '')
@@ -1095,7 +1095,7 @@ test('宿主与嵌入页明暗相反时，控件、JSON 树、计划/交付/日�
     expect(value).toBeGreaterThanOrEqual(4.5)
   }
 
-  // 验证 DSH 深色 + BeefTV 浅色下，面板内控件、JSON 树（含错误载荷）与四类对话卡片也全部覆盖了 body[data-ds-dark-theme] 且 >= 4.5:1。
+  // 验证 DSH 深色 + DofuTV 浅色下，面板内控件、JSON 树（含错误载荷）与四类对话卡片也全部覆盖了 body[data-ds-dark-theme] 且 >= 4.5:1。
   const light = await measureContrast('.beeftv-harness-agent')
   expect(light.scheme).toBe('light')
   expect(light.link).toBe('#2563eb')
@@ -1183,7 +1183,7 @@ test('宿主与嵌入页明暗相反时，控件、JSON 树、计划/交付/日�
   }
 
   // 重新激活门户后卸载工作台，确认 body 属性与 <style data-beeftv-portal-theme> 均被彻底移除。
-  await page.getByRole('heading', { name: 'BeefTV Agent' }).click()
+  await page.getByRole('heading', { name: 'DofuTV Agent' }).click()
   expect(await page.evaluate(() => document.body.dataset.beeftvPortalTheme)).toBe('1')
   await page.evaluate(() => (window as any).__unmountWorkbench())
   const tornDown = await page.evaluate(() => ({

@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "beeftv-skills",
   "version": "0.1.0",
-  "description": "配合 BeefTV 桌面版操作画布，查找适用的技能，并协助整理和投稿创作方法。",
+  "description": "配合 DofuTV 桌面版操作画布，查找适用的技能，并协助整理和投稿创作方法。",
   "author": { "name": "BeefTV", "url": "https://beeftv.app" },
   "homepage": "https://beeftv.app",
   "repository": "https://github.com/glanderness/BeefTV",

@@ -91,7 +91,7 @@ export function UploadPluginModal({ open, onClose, onUpload }: UploadPluginModal
                     </div>
                     <div className="plugin-upload-notice">
                         <AlertTriangle className="size-4" />
-                        <span>插件会运行它自带的代码，能读取你在 BeefTV 里的数据和本机保存的 API Key。请只上传你信任的插件。</span>
+                        <span>插件会运行它自带的代码，能读取你在 DofuTV 里的数据和本机保存的 API Key。请只上传你信任的插件。</span>
                     </div>
                 </aside>
             </div>

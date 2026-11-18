@@ -133,9 +133,9 @@ type MediaTaskMissingError struct {
 	RequestID string
 }
 
-func (e *MediaTaskMissingError) Error() string { return "BeefTV 查不到这个编号的提交记录" }
+func (e *MediaTaskMissingError) Error() string { return "算力服务查不到这个编号的提交记录" }
 
-// IsMediaTaskNotFound 表示查询原编号时 BeefTV 查不到这次提交。
+// IsMediaTaskNotFound 表示查询原编号时 算力服务查不到这次提交。
 func IsMediaTaskNotFound(err error) bool {
 	var missing *MediaTaskMissingError
 	return errors.As(err, &missing)
@@ -559,7 +559,7 @@ func (c *MediaClient) Wait(ctx context.Context, ref, kind string, legacy bool) (
 	return c.wait(ctx, ref, kind, legacy, false)
 }
 
-// Collect 与 Wait 相同，但 BeefTV 查不到这个编号时立即返回 404，交给调用方处理。
+// Collect 与 Wait 相同，但 算力服务查不到这个编号时立即返回 404，交给调用方处理。
 // 只给恢复路径用：那时原请求早已发出。刚发出请求时查不到可能是请求还在路上，
 // 所以生成过程仍用 Wait。
 func (c *MediaClient) Collect(ctx context.Context, ref, kind string, legacy bool) (map[string]any, error) {

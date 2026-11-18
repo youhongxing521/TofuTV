@@ -684,7 +684,7 @@ export type PluginEventName = keyof PluginEventMap;
 
 /** What the host install confirmation needs; Go reads the real package before committing. */
 export type PluginInstallConfirmRequest = {
-    /** npm spec, local package directory, or the name of a sample shipped with BeefTV. */
+    /** npm spec, local package directory, or the name of a sample shipped with DofuTV. */
     source: string;
     name?: string;
     version?: string;

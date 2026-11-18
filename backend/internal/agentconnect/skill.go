@@ -16,7 +16,7 @@ const (
 	skillSource     = "beeftv-desktop"
 )
 
-var errSkillNotOwned = errors.New("skill directory is not managed by BeefTV")
+var errSkillNotOwned = errors.New("skill directory is not managed by DofuTV")
 
 func markerContent() []byte {
 	version := strings.TrimSpace(buildinfo.Version)

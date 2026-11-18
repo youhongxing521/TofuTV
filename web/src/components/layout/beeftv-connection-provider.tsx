@@ -115,7 +115,7 @@ function useConnectionState() {
             await applyConnection(await action(), options);
         } catch (error) {
             try { await refresh(); } catch { setConnection(previous); }
-            message.error(error instanceof Error ? error.message : "无法更新 BeefTV 连接，请重试");
+            message.error(error instanceof Error ? error.message : "无法更新 上游算力连接，请重试");
         } finally {
             actionPending.current = false;
             setLoading(false);
@@ -190,6 +190,6 @@ function useConnectionState() {
         applySummary,
         applyBalanceCnyIfCurrent,
         retryCatalog,
-        openAccount: () => openBeefTVWallet().catch((error) => message.error(error instanceof Error ? error.message : "无法打开 BeefTV 账户")),
+        openAccount: () => openBeefTVWallet().catch((error) => message.error(error instanceof Error ? error.message : "无法打开 算力账户")),
     };
 }

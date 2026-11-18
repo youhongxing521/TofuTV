@@ -24,7 +24,7 @@ export function assistantStatusNotice(reason: string | undefined): AssistantStat
         case "model_protocol_unsupported":
             return { text: "还没有可用的助手模型", actionLabel: "去模型配置", action: "model-settings" };
         case "credential_missing":
-            return { text: "BeefTV 还没连接好", actionLabel: "去连接", action: "model-settings" };
+            return { text: "上游算力尚未连接", actionLabel: "去连接", action: "model-settings" };
         case "host_starting":
             return { text: "助手正在启动…", starting: true };
         case "host_start_failed":
@@ -202,7 +202,7 @@ export function assistantProductionProposalParts(
     return { header, targetLines, footer };
 }
 
-/** 提议可能来自自建渠道，不能把所有费用都归到 BeefTV 官方算力。没有后端估算的旧提议仍显示渠道单价。 */
+/** 提议可能来自自建渠道，不能把所有费用都归到 上游算力。没有后端估算的旧提议仍显示渠道单价。 */
 export function assistantProposalText(
     proposal: AssistantGenerationProposal,
     priceLines: string[] = [],

@@ -88,7 +88,7 @@ func integrationClients(clients agentClientRegistry, kind agentops.ClientKind) (
 }
 
 func registryUnreadable(kind agentops.ClientKind) error {
-	return agentops.PreconditionFailed("registry_unreadable", "没能读取 BeefTV 的连接记录，暂时无法确认 "+integrationName(kind)+" 的连接状态。请稍后重试。", nil)
+	return agentops.PreconditionFailed("registry_unreadable", "没能读取 DofuTV 的连接记录，暂时无法确认 "+integrationName(kind)+" 的连接状态。请稍后重试。", nil)
 }
 
 func integrationDetected(manager *agentconnect.Manager, kind agentops.ClientKind, cliPath, dataDir string) bool {
@@ -233,7 +233,7 @@ func registerAgentIntegrationRoutes(r gin.IRouter, svc ownerCredentialDirs, clie
 
 		cliPath, available := integrationCLIPath()
 		if !available {
-			failAgentOps(c, agentops.PreconditionFailed("cli_unavailable", "安装文件不完整，无法连接外部工具。请重新下载并完整解压 BeefTV。", nil))
+			failAgentOps(c, agentops.PreconditionFailed("cli_unavailable", "安装文件不完整，无法连接外部工具。请重新下载并完整解压 DofuTV。", nil))
 			return
 		}
 		dataDir, err := filepath.Abs(svc.DataDir())
@@ -268,7 +268,7 @@ func registerAgentIntegrationRoutes(r gin.IRouter, svc ownerCredentialDirs, clie
 		tokenFile, err := manager.WriteToken(kind, token)
 		if err != nil {
 			if cleanupErr := cleanupAfterTokenWriteFailure(clients, reg.ID); cleanupErr != nil {
-				failAgentOps(c, agentops.PreconditionFailed("connect_cleanup_failed", "没能保存连接凭据，也没能撤销刚生成的连接。请重启 BeefTV 后重试。", nil))
+				failAgentOps(c, agentops.PreconditionFailed("connect_cleanup_failed", "没能保存连接凭据，也没能撤销刚生成的连接。请重启 DofuTV 后重试。", nil))
 				return
 			}
 			failAgentOps(c, integrationFailure(kind, err))
@@ -277,7 +277,7 @@ func registerAgentIntegrationRoutes(r gin.IRouter, svc ownerCredentialDirs, clie
 		spec := agentconnect.Launch(cliPath, dataDir, tokenFile, reg.Mode, reg.ID)
 		if err := manager.Connect(kind, spec); err != nil {
 			if cleanupErr := cleanupFailedConnect(manager, clients, kind, reg.ID); cleanupErr != nil {
-				failAgentOps(c, agentops.PreconditionFailed("connect_cleanup_failed", "没能写入 "+integrationName(kind)+" 配置，也没能撤销刚生成的连接。请重启 BeefTV 后重试。", nil))
+				failAgentOps(c, agentops.PreconditionFailed("connect_cleanup_failed", "没能写入 "+integrationName(kind)+" 配置，也没能撤销刚生成的连接。请重启 DofuTV 后重试。", nil))
 				return
 			}
 			failAgentOps(c, integrationFailure(kind, err))
@@ -354,7 +354,7 @@ func registerAgentIntegrationRoutes(r gin.IRouter, svc ownerCredentialDirs, clie
 		warning := ""
 		if err := manager.RemoveConfig(kind); err != nil {
 			name := integrationName(kind)
-			warning = "BeefTV 已停止接受 " + name + " 的访问。" + name + " 里的 BeefTV 连接没能自动移除，可以在它的 MCP 设置里手动删除。"
+			warning = "DofuTV 已停止接受 " + name + " 的访问。" + name + " 里的画布连接没能自动移除，可以在它的 MCP 设置里手动删除。"
 		}
 		_ = manager.RemoveSkill(kind)
 		cliPath, _ := integrationCLIPath()

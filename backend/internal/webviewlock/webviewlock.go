@@ -25,12 +25,12 @@ const (
 // ErrElevatedWebViewResidual reports that an orphaned WebView2 process running
 // at higher integrity (Administrator) holds the profile lock and cannot be
 // terminated by a normal-integrity desktop launch.
-var ErrElevatedWebViewResidual = errors.New("检测到管理员权限残留的 WebView2 进程占用浏览器目录，请在任务管理器结束残留的 msedgewebview2.exe 或重启电脑后再打开 BeefTV")
+var ErrElevatedWebViewResidual = errors.New("检测到管理员权限残留的 WebView2 进程占用浏览器目录，请在任务管理器结束残留的 msedgewebview2.exe 或重启电脑后再打开 DofuTV")
 
 // ErrWebViewProfileBusy reports that the WebView2 lockfile remains held after
 // the graceful shutdown window by a process that cannot be identified or safely
 // terminated (for example another session, service, or security-software hook).
-var ErrWebViewProfileBusy = errors.New("检测到 WebView2 浏览器目录仍被其他进程占用，请关闭占用程序或重启电脑后再打开 BeefTV")
+var ErrWebViewProfileBusy = errors.New("检测到 WebView2 浏览器目录仍被其他进程占用，请关闭占用程序或重启电脑后再打开 DofuTV")
 
 // IsBlockingProfileError reports whether err prevents WebView2 from opening
 // its userDataFolder and should abort desktop startup with a user-visible notice.
@@ -114,9 +114,9 @@ func LockFileForProfile(profileDir string) string {
 }
 
 // PrepareAndLeaseProfile reclaims orphaned WebView2 locks only when no live
-// BeefTV host owns profileDir, then acquires a shared host lease held until
+// DofuTV host owns profileDir, then acquires a shared host lease held until
 // release() or process exit so concurrent workspaces never kill each other's WebView2.
-// When a pre-lease BeefTV host still holds the profile lock, sameWorkspaceActive
+// When a pre-lease DofuTV host still holds the profile lock, sameWorkspaceActive
 // indicates whether a running instance of the same workspace exists so Wails
 // SingleInstanceLock can forward to it instead of aborting as busy.
 func PrepareAndLeaseProfile(profileDir string, sameWorkspaceActive bool, gracefulWait, reclaimWait time.Duration) (func(), error) {

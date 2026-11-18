@@ -7,7 +7,7 @@ import { upgradeBuiltinModelProfile } from "@/lib/builtin-service-presets";
 export async function testChannelModelConnection(channel: ModelChannel, model: string, capability: ModelCapability, protocol: ModelProtocol, runTask = runBackendGenerationTask) {
     if (!channel.baseUrl.trim()) throw new Error("请先填写 Base URL");
     if (!channelHasGenerationCredential(channel, model)) {
-        throw new Error(isBuiltinBeefTVChannel(channel) ? "请先连接 BeefTV" : "请先填写 API Key");
+        throw new Error(isBuiltinBeefTVChannel(channel) ? "请先连接上游算力" : "请先填写 API Key");
     }
     const selectedModel = encodeChannelModel(channel.id, model);
     const rawProfile = channel.modelProfiles?.find((item) => item.model === model);

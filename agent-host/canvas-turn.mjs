@@ -249,7 +249,7 @@ export function providerRegistration({ api, baseUrl, modelId, maxTokens, context
     ? { ...catalogCompat, promptCacheKeyMode: 'enabled' }
     : catalogCompat ? { ...catalogCompat } : undefined;
   return {
-    name: 'BeefTV', baseUrl, apiKey: '$BEEFTV_AGENT_API_KEY', api,
+    name: 'DofuTV', baseUrl, apiKey: '$BEEFTV_AGENT_API_KEY', api,
     models: [{
       id: modelId,
       name: modelId,

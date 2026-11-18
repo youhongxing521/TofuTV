@@ -43,9 +43,9 @@ export function activate(host) {
 
 **2. 安装。** 打开插件中心，点「安装插件」，选「本地插件目录」，填这个文件夹的完整路径，点「下一步」，核对信息后确认安装。
 
-**3. 试一下。** 按 `Cmd+K`（Windows 和 Linux 上是 `Ctrl+K`）打开命令面板，输入“问好”，选中这条命令，就能看到“你好，BeefTV！”。
+**3. 试一下。** 按 `Cmd+K`（Windows 和 Linux 上是 `Ctrl+K`）打开命令面板，输入“问好”，选中这条命令，就能看到“你好，DofuTV！”。
 
-**4. 改代码。** 把问候语改一下，回到插件中心，点这个插件上的「重新加载」，再运行一次命令。不用重启 BeefTV，也不用改版本号。
+**4. 改代码。** 把问候语改一下，回到插件中心，点这个插件上的「重新加载」，再运行一次命令。不用重启 DofuTV，也不用改版本号。
 
 `package.json` 写错时，重新加载会失败并逐条说明要改什么，原来装好的版本照常可用。
 
@@ -138,11 +138,11 @@ export function activate(host) {
 
 - `updateNodeData` 写入的内容保存在节点的 `metadata.pluginData` 里，随画布一起保存。
 - 用 `host.React`，不要在插件里再带一份 React。
-- 代码要直接写成浏览器能运行的 JS。BeefTV 不会替你编译，JSX 和 TypeScript 要先自己转好。
+- 代码要直接写成浏览器能运行的 JS。DofuTV 不会替你编译，JSX 和 TypeScript 要先自己转好。
 
 ## 给助手加一个工具
 
-创作助手的工具写在 `pi.extensions` 指向的文件里，写法和 pi 扩展相同。工具里用 `ctx.executeTool` 调用 BeefTV 的业务操作，工具名是操作 ID 把点换成下划线，比如 `canvas.nodes.create` 对应 `canvas_nodes_create`。权限模式、付费确认和整组撤销都照常生效。
+创作助手的工具写在 `pi.extensions` 指向的文件里，写法和 pi 扩展相同。工具里用 `ctx.executeTool` 调用 DofuTV 的业务操作，工具名是操作 ID 把点换成下划线，比如 `canvas.nodes.create` 对应 `canvas_nodes_create`。权限模式、付费确认和整组撤销都照常生效。
 
 ```json
 {
@@ -216,7 +216,7 @@ export default function (pi: ExtensionAPI) {
 2. 想进精选列表，向 [Sunnyender-org/beeftv-plugins](https://github.com/Sunnyender-org/beeftv-plugins) 提一个 Pull Request，在 `registry.json` 的 `packages` 里加一行包名。名称、说明、版本和作者都从 npm 读。
 3. 发新版本只要再运行一次 `npm publish`。用户的插件中心会显示「更新到 v新版本」，由用户自己决定要不要更新。
 
-收录进精选列表不代表 BeefTV 为插件担保。用户安装任何插件前，BeefTV 都会显示来源和风险，由用户确认。
+收录进精选列表不代表 DofuTV 为插件担保。用户安装任何插件前，DofuTV 都会显示来源和风险，由用户确认。
 
 没有发布到 npm 也能分享：「npm 插件包」的输入框还可以填 `github:owner/repo` 或一个 `.tgz` 地址。
 
@@ -226,7 +226,7 @@ export default function (pi: ExtensionAPI) {
 
 - [插件参考](./plugin-reference.mdx)：`package.json` 字段、权限、界面挂点、事件、`host` 接口和业务操作。
 - [接入生成服务](./plugin-generation.mdx)：用 JSON 或 JS 接入模型服务。
-- [写一个技能](./skills.mdx)：技能的格式和 BeefTV 的规则。
-- [插件系统怎么运转](./plugin-system.mdx)：给想读 BeefTV 代码的人。
+- [写一个技能](./skills.mdx)：技能的格式和 DofuTV 的规则。
+- [插件系统怎么运转](./plugin-system.mdx)：给想读 DofuTV 代码的人。
 - `plugin-packages/beeftv-plugin-slot-test/`：每个挂点各挂一项的示例。
-- `@beeftv/plugin-sdk`：开发时用的类型定义。BeefTV 直接加载你的 JS 文件，所以运行时不要 `import` 它，用 JSDoc 拿到编辑器提示即可。
+- `@beeftv/plugin-sdk`：开发时用的类型定义。DofuTV 直接加载你的 JS 文件，所以运行时不要 `import` 它，用 JSDoc 拿到编辑器提示即可。

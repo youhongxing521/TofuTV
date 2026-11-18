@@ -135,7 +135,7 @@ func RefreshCredentials(host CompileHost, input map[string]any, channelID string
 			return e
 		}
 		if key == "" {
-			return BadRequest("BeefTV 连接已断开，请先在设置中重新连接")
+			return BadRequest("上游算力连接已断开，请先在设置中重新连接")
 		}
 		config["apiKey"] = key
 		config["baseUrl"] = base

@@ -6,7 +6,7 @@
 !include "FileFunc.nsh"
 ${StrStr}
 ${UnStrStr}
-Name "BeefTV"
+Name "DofuTV"
 OutFile "${OUTPUT}"
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
@@ -28,9 +28,9 @@ Var MoveError
 Var MoveAttempt
 Var OldMoved
 VIProductVersion "${VERSION}.0"
-VIAddVersionKey "ProductName" "BeefTV"
+VIAddVersionKey "ProductName" "DofuTV"
 VIAddVersionKey "FileVersion" "${VERSION}"
-VIAddVersionKey "FileDescription" "BeefTV Setup"
+VIAddVersionKey "FileDescription" "DofuTV Setup"
 VIAddVersionKey "LegalCopyright" "BeefTV"
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE DirectoryPageLeave
 !insertmacro MUI_PAGE_DIRECTORY
@@ -47,10 +47,10 @@ LangString BEEFTV_DIR_FOREIGN ${LANG_ENGLISH} "This folder already holds other f
 LangString BEEFTV_DIR_FOREIGN ${LANG_SIMPCHINESE} "这个文件夹里已有其他文件，不是 BeefTV 安装位置。请选择一个空文件夹，或当前的 BeefTV 安装位置。"
 LangString BEEFTV_DIR_WRITE ${LANG_ENGLISH} "BeefTV cannot write here. Administrator rights are required, so choose another folder."
 LangString BEEFTV_DIR_WRITE ${LANG_SIMPCHINESE} "需要管理员权限，请选择其他文件夹。"
-LangString BEEFTV_BUSY ${LANG_ENGLISH} "Another BeefTV installer or uninstaller is running. Close it and try again."
-LangString BEEFTV_BUSY ${LANG_SIMPCHINESE} "另一个 BeefTV 安装或卸载程序正在运行。请先关闭它，再试一次。"
-LangString BEEFTV_CLOSE ${LANG_ENGLISH} "Please close BeefTV and its CLI, then choose Retry."
-LangString BEEFTV_CLOSE ${LANG_SIMPCHINESE} "请退出 BeefTV 及其命令行程序，然后点击“重试”。"
+LangString BEEFTV_BUSY ${LANG_ENGLISH} "Another DofuTV installer or uninstaller is running. Close it and try again."
+LangString BEEFTV_BUSY ${LANG_SIMPCHINESE} "另一个 DofuTV 安装或卸载程序正在运行。请先关闭它，再试一次。"
+LangString BEEFTV_CLOSE ${LANG_ENGLISH} "Please close DofuTV and its CLI, then choose Retry."
+LangString BEEFTV_CLOSE ${LANG_SIMPCHINESE} "请退出 DofuTV 及其命令行程序，然后点击“重试”。"
 LangString BEEFTV_RETRY ${LANG_ENGLISH} "Windows could not move this application folder (error $MoveError):$\r$\n$MoveFrom$\r$\n$\r$\nClose programs or terminal windows using it, then choose Retry. Cancel stops this installation.$\r$\nLog: $InstallLog"
 LangString BEEFTV_RETRY ${LANG_SIMPCHINESE} "Windows 无法移动以下程序文件夹（错误 $MoveError）：$\r$\n$MoveFrom$\r$\n$\r$\n请关闭正在使用它的程序或终端窗口，然后点击“重试”。点击“取消”将停止安装。$\r$\n安装日志：$InstallLog"
 LangString BEEFTV_PRESERVED ${LANG_ENGLISH} "Installation stopped. The previous application is still at $INSTDIR. Your projects are preserved.$\r$\nLog: $InstallLog"
@@ -518,7 +518,7 @@ Section "BeefTV (required)" SEC_APP
   CreateShortcut "$SMPROGRAMS\BeefTV\BeefTV.lnk" "$INSTDIR\BeefTV.exe"
   CreateShortcut "$SMPROGRAMS\BeefTV\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   CreateShortcut "$DESKTOP\BeefTV.lnk" "$INSTDIR\BeefTV.exe"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\BeefTV" "DisplayName" "BeefTV"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\BeefTV" "DisplayName" "DofuTV"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\BeefTV" "DisplayVersion" "${VERSION}"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\BeefTV" "UninstallString" '$\"$INSTDIR\Uninstall.exe$\"'
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\BeefTV" "QuietUninstallString" '$\"$INSTDIR\Uninstall.exe$\" /S'

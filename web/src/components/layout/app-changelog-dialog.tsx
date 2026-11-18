@@ -21,10 +21,10 @@ export function AppChangelogDialog({ open, onClose }: { open: boolean; onClose: 
     return (
         <AppModal
             rootClassName="app-spatial-modal app-changelog-modal"
-            title={<div className="app-changelog-heading"><span>{showLicenses ? "第三方许可与源码" : "更新日志"}</span><span className="app-changelog-heading-version">{version}</span></div>}
+            title={<div className="app-changelog-heading"><span>{showLicenses ? "第三方许可与源码" : "上游更新记录"}</span><span className="app-changelog-heading-version">{version}</span></div>}
             open={open}
             width={680}
-            footer={<button type="button" className="text-sm text-primary underline-offset-4 hover:underline focus-visible:underline" onClick={() => setShowLicenses(!showLicenses)}>{showLicenses ? "返回更新日志" : "第三方许可与源码"}</button>}
+            footer={<button type="button" className="text-sm text-primary underline-offset-4 hover:underline focus-visible:underline" onClick={() => setShowLicenses(!showLicenses)}>{showLicenses ? "返回上游更新记录" : "第三方许可与源码"}</button>}
             centered
             onCancel={() => { setShowLicenses(false); onClose(); }}
             modalRender={(node) => (
@@ -37,7 +37,7 @@ export function AppChangelogDialog({ open, onClose }: { open: boolean; onClose: 
                 {notes.map((entry, index) => (
                     <details className="app-changelog-release" key={entry.version} open={index === 0 ? true : undefined}>
                         <summary className="app-changelog-release-summary">
-                            <span>{index === 0 ? "本次更新" : entry.version}</span>
+                            <span>{entry.version}</span>
                             <ChevronDown className="app-changelog-chevron" aria-hidden="true" />
                         </summary>
                         <ul className="app-changelog-list">

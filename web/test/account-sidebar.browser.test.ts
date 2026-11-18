@@ -253,7 +253,7 @@ test("opening sidebar account modal never auto-starts OAuth; explicit login, cha
     try {
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(server.url.toString());
-        const trigger = page.getByRole("button", { name: "登录 BeefTV", exact: true });
+        const trigger = page.getByRole("button", { name: "连接上游算力", exact: true });
         await trigger.waitFor();
         expect(connectionReads).toBe(1);
 
@@ -294,7 +294,7 @@ test("catalog_failed keeps authenticated account identity/wallet and retries bac
     try {
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(server.url.toString());
-        const trigger = page.getByRole("button", { name: "BeefTV 账户：测试账号", exact: true });
+        const trigger = page.getByRole("button", { name: "算力账户：测试账号", exact: true });
         await trigger.waitFor();
         await trigger.click();
 
@@ -320,7 +320,7 @@ test("connection_error with catalogFailed=true retries backend finalize from mod
     try {
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(server.url.toString());
-        await page.getByRole("button", { name: "登录 BeefTV", exact: true }).click();
+        await page.getByRole("button", { name: "连接上游算力", exact: true }).click();
         const modal = page.locator(".account-settings-modal");
         await modal.waitFor();
         await modal.getByRole("button", { name: "模型", exact: true }).click();
@@ -423,7 +423,7 @@ test("account balance pane shows live balance, switches CNY/USD methods cleanly,
     try {
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(server.url.toString());
-        await page.getByRole("button", { name: "BeefTV 账户：测试账号", exact: true }).click();
+        await page.getByRole("button", { name: "算力账户：测试账号", exact: true }).click();
         const modal = page.locator(".account-settings-modal");
         await modal.waitFor();
         await modal.getByText("¥ 28.50").waitFor();
@@ -613,7 +613,7 @@ test("topup info failure blocks unverified payment submission until retried; car
     try {
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(server.url.toString());
-        await page.getByRole("button", { name: "BeefTV 账户：测试账号", exact: true }).click();
+        await page.getByRole("button", { name: "算力账户：测试账号", exact: true }).click();
         const modal = page.locator(".account-settings-modal");
         await modal.waitFor();
 
@@ -706,7 +706,7 @@ test("slow topup/info response cannot overwrite a newer reconciled balance from 
             }));
         });
         await page.goto(server.url.toString());
-        await page.getByRole("button", { name: "BeefTV 账户：测试账号", exact: true }).click();
+        await page.getByRole("button", { name: "算力账户：测试账号", exact: true }).click();
         const modal = page.locator(".account-settings-modal");
         await modal.waitFor();
 

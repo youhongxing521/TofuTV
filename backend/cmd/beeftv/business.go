@@ -146,7 +146,7 @@ func (c *client) callBusiness(ctx context.Context, tool businessTool, args busin
 	}
 	base, pipe := c.currentEndpoint()
 	if base == "" {
-		return nil, &cliError{code: exitTransportFailure, reason: "runtime_not_found", msg: "未发现运行中的 BeefTV 工作区，请先打开 BeefTV"}
+		return nil, &cliError{code: exitTransportFailure, reason: "runtime_not_found", msg: "未发现运行中的 DofuTV 工作区，请先打开 DofuTV"}
 	}
 	if pipe != "" {
 		ctx = localipc.WithRequiredEndpoint(ctx, pipe)
@@ -386,7 +386,7 @@ func registerBusinessGateway(server *mcp.Server, c *client, tools []businessTool
 		"query":    map[string]any{"type": "string", "description": "按 ID、说明或路径里的关键字筛选，例如 assets、folders、timeline"},
 		"readOnly": map[string]any{"type": "boolean", "description": "true 只列只读接口，false 只列写接口；不填列全部"},
 	}, "additionalProperties": false}
-	server.AddTool(&mcp.Tool{Name: "business.list", Description: "列出 BeefTV 本地工作区的底层业务接口（素材库、文件夹、项目、任务、时间线、设置等），返回接口 ID、说明、方法、路径和参数结构。画布、素材、媒体、技能操作已有专门工具，覆盖不到时再用这里找接口，然后用 business.call 调用。", InputSchema: listSchema, Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true}},
+	server.AddTool(&mcp.Tool{Name: "business.list", Description: "列出 DofuTV 本地工作区的底层业务接口（素材库、文件夹、项目、任务、时间线、设置等），返回接口 ID、说明、方法、路径和参数结构。画布、素材、媒体、技能操作已有专门工具，覆盖不到时再用这里找接口，然后用 business.call 调用。", InputSchema: listSchema, Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true}},
 		func(_ context.Context, request *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			var filter struct {
 				Query    string `json:"query"`

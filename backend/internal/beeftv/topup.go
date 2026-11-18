@@ -341,7 +341,7 @@ func parseUpstreamErrorDetail(raw []byte, fallback string) (string, string) {
 			}
 		}
 		if code == "desktop_token_required" {
-			return "当前登录凭据不支持桌面充值，请重新登录 BeefTV", code
+			return "当前登录凭据不支持桌面充值，请重新连接上游算力", code
 		}
 		if msg := strings.TrimSpace(envelope.Message); msg != "" {
 			return msg, code

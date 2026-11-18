@@ -93,7 +93,7 @@ function collectSourceFiles(directory: string): string[] {
 }
 
 describe("旧内置 Agent 页面入口退场", () => {
-    test("首页不再提供 Agent 能力入口，手工创作入口仍然指向真实画布路径", () => {
+    test("首页助手和手工创作入口都指向真实画布路径", () => {
         const markup = renderToStaticMarkup(
             <MemoryRouter>
                 <HomeDashboard projects={[]} loading={false} error={false} onRetry={() => {}} />
@@ -103,6 +103,7 @@ describe("旧内置 Agent 页面入口退场", () => {
         expect(markup).not.toContain('data-mode="agent"');
         expect(markup).toContain("新建画布创作");
         for (const [label, href] of [
+            ["DofuTV Agent", "/canvas?mode=new&amp;start=agent"],
             ["自由画布", "/canvas?mode=new"],
             ["视频生成", "/canvas?mode=new&amp;add=video"],
             ["图片生成", "/canvas?mode=new&amp;add=image"],

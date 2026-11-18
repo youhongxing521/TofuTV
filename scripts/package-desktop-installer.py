@@ -32,7 +32,7 @@ def package(version, platform, payload, output):
             subprocess.run(['ditto', str(payload), str(stage / 'BeefTV.app')], check=True)
             (stage / 'Applications').symlink_to('/Applications')
             shutil.copy2(ROOT / 'docs/desktop-install.md', stage / 'Installation.txt')
-            subprocess.run(['hdiutil', 'create', '-volname', 'BeefTV', '-srcfolder', str(stage),
+            subprocess.run(['hdiutil', 'create', '-volname', 'DofuTV', '-srcfolder', str(stage),
                             '-fs', 'HFS+', '-nospotlight', '-format', 'UDZO', '-verbose', '-ov', str(output)], check=True)
     elif platform == 'windows-amd64':
         compiler = shutil.which('makensis') or r'C:\Program Files (x86)\NSIS\makensis.exe'
@@ -53,14 +53,14 @@ def package(version, platform, payload, output):
             (control / 'control').write_text(
                 f'Package: beeftv\nVersion: {version[1:]}\nArchitecture: amd64\n'
                 'Maintainer: BeefTV Contributors <58928515+glanderness@users.noreply.github.com>\n'
-                'Homepage: https://github.com/glanderness/BeefTV\nSection: graphics\nPriority: optional\n'
+                'Homepage: https://gitee.com/hongxingyou/beeftv\nSection: graphics\nPriority: optional\n'
                 'Depends: libgtk-3-0t64, libwebkit2gtk-4.1-0, gstreamer1.0-plugins-good, '
                 'gstreamer1.0-plugins-bad, gstreamer1.0-libav, ffmpeg, fonts-noto-cjk\n'
-                'Description: BeefTV creative workspace (Ubuntu 24.04)\n')
+                'Description: DofuTV creative workspace (Ubuntu 24.04)\n')
             applications = stage / 'usr/share/applications'
             applications.mkdir(parents=True)
             (applications / 'beeftv.desktop').write_text(
-                '[Desktop Entry]\nType=Application\nName=BeefTV\n'
+                '[Desktop Entry]\nType=Application\nName=DofuTV\n'
                 'Exec=/opt/beeftv/BeefTV-linux/BeefTV %u\nIcon=beeftv\nMimeType=x-scheme-handler/beeftv;\n'
                 'Terminal=false\nCategories=Graphics;AudioVideo;\nStartupWMClass=BeefTV\n')
             icons = stage / 'usr/share/pixmaps'

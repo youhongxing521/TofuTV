@@ -39,7 +39,7 @@ func registerAssistantSkillScriptRoutes(
 			c.JSON(http.StatusForbidden, gin.H{
 				"code":   http.StatusForbidden,
 				"reason": "agent_token_cannot_approve",
-				"msg":    "Agent 自身的凭据不能批准脚本运行，请在 BeefTV 界面确认",
+				"msg":    "Agent 自身的凭据不能批准脚本运行，请在 DofuTV 界面确认",
 			})
 			return
 		}

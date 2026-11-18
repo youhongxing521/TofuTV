@@ -83,7 +83,7 @@ export function AccountBalancePane() {
     const connected = isBeefTVAuthenticated(connection);
     const pending = connection?.state === "pending" || connection?.state === "connecting";
     const accountId = connection?.account?.id;
-    const name = connection?.account?.display_name || connection?.account?.username || connection?.account?.email || "BeefTV 账户";
+    const name = connection?.account?.display_name || connection?.account?.username || connection?.account?.email || "算力账户";
 
     const accountRef = useRef(account);
     accountRef.current = account;
@@ -369,7 +369,7 @@ export function AccountBalancePane() {
 
     return <>
         <div className="account-balance-identity">
-            <div><h3>{connected ? name : "登录 BeefTV"}</h3>
+            <div><h3>{connected ? name : "连接上游算力"}</h3>
                 {connected && connection?.account?.email && name !== connection.account.email ? <p>{connection.account.email}</p> : null}
                 {connection?.state !== "connected" ? <p role="status" aria-live="polite">{beefTVConnectionLabel(connection)}</p> : null}
             </div>

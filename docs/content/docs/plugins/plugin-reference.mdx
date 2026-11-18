@@ -14,14 +14,14 @@ description: 插件的 package.json 字段、权限、界面挂点、宿主事�
 | 字段 | 用途 |
 | --- | --- |
 | `name` | 插件 ID，全小写加连字符。约定以 `beeftv-plugin-` 开头 |
-| `version` | 版本号。BeefTV 只比较 `x.y.z` 三段数字，写成别的形式不会提示更新 |
+| `version` | 版本号。DofuTV 只比较 `x.y.z` 三段数字，写成别的形式不会提示更新 |
 | `description`、`author` | 显示在插件中心 |
 | `keywords` | 写上 `"beeftv-plugin"`，才能被插件市场的 npm 搜索发现 |
-| `dependencies` | BeefTV 安装插件时用自带的 npm 一起装好 |
+| `dependencies` | DofuTV 安装插件时用自带的 npm 一起装好 |
 | `pi.extensions` | 创作助手工具的入口文件 |
 | `pi.skills` | 技能所在的目录 |
 
-`beeftv` 里只能写下面这些键。写了别的键（比如 `beeftv.id`、`beeftv.apiVersion`、顶层的 `canvasNodes`），BeefTV 会拒绝安装，并逐条说明该怎么改。
+`beeftv` 里只能写下面这些键。写了别的键（比如 `beeftv.id`、`beeftv.apiVersion`、顶层的 `canvasNodes`），DofuTV 会拒绝安装，并逐条说明该怎么改。
 
 | 字段 | 用途 |
 | --- | --- |
@@ -66,7 +66,7 @@ description: 插件的 package.json 字段、权限、界面挂点、宿主事�
 
 ## 权限
 
-BeefTV 不做沙箱。`permissions` 用来告诉用户插件会做什么，显示在插件设置里，不会限制插件代码。插件和 BeefTV 运行在同一个页面和同一台电脑上，所以用户只应该安装信任的插件。
+DofuTV 不做沙箱。`permissions` 用来告诉用户插件会做什么，显示在插件设置里，不会限制插件代码。插件和 DofuTV 运行在同一个页面和同一台电脑上，所以用户只应该安装信任的插件。
 
 唯一的例外是剪辑工作台和模型渠道写入：缺少下表里的权限时，对应剪辑挂点不会显示，插件也不能通过 `host.channels` 读写模型渠道。
 
@@ -102,7 +102,7 @@ BeefTV 不做沙箱。`permissions` 用来告诉用户插件会做什么，显�
 
 ## 界面挂点
 
-用 `host.contribute(挂点, 内容)` 往 BeefTV 的界面加东西。它返回一个撤销函数；插件停用或卸载时，BeefTV 会自动撤掉这个插件加的所有内容。
+用 `host.contribute(挂点, 内容)` 往 DofuTV 的界面加东西。它返回一个撤销函数；插件停用或卸载时，DofuTV 会自动撤掉这个插件加的所有内容。
 
 点击回调的名字：工具栏按钮和提示词按钮用 `onClick`，其余用 `onSelect`。
 
@@ -117,7 +117,7 @@ BeefTV 不做沙箱。`permissions` 用来告诉用户插件会做什么，显�
 | 画布 | `canvas.nodePanel` | `id`、`title`、`nodeTypes`、`render` | 节点配置面板里的区域 |
 | 画布 | `canvas.promptActions` | `id`、`label`、`onClick` 或 `render` | 提示词输入框旁的按钮 |
 | 画布 | `canvas.sidePanel` | `id`、`label`、`render` | 画布右侧面板，和创作助手并列 |
-| 生成 | `generation.beforeSubmit` | `id`、`label`、`transform` | 提交生成前改写提示词。BeefTV 会告诉用户是哪个插件改的，模型参数保持用户的设置 |
+| 生成 | `generation.beforeSubmit` | `id`、`label`、`transform` | 提交生成前改写提示词。DofuTV 会告诉用户是哪个插件改的，模型参数保持用户的设置 |
 | 剪辑 | `editor.timeline-panel` | `render` | 时间线面板 |
 | 剪辑 | `editor.preview-renderer` | `render` | 预览渲染 |
 | 剪辑 | `editor.inspector` | `render` | 属性面板 |
@@ -159,7 +159,7 @@ BeefTV 不做沙箱。`permissions` 用来告诉用户插件会做什么，显�
 | 接口 | 用途 |
 | --- | --- |
 | `host.pluginId`、`host.manifest` | 这个插件自己的 ID 和清单 |
-| `host.React` | BeefTV 的 React，不要再带一份 |
+| `host.React` | DofuTV 的 React，不要再带一份 |
 | `host.contribute(slot, payload)` | 往挂点加内容 |
 | `host.events.on(event, callback)` | 订阅事件 |
 | `host.ops.call(op, params)` | 调用业务操作 |

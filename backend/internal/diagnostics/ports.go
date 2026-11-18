@@ -3,6 +3,7 @@ package diagnostics
 import (
 	"time"
 
+	"infinite-canvas/backend/internal/appearance"
 	"infinite-canvas/backend/internal/model"
 )
 
@@ -40,6 +41,6 @@ func (b staticBrand) NameAndSlug() (string, string) {
 }
 
 const (
-	defaultBrandName = "BeefTV"
-	defaultBrandSlug = "beeftv"
+	defaultBrandName = appearance.DefaultBrandName
+	defaultBrandSlug = appearance.DefaultBrandSlug
 )

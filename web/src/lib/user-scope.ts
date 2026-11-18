@@ -5,7 +5,7 @@ const GUEST_SCOPE = "guest";
 
 let memoryScope: string | undefined;
 
-// BeefTV has one local workspace per backend. The workspace id only namespaces
+// DofuTV has one local workspace per backend. The workspace id only namespaces
 // local persistence; it changes once at startup (guest -> workspace id).
 const namespaceListeners = new Set<() => void>();
 

@@ -1,5 +1,5 @@
 import { AudioLines, Bot, Box, Clapperboard, Image, Layers3, Video } from "lucide-react";
-import { PRODUCT_NAME } from "@/lib/product-brand";
+import { PRODUCT_AGENT_NAME } from "@/lib/product-brand";
 
 export const beefTVCapabilityItems = [
     { id: "canvas", label: "自由画布", detail: "组织镜头与素材", to: "/canvas?mode=new", icon: Layers3, disabled: false },
@@ -9,6 +9,6 @@ export const beefTVCapabilityItems = [
     // local canvas and let the canvas insert the correctly configured node.
     { id: "audio", label: "音频生成", detail: "配音与声音素材", to: "/canvas?mode=new&add=audio", icon: AudioLines, disabled: false },
     { id: "director", label: "3D 导演台", detail: "新建画布并打开 3D 导演台", to: "/canvas?mode=new&start=director", icon: Box, disabled: false },
-    { id: "agent", label: PRODUCT_NAME + " Agent", detail: "新建画布并打开创作助手", to: "/canvas?mode=new&start=agent", icon: Bot, disabled: false },
+    { id: "agent", label: PRODUCT_AGENT_NAME, detail: "新建画布并打开创作助手", to: "/canvas?mode=new&start=agent", icon: Bot, disabled: false },
     { id: "projects", label: "项目库", detail: "查看已有项目，继续创作", to: "/project", icon: Clapperboard, disabled: false },
 ] as const;

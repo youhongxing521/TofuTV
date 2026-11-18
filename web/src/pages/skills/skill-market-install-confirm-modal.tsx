@@ -83,7 +83,7 @@ export function SkillMarketInstallConfirmModal({
                     <div className="flex flex-col gap-2 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-xs">
                         <div className="flex items-center gap-1.5 font-semibold text-amber-600 dark:text-amber-400">
                             <AlertTriangle className="size-4 shrink-0" />
-                            <span>这是第三方技能，BeefTV 没有审核过它的内容</span>
+                            <span>这是第三方技能，DofuTV 没有审核过它的内容</span>
                         </div>
                         <p className="m-0 leading-relaxed text-foreground/85">
                             {isUpdate ? "更新后" : "安装后"}，助手会读取技能说明和附带文件，并按说明调用画布工具或已配置的付费模型，费用从你的账户扣。请只{isUpdate ? "更新" : "安装"}你信任的技能。

@@ -229,7 +229,7 @@ func admitGeneration(ctx *Context, raw json.RawMessage, mode generationAdmission
 				if hint == "" {
 					hint = "<proposalId>"
 				}
-				return nil, PermissionDenied("generation_approval_required", "当前凭据设为「每次问我」，请先在 BeefTV 界面确认或运行 beeftv approve "+hint+" 批准生成单；Agent 自身凭据不能自批")
+				return nil, PermissionDenied("generation_approval_required", "当前凭据设为「每次问我」，请先在 DofuTV 界面确认或运行 beeftv approve "+hint+" 批准生成单；Agent 自身凭据不能自批")
 			}
 			// owner 批准的是整张生成单，不能借一次部分节点的重做扩大成整单付费。
 			if mode == generationRegenerate && !sameNodeIDSet(existingOrder.NodeIDs, args.NodeIDs) {
@@ -250,7 +250,7 @@ func admitGeneration(ctx *Context, raw json.RawMessage, mode generationAdmission
 			}
 			if existingOrder.Status == GenerationOrderPending && mode != generationRegenerate {
 				hint := existingOrder.ProposalID
-				return nil, PermissionDenied("generation_approval_required", "当前凭据设为「每次问我」，请先在 BeefTV 界面确认或运行 beeftv approve "+hint+" 批准生成单；Agent 自身凭据不能自批")
+				return nil, PermissionDenied("generation_approval_required", "当前凭据设为「每次问我」，请先在 DofuTV 界面确认或运行 beeftv approve "+hint+" 批准生成单；Agent 自身凭据不能自批")
 			}
 			if mode == generationRegenerate && existingOrder.Status != GenerationOrderPending && !existingOrder.Regenerate {
 				return nil, PermissionDenied("generation_approval_required", "这张生成单不是用于原地重做的；请重新提出生成单并由 owner 批准")
@@ -334,7 +334,7 @@ func admitGeneration(ctx *Context, raw json.RawMessage, mode generationAdmission
 				"operation":  "beeftv approve " + existingOrder.ProposalID,
 				"approval":   "owner-required",
 				"proposalId": existingOrder.ProposalID,
-				"message":    "生成单已标记为原地重做，尚未生成或扣费。请由 owner 在 BeefTV 界面确认或运行 beeftv approve 批准；批准后请用新的 operationId 再调用 canvas.generation.regenerate 读取任务。",
+				"message":    "生成单已标记为原地重做，尚未生成或扣费。请由 owner 在 DofuTV 界面确认或运行 beeftv approve 批准；批准后请用新的 operationId 再调用 canvas.generation.regenerate 读取任务。",
 			},
 		}, nil
 	}

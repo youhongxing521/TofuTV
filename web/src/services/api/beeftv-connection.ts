@@ -5,10 +5,10 @@ export function getBeefTVConnectionEpoch() {
     return connectionEpoch;
 }
 
-/** 请求期间 BeefTV 连接被重连或断开：丢弃旧连接的结果，不能当成新连接的数据。 */
+/** 请求期间 上游算力连接被重连或断开：丢弃旧连接的结果，不能当成新连接的数据。 */
 export class BeefTVConnectionChangedError extends Error {
     constructor() {
-        super("BeefTV 连接已变更，请重新读取");
+        super("上游算力连接已变更，请重新读取");
         this.name = "BeefTVConnectionChangedError";
     }
 }
@@ -146,9 +146,9 @@ export function beefTVConnectionLabel(summary: BeefTVConnectionSummary | null | 
     const state = summary?.state || "disconnected";
     switch (state) {
         case "connecting":
-            return summary?.errorReason || "正在连接 BeefTV";
+            return summary?.errorReason || "正在连接上游算力";
         case "connection_error":
-            return summary?.errorReason || "无法连接 BeefTV 服务，请检查网络后重试";
+            return summary?.errorReason || "无法连接上游算力服务，请检查网络后重试";
         case "pending":
             return summary?.errorReason || (summary?.userCode ? `请在浏览器中确认 ${summary.userCode}` : "请在浏览器中确认授权");
         case "connected":

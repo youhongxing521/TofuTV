@@ -1,6 +1,6 @@
 {
   "id": "beeftv",
-  "displayName": "BeefTV",
+  "displayName": "上游算力",
   "baseUrl": "https://beeftv.app",
   "catalogProtocol": "openai",
   "presetVersion": 1,

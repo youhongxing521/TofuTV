@@ -53,7 +53,7 @@ export function AccountSettingsModal({ open, onClose }: { open: boolean; onClose
                     <div className="account-setting-row"><div><h3>版本与更新日志</h3><p>{installedVersion ? `当前版本 ${installedVersion}，查看版本记录与第三方许可` : "查看版本记录与第三方许可"}</p></div><AppChangelogButton appearance="button" version={installedVersion} label="查看" /></div>
                 </> : null}
                 {active === "models" ? <>
-                    <div className="account-setting-row account-model-connection"><div><h3>BeefTV 官方渠道</h3><p role="status">{syncing ? "正在同步模型…" : catalogSyncFailed ? "模型同步失败" : connection?.state === "connected" ? "已连接，模型已同步到本地" : "登录后自动连接官方模型"}</p></div>
+                    <div className="account-setting-row account-model-connection"><div><h3>上游算力</h3><p role="status">{syncing ? "正在同步模型…" : catalogSyncFailed ? "模型同步失败" : connection?.state === "connected" ? "已连接，模型已同步到本地" : "连接后自动同步服务商模型"}</p></div>
                         {catalogSyncFailed ? <Button loading={busy} onClick={() => void retryCatalog()}>重试同步</Button> : <Button onClick={() => goTo("/settings?section=channels")}>管理渠道</Button>}
                     </div>
                     <ModelDefaultGrid config={config} onChange={(key, value) => updateConfig(key, value)} onOpenChannels={() => goTo("/settings?section=channels")} />

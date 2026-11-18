@@ -15,6 +15,10 @@ import (
 // 已经保存过助手模型的用户不会被改写（见 SaveCatalogWithAssistantDefault）。
 const DefaultManagedAssistantModel = "deepseek-v4.1-flash"
 
+func ChannelDisplayName() string {
+	return providerpreset.BeefTV().DisplayName
+}
+
 func applyCatalog(store *workspace.ProviderConfig, models []CatalogModel, previousAccountID, nextAccountID string, authorizationID string) error {
 	if store == nil {
 		return nil

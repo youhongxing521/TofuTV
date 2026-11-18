@@ -36,7 +36,7 @@ export function BeefTVConnectionActions({
         return (
             <>
                 <Button className={buttonClass} size="small" onClick={onWallet}>
-                    打开 BeefTV 账户
+                    打开 算力账户
                 </Button>
                 <Button className={buttonClass} size="small" loading={busy} onClick={onDisconnect}>
                     断开连接
@@ -65,7 +65,7 @@ export function BeefTVConnectionActions({
     }
     return (
         <Button data-onboarding="official-connect" className={buttonClass} size="small" type="primary" loading={busy} onClick={onConnect}>
-            连接 BeefTV
+            连接上游算力
         </Button>
     );
 }

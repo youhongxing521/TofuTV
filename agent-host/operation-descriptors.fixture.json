@@ -1,7 +1,7 @@
 [
   {
     "id": "agent.guide",
-    "summary": "读取 BeefTV 外部 Agent 使用说明（与一键接入安装的技能同一份）",
+    "summary": "读取 DofuTV 外部 Agent 使用说明（与一键接入安装的技能同一份）",
     "readOnly": true,
     "scope": "workspace_read",
     "params": {

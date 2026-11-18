@@ -671,9 +671,9 @@ export function CanvasVideoSubtitleEraseDialog({
                 <div className="rounded-[var(--r-md)] border px-3.5 py-2.5 text-xs" style={{ background: theme.node.panel, borderColor: theme.node.edge }}>
                     {!officialConnected ? (
                         <p role="status" style={{ color: theme.node.muted }}>
-                            视频智能擦除需要连接 BeefTV 官方算力。
+                            视频智能擦除需要连接 上游算力。
                             <a href="#/settings?section=channels" className="ml-1 underline" onClick={onClose}>
-                                前往连接官方算力
+                                前往连接上游算力
                             </a>
                         </p>
                     ) : serviceUnavailable ? (

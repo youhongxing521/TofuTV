@@ -157,7 +157,7 @@ export function mergeFetchedChannelModelProfiles(channel: ModelChannel, catalog:
         const catalogVideo = versionedVideoCapability(item.videoCapabilities, item.videoCapabilitiesVersion);
         const catalogImage = item.imageCapabilitiesVersion ? sanitizeServerImageCapability(item.imageCapabilities) : null;
         const inferredProtocol = catalogVideo && managed ? "openai-videos" : mapped.protocol || (isBeefTVCatalogChannel(channel) ? protocolForBeefTVCatalog(item.supportedEndpointTypes) : protocolForModelCatalog(item.supportedEndpointTypes));
-        // BeefTV and compatible gateways may advertise generic OpenAI endpoints without modelType.
+        // DofuTV and compatible gateways may advertise generic OpenAI endpoints without modelType.
         // An explicit versioned contract still identifies the profile and its quote.
         const inferredCapability = (catalogVideo ? "video" : catalogImage ? "image" : undefined) || mapped.capability || item.modelType || modelProtocolCapability(inferredProtocol);
         const sourcedImage = inferredCapability === "image" ? catalogImage : null;
