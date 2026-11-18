@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ComponentType, type CSSPrope
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 
 import { BrandLogoFrame } from "@/components/brand/brand-logo";
+import { PRODUCT_NAME } from "@/lib/product-brand";
 import { WorkspaceSidebarUpdate } from "@/components/layout/workspace-sidebar-update";
 import { WorkspaceSidebarAccount } from "@/components/layout/workspace-sidebar-account";
 import { WorkspaceSidebarSocialLinks } from "@/components/layout/workspace-sidebar-social-links";
@@ -60,7 +61,7 @@ function buildNav(features: FeatureAvailability): { groups: WorkspaceNavGroup[];
                 ...(features.pluginCenterEnabled ? [{ ...toolItem("plugins", "/plugins"), title: "插件" }] : []),
                 { id: "settings:channels", title: "模型配置", icon: Settings2, to: "/settings?section=channels" },
                 { id: "settings:storage", title: "存储设置", icon: HardDrive, to: "/settings?section=storage" },
-                { id: "agents", title: "BeefTV MCP", icon: Plug, to: "/agents" },
+                { id: "agents", title: PRODUCT_NAME + " MCP", icon: Plug, to: "/agents" },
             ],
         },
     ];
@@ -87,7 +88,7 @@ function WorkspaceSwitcher({ collapsed, onNavigate, onExpand, onCollapse }: { co
         <div className="app-workspace-sidebar-brand-row relative shrink-0 px-3 pt-3">
             <Link to="/" onClick={onNavigate} className="app-workspace-sidebar-brand-button group" aria-label={`${appearance.brandName}首页`}>
                 <span className="flex min-w-0 items-center gap-2">
-                    <BrandLogoFrame className="app-workspace-brand-mark grid size-8 shrink-0 place-items-center rounded-[var(--r-sm)] shadow-sm" logoClassName="size-5 object-contain" alt="" fallback={<span className="app-workspace-brand-placeholder" aria-hidden>B</span>} />
+                    <BrandLogoFrame className="app-workspace-brand-mark grid size-8 shrink-0 place-items-center rounded-[var(--r-sm)] shadow-sm" logoClassName="size-5 object-contain" alt="" fallback={<span className="app-workspace-brand-placeholder" aria-hidden>{appearance.brandName.charAt(0)}</span>} />
                     <span className="flex min-w-0">
                         <span className="app-workspace-brand-wordmark truncate text-[var(--fs-body)] leading-none font-semibold">{appearance.brandName}</span>
                     </span>

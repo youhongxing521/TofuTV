@@ -365,15 +365,16 @@ test("collapsing sidebar resets expanded social links without stealing focus fro
     try {
         await page.emulateMedia({ reducedMotion: "reduce" });
         await page.goto(server.url.toString());
-        await page.getByRole("button", { name: "联系我们" }).click();
-        await page.getByRole("button", { name: "收起联系方式" }).waitFor();
+        await page.getByRole("button", { name: "项目与反馈" }).click();
+        await page.getByRole("button", { name: "收起项目与反馈" }).waitFor();
+        expect(await page.getByRole("link", { name: "打开 DofuTV Gitee 仓库" }).getAttribute("href")).toBe("https://gitee.com/hongxingyou/beeftv");
 
         const collapseBtn = page.getByRole("button", { name: "切换侧栏收起" });
         await collapseBtn.click();
         expect(await collapseBtn.evaluate((el) => document.activeElement === el)).toBe(true);
 
         await collapseBtn.click();
-        const contactBtn = page.getByRole("button", { name: "联系我们" });
+        const contactBtn = page.getByRole("button", { name: "项目与反馈" });
         expect(await contactBtn.getAttribute("aria-expanded")).toBe("false");
     } finally {
         await page.close();

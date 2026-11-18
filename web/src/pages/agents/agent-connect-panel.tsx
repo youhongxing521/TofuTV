@@ -54,7 +54,7 @@ export function AgentConnectPanel({ kind, onClose, onConfigured, verifiedClientI
                 <p className="py-2 text-xs leading-5 text-foreground/60">没有拿到接入内容，请断开后重新连接。</p>
             ) : (
                 <div className="flex flex-col gap-3 py-1">
-                    <p className="text-xs leading-5 text-foreground/60">连接后可使用 BeefTV 的全部创作工具。每次操作的审批由 {agentClientKindLabel(kind || "other")} 负责。</p>
+                    <p className="text-xs leading-5 text-foreground/60">连接后可使用工作台的全部创作工具。每次操作的审批由 {agentClientKindLabel(kind || "other")} 负责。</p>
                 </div>
             )}
             <div className="mt-4 flex justify-end gap-2">

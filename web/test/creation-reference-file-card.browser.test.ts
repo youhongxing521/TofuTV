@@ -10,7 +10,7 @@ beforeAll(async () => {
         Bun.build({
             entrypoints: [import.meta.dir + "/fixtures/creation-reference-file-card-harness.tsx"],
             target: "browser",
-            external: ["/beef-logo.png"],
+            external: ["/dofutv-mark.png"],
             define: {
                 "import.meta.env.DEV": "false",
                 "import.meta.env.PROD": "true",

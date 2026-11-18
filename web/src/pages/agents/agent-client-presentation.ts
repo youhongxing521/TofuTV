@@ -25,7 +25,7 @@ const modeLabels: Record<AgentClientMode, string> = {
 
 const modeSummaries: Record<AgentClientMode, string> = {
     "read-only": "此连接保持只读；重新连接后可使用全部创作工具。",
-    "read-write": "可使用 BeefTV 的全部创作工具，操作审批由连接的 Agent 负责。",
+    "read-write": "可使用工作台的全部创作工具，操作审批由连接的 Agent 负责。",
 };
 
 export function agentClientKindLabel(kind: AgentClientKind | string) {

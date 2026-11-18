@@ -8,6 +8,7 @@ import { canvasDockStyle } from "@/lib/canvas/canvas-aceternity-style";
 import type { CanvasContextSummary } from "@/lib/canvas/canvas-context-summary";
 import type { CanvasShortDramaProgress } from "@/lib/canvas/canvas-short-drama";
 import { canvasThemes } from "@/lib/canvas-theme";
+import { PRODUCT_NAME } from "@/lib/product-brand";
 import { exportCanvasProjectsByIds } from "@/lib/canvas/canvas-export";
 import { resolveWorkspaceExportCanvasIds } from "@/lib/canvas/canvas-workspace-project";
 import { loadCanvasProjectForEditing } from "@/services/local-workspace-sync";
@@ -216,11 +217,7 @@ export function CanvasTopBar({
                             }}
                         >
                             <button type="button" className="canvas-topbar-project-menu-button canvas-topbar-action inline-flex size-9 items-center justify-center gap-0.5 rounded-full" style={{ color: theme.node.text }} aria-label="打开画布菜单">
-                                {libtvChrome ? (
-                                    <span className="canvas-topbar-libtv-brand-mark" aria-hidden="true" />
-                                ) : (
-                                    <BrandLogoFrame className="canvas-topbar-brand-mark" logoClassName="canvas-topbar-brand-mark-image" alt="" fallback={<span className="canvas-topbar-brand-mark-fallback" aria-hidden="true">B</span>} />
-                                )}
+                                <BrandLogoFrame className="canvas-topbar-brand-mark" logoClassName="canvas-topbar-brand-mark-image" alt="" fallback={<span className="canvas-topbar-brand-mark-fallback" aria-hidden="true">{PRODUCT_NAME.charAt(0)}</span>} />
                                 <ChevronDown className="size-2.5 opacity-55" aria-hidden="true" />
                             </button>
                     </Dropdown>

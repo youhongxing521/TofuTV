@@ -361,7 +361,7 @@ func classifyBootFailure(phase string, err error) (string, string) {
 	lower := strings.ToLower(err.Error())
 	switch {
 	case strings.Contains(lower, "另一实例使用"):
-		return "workspace_locked", "当前数据目录正被另一个 BeefTV 窗口占用，请先关闭其他窗口或结束残留进程后重试。"
+		return "workspace_locked", "当前数据目录正被另一个 DofuTV 窗口占用，请先关闭其他窗口或结束残留进程后重试。"
 	case strings.Contains(lower, "permission denied") || strings.Contains(lower, "access is denied") || strings.Contains(lower, "拒绝访问"):
 		return "data_dir_permission_denied", "当前数据目录没有读写权限，请检查目录权限或系统受控文件夹访问设置。"
 	case strings.Contains(lower, "no space left") || strings.Contains(lower, "not enough space") || strings.Contains(lower, "磁盘空间不足"):

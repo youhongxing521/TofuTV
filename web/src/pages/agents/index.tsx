@@ -6,6 +6,7 @@ import { useState } from "react";
 import { PageHeader, WorkspacePage } from "@/components/layout/workspace-page";
 import { EmptyState } from "@/components/ui/product/empty-state";
 import { useCopyText } from "@/hooks/use-copy-text";
+import { PRODUCT_NAME } from "@/lib/product-brand";
 import { isNativeDesktopRuntime } from "@/lib/runtime-mode";
 import { connectAgentIntegration, disconnectAgentIntegration, listAgentClients, revokeAgentClient, type AgentClientKind, type AgentIntegration, type AgentIntegrationKind } from "@/services/api/agent-clients";
 import { ApiError } from "@/services/api/request";
@@ -80,7 +81,7 @@ export default function AgentsPage() {
 
     return (
         <WorkspacePage>
-            <PageHeader title="BeefTV MCP" />
+            <PageHeader title={PRODUCT_NAME + " MCP"} />
 
             {unsupported ? (
                 <EmptyState icon={Plug} title="当前版本还不支持" description="更新到新版本后就能在这里连接 Codex、Claude Code 和 Cursor。" />
