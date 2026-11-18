@@ -34,7 +34,7 @@ export async function commitCanvasDocument(input: {
     expectedRevision: number;
     document: Record<string, unknown>;
 }) {
-    return executeWorkspaceOperation<CanvasDocumentCommitResult>("canvas.document.commit", {
+    return http.post<WorkspaceOperationResult<CanvasDocumentCommitResult>>("/canvas-editor/document", {
         opId: input.operationId,
         params: {
             canvasId: input.canvasId,
@@ -141,8 +141,8 @@ export async function bindCanvasTaskOutput(input: {
     signal?: AbortSignal;
     traceId?: string;
 }) {
-    return executeWorkspaceOperation<CanvasTaskBindReceipt>(
-        "canvas.task.bind",
+    return http.post<WorkspaceOperationResult<CanvasTaskBindReceipt>>(
+        "/canvas-editor/task-output",
         {
             opId: input.operationId,
             params: {
@@ -152,7 +152,6 @@ export async function bindCanvasTaskOutput(input: {
                 outputIndex: input.outputIndex ?? 0,
             },
         },
-        input.signal,
-        taskDiagnosticHeaders(input.taskId, input.traceId),
+        { signal: input.signal, headers: taskDiagnosticHeaders(input.taskId, input.traceId) },
     );
 }

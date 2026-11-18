@@ -463,6 +463,22 @@ paths:
           description: 当前版本或素材状态已变化，恢复未执行
         "428":
           description: 缺少当前 revision
+  /canvas-editor/document:
+    post:
+      summary: 从画布界面按版本提交文档
+      description: 请求体包含幂等键 opId 与 params.canvasId、params.expectedRevision、params.document。
+      responses:
+        "200":
+          description: 返回提交回执与新 revision
+        "409":
+          description: 文档版本或幂等键冲突
+  /canvas-editor/task-output:
+    post:
+      summary: 从画布界面绑定已有任务产物
+      description: 请求体包含幂等键 opId 与 params.canvasId、params.taskId、params.nodeId、params.outputIndex。
+      responses:
+        "200":
+          description: 返回绑定回执与当前画布状态
   /ops:
     get:
       tags: [agent-ops]

@@ -37,7 +37,7 @@ beforeAll(async () => {
         }
         if (path === "/api/tasks/synthetic-image-task") return json({ id: "synthetic-image-task", type: "canvas_image", status: "failed", error: "Synthetic terminal task; no model called", attempts: 1, createdAt: "2026-10-18", updatedAt: "2026-10-18" });
         if (path === "/api/canvas-projects/c1") { await gate; return json({ project: backend }); }
-        if (path === "/api/ops/canvas.document.commit") {
+        if (path === "/api/canvas-editor/document") {
             const body = await request.json();
             if (body.params.expectedRevision !== backend.revision) return Response.json({ code: 409, data: null, msg: "Revision conflict", reason: "canvas_revision_conflict" }, { status: 409 });
             commits.push(body);

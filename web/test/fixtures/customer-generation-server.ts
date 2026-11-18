@@ -42,7 +42,7 @@ export async function startCustomerScenarioServer(options: { port?: number } = {
         if (url.pathname === "/_scenario/state") return json({ project: state.project, posts: state.posts, downloads: state.downloads, lookups: state.lookups });
         if (url.pathname === "/_scenario/release") { state.release(); return json({ released: true }); }
         if (url.pathname === "/") { state.holdCharacter = url.searchParams.has("hold-character"); state.delayReceipt = url.searchParams.has("lose-receipt"); state.sameOriginHang = url.searchParams.has("same-origin-hang"); }
-        if (url.pathname === "/api/ops/canvas.document.commit") {
+        if (url.pathname === "/api/canvas-editor/document") {
             const body = await request.json();
             state.project = { ...body.params.document, revision: state.project.revision + 1 };
             return json({ revision: state.project.revision, result: { canvasId: state.project.id, revision: state.project.revision, title: state.project.title, updatedAt: state.project.updatedAt } });

@@ -68,12 +68,12 @@ beforeAll(async () => {
         }
         const assetMatch = /^\/api\/assets\/asset-([^/]+)$/.exec(path);
         if (assetMatch) return Response.json({ code: 0, data: { asset: assetFor(assetMatch[1]) } });
-        if (path === "/api/ops/canvas.document.commit") {
+        if (path === "/api/canvas-editor/document") {
             const body = await request.json();
             canonicalCanvas = { ...body.params.document, revision: (canonicalCanvas?.revision ?? 0) + 1 };
             return Response.json({ code: 0, data: { op: "canvas.document.commit", opId: body.opId, result: { id: body.params.id ?? "canvas-a", revision: canonicalCanvas.revision }, revision: canonicalCanvas.revision } });
         }
-        if (path === "/api/ops/canvas.task.bind") {
+        if (path === "/api/canvas-editor/task-output") {
             const body = await request.json();
             if (!canonicalCanvas) return Response.json({ code: 409, msg: "画布尚未保存" }, { status: 409 });
             const asset = assetFor(body.params.taskId);
@@ -120,7 +120,7 @@ test("a task node that only arrives with the later remote copy is subscribed and
     expect(late.metadata?.storageKey).toBe("resource:late-task-video");
     expect(late.metadata?.errorDetails).toBeUndefined();
     expect(nodeIn(snap, "node-cached")?.metadata?.status).toBe("success");
-    expect(requests.filter((request) => request === "POST /api/ops/canvas.task.bind")).toHaveLength(1);
+    expect(requests.filter((request) => request === "POST /api/canvas-editor/task-output")).toHaveLength(1);
     expect(requests.some((request) => request.startsWith("POST /api/tasks"))).toBe(false);
 }, 20_000);
 
@@ -138,7 +138,7 @@ test("a newer request during asset hydration prevents the old result from being 
     await page.evaluate(() => window.lateHarness!.regenerate("node-hydrating"));
     releaseAsset();
     await Bun.sleep(500);
-    expect(requests).not.toContain("POST /api/ops/canvas.task.bind");
+    expect(requests).not.toContain("POST /api/canvas-editor/task-output");
     expect(nodeIn(await snapshot(), "node-hydrating")?.metadata?.status).toBe("loading");
 }, 15_000);
 
@@ -218,7 +218,7 @@ test("an old task's result never overwrites a newer request or a newer task id o
     slowDone = true;
     await Bun.sleep(4_500);
     const snap = await snapshot();
-    expect(requests).not.toContain("POST /api/ops/canvas.task.bind");
+    expect(requests).not.toContain("POST /api/canvas-editor/task-output");
     expect(nodeIn(snap, "node-slow")?.metadata?.status).toBe("loading");
     expect(nodeIn(snap, "node-slow")?.metadata?.storageKey).toBeUndefined();
     expect(nodeIn(snap, "node-slow-2")?.metadata?.taskId).toBe("newer-task");
@@ -259,12 +259,12 @@ test("switching canvas aborts a late recovery and never writes the old task back
     await waitUntil("late task subscribed", () => (taskReads.get("slow-task") ?? 0) > 0);
     await page.evaluate(() => window.lateHarness!.switchProject("canvas-b"));
     await waitUntil("canvas b loaded", async () => (await snapshot()).projectId === "canvas-b");
-    const writesBefore = requests.filter((request) => request.startsWith("POST /api/ops/")).length;
+    const writesBefore = requests.filter((request) => request.startsWith("POST /api/canvas-editor/")).length;
     slowDone = true;
     await Bun.sleep(4_500);
     const snap = await snapshot();
-    expect(requests.filter((request) => request.startsWith("POST /api/ops/")).length).toBe(writesBefore);
-    expect(requests).not.toContain("POST /api/ops/canvas.task.bind");
+    expect(requests.filter((request) => request.startsWith("POST /api/canvas-editor/")).length).toBe(writesBefore);
+    expect(requests).not.toContain("POST /api/canvas-editor/task-output");
     expect(snap.nodes.map((node) => node.id)).toEqual(["node-b"]);
     expect(snap.nodes[0].metadata?.status).toBe("success");
     expect(snap.store["canvas-a"]?.find((node) => node.id === "node-slow")?.metadata?.status).not.toBe("success");
@@ -277,6 +277,6 @@ test("unmounting during a late recovery aborts it without writing the result", a
     await page.evaluate(() => window.lateHarness!.unmount());
     slowDone = true;
     await Bun.sleep(4_500);
-    expect(requests.filter((request) => request.startsWith("POST /api/ops/"))).toEqual([]);
+    expect(requests.filter((request) => request.startsWith("POST /api/canvas-editor/"))).toEqual([]);
     expect((await snapshot()).store["canvas-a"]?.find((node) => node.id === "node-slow")?.metadata?.status).not.toBe("success");
 }, 20_000);

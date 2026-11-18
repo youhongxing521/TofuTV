@@ -44,12 +44,12 @@ beforeAll(async () => {
                 }
                 return Response.json({ code: 0, data: { project: canonicalCanvas } });
             }
-            if (path === "/api/ops/canvas.document.commit") {
+            if (path === "/api/canvas-editor/document") {
                 const body = await request.json();
                 canonicalCanvas = { ...body.params.document, revision: (canonicalCanvas?.revision ?? 0) + 1 };
                 return Response.json({ code: 0, data: { op: "canvas.document.commit", opId: body.opId, result: { id: "canvas-a", revision: canonicalCanvas.revision }, revision: canonicalCanvas.revision } });
             }
-            if (path === "/api/ops/canvas.task.bind") {
+            if (path === "/api/canvas-editor/task-output") {
                 const body = await request.json();
                 if (!canonicalCanvas) return Response.json({ code: 409, msg: "画布尚未保存" }, { status: 409 });
                 canonicalCanvas = { ...canonicalCanvas, revision: canonicalCanvas.revision + 1,
@@ -141,6 +141,6 @@ test("retrieved original result is applied and persisted onto the canvas", async
     expect(snapshot.nodes[0].metadata.storageKey).toBe("resource:test-video");
     expect(snapshot.nodes[0].metadata.taskId).toBe("original");
     expect(canonicalCanvas?.nodes[0].metadata.storageKey).toBe("resource:test-video");
-    expect(requests.filter((request) => request === "POST /api/ops/canvas.task.bind")).toHaveLength(1);
+    expect(requests.filter((request) => request === "POST /api/canvas-editor/task-output")).toHaveLength(1);
     expect(requests.filter((request) => request.startsWith("POST /api/tasks"))).toEqual(["POST /api/tasks/original/recover"]);
 }, 15_000);

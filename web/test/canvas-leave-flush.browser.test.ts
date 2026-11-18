@@ -26,7 +26,7 @@ beforeAll(async () => {
         if (path === "/harness.js") return new Response(script, { headers: { "Content-Type": "application/javascript" } });
         if (path === "/api/canvas-projects/c1") return json({ project: backend });
         if (path === "/api/canvas-projects/c2") return json({ project: secondBackend });
-        if (path === "/api/ops/canvas.document.commit") {
+        if (path === "/api/canvas-editor/document") {
             const body = await request.json();
             const current = body.params.canvasId === "c2" ? secondBackend : backend;
             if (body.params.expectedRevision !== current.revision) return Response.json({ code: 409, data: null, msg: "Revision conflict", reason: "canvas_revision_conflict" }, { status: 409 });
