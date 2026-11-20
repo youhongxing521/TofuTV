@@ -82,7 +82,7 @@ export function PluginInstallConfirmModal({ open, initialRequest, loading = fals
                         <Input
                             value={sourceInput}
                             onChange={(e) => setSourceInput(e.target.value)}
-                            placeholder={installMode === "npm" ? "beeftv-plugin-example" : "/path/to/my-plugin"}
+                            placeholder={installMode === "npm" ? "tofutv-plugin-example" : "/path/to/my-plugin"}
                             aria-label={installMode === "npm" ? "npm 插件包名" : "本地插件目录路径"}
                         />
                         <p className="plugin-install-hint">{installMode === "npm" ? "支持包名、指定版本或仓库地址" : "填写包含 package.json 的目录完整路径"}</p>

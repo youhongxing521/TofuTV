@@ -147,3 +147,40 @@ func TestVideoResolutionReachesProtocolRequest(t *testing.T) {
 		t.Fatalf("resolution_name = %#v, want 720p", body["resolution_name"])
 	}
 }
+
+// 模型没有声明视频能力时，能力表里没有可对齐的档位，纯数字档位必须补上 p
+// 再发上游。Seedance 只接受 720p 这类写法，直接发 720 会被判 invalid_params。
+func TestVideoResolutionWithoutCapabilityGetsSuffix(t *testing.T) {
+	cases := []struct {
+		quality string
+		want    string
+	}{
+		{"720", "720p"},
+		{"1080", "1080p"},
+		{"720p", "720p"},
+		{"1080P", "1080P"},
+		{"", ""},
+		{"auto", "auto"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.quality, func(t *testing.T) {
+			request := ProtocolRequestFromInput(Input{
+				Mode:   "video",
+				Prompt: "move",
+				Config: Config{Model: "bytedance/doubao-seedance-2-0-fast-260128", VQuality: tc.quality, Size: "1:1"},
+			})
+			if request.Resolution != tc.want {
+				t.Fatalf("protocol resolution = %q, want %q", request.Resolution, tc.want)
+			}
+		})
+	}
+}
+
+// 能力表声明了带 p 的档位时，仍然以声明值为准，不被后缀补齐改写。
+func TestVideoResolutionPrefersDeclaredCapability(t *testing.T) {
+	profile := &modelcatalog.VideoCapabilityConfig{Resolutions: []string{"480p", "720p", "1080p"}}
+	request := ProtocolRequestFromInput(Input{Mode: "video", Prompt: "move", Config: Config{Model: "seedance", VQuality: "720"}, VideoCapability: profile})
+	if request.Resolution != "720p" {
+		t.Fatalf("declared resolution = %q, want 720p", request.Resolution)
+	}
+}

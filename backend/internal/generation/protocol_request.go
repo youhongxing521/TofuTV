@@ -37,6 +37,12 @@ func ProtocolRequestFromInput(input Input) protocol.GenerationRequest {
 	if input.Mode == "video" {
 		if declared := videoResolutionNameRequest(input.VideoCapability, resolution); declared != "" {
 			resolution = declared
+		} else if input.VideoCapability == nil && !isAutomaticVideoResolution(resolution) {
+			// 模型没有声明视频能力时，能力表里找不到可对齐的档位，
+			// 只能按视频协议通用写法补上分辨率后缀：720 -> 720p。
+			// 上游（Seedance、DashScope 等）只认带 p 的档位，直接透传
+			// 纯数字会被判 invalid_params 并拒绝提交。
+			resolution = NormalizeVideoResolution(resolution)
 		}
 	}
 	aspectRatio := strings.TrimSpace(input.Config.Size)

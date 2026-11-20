@@ -1,6 +1,8 @@
 package generation
 
 import (
+	"errors"
+	"strings"
 	"testing"
 
 	"infinite-canvas/backend/internal/model"
@@ -83,6 +85,21 @@ func TestEnrichAPICallLogPayloadNeverTreatsTraceRequestIDOrFailedCreateAsProvide
 		resultErr := ProtocolResultError("invalid parameter", explicitID, body)
 		if DefiniteImageInputRejection(resultErr) {
 			t.Fatalf("failed create with accepted task_id must not be DefiniteImageInputRejection: %v", resultErr)
+		}
+	})
+
+	t.Run("missing required field keeps a structured parameter code", func(t *testing.T) {
+		body := []byte(`{"output":{"task_id":"job-missing-img","task_status":"FAILED"},"request_id":"req-poll-1"}`)
+		err := ProtocolResultError("Field required: input.img_url", "job-missing-img", body)
+		var payload PayloadError
+		if !errors.As(err, &payload) {
+			t.Fatalf("want structured payload error, got %T: %v", err, err)
+		}
+		if !strings.Contains(payload.raw, "invalid_parameter") {
+			t.Fatalf("payload must carry invalid_parameter, raw=%s", payload.raw)
+		}
+		if DefiniteImageInputRejection(err) {
+			t.Fatalf("missing video first frame must not be classified as image input rejection: %v", err)
 		}
 	})
 }

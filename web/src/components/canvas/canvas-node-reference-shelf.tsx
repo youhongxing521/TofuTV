@@ -71,6 +71,7 @@ export function VideoReferenceModeSwitch({
             aria-pressed={allActive}
             aria-disabled={!state.canSelectAll}
             aria-label="全能参考模式"
+            data-onboarding="video-all-references"
             data-canvas-no-drag
             className={`inline-flex h-5 items-center rounded-[var(--r-sm)] px-2 text-[var(--fs-tiny)] font-medium leading-none transition-colors ${state.canSelectAll ? "cursor-pointer" : "cursor-not-allowed opacity-45"}`}
             style={{

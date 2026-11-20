@@ -527,6 +527,8 @@ export function taskOutcomeCopy(outcome?: TaskOutcome | null, nowMs = Date.now()
                 reason = "上次生成未完成，费用已退回，可以直接重新生成";
             } else if (outcome.reason === "not_charged" || outcome.reason === "request_not_sent") {
                 reason = "上次请求未扣费，可以直接重新生成";
+            } else if (outcome.reason === "input_invalid") {
+                reason = "上次输入未通过校验，未开始生成，可以直接修改后重新生成";
             }
             const action = "可以直接重新生成";
             return {

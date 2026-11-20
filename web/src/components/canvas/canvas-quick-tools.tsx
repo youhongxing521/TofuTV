@@ -19,7 +19,7 @@ export function CanvasQuickTools({ tool, onToolChange, onAddNode }: {
                 <MousePointer2 size={18} aria-hidden="true" />
             </button>
             {nodeTools.map(({ type, label, icon: Icon }) => (
-                <button key={type} type="button" aria-label={label} title={label} onClick={() => onAddNode(type)}>
+                <button key={type} type="button" aria-label={label} title={label} data-onboarding={type === CanvasNodeType.Video ? "video-shortcut" : undefined} onClick={() => onAddNode(type)}>
                     <Icon size={18} aria-hidden="true" />
                 </button>
             ))}

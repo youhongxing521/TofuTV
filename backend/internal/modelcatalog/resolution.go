@@ -16,7 +16,8 @@ func normalizeVideoResolution(value string) string {
 	if strings.EqualFold(value, "2k") {
 		return "1440p"
 	}
-	if strings.HasSuffix(value, "p") {
+	// 大小写不敏感判断后缀，避免 "1080P" 被拼成 "1080Pp"。
+	if strings.HasSuffix(strings.ToLower(value), "p") {
 		return value
 	}
 	return value + "p"

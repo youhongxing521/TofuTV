@@ -15,6 +15,7 @@ const (
 
 	ReasonSettlementPending          = "settlement_pending"
 	ReasonChargedResultUnrecoverable = "charged_result_unrecoverable"
+	ReasonInputInvalid               = "input_invalid"
 )
 
 // OutcomeFacts 来自持久化证据。读失败必须显式标记，不能当成没有证据。
@@ -62,6 +63,17 @@ func ComputeOutcome(task model.Task, resultState string, facts OutcomeFacts) Out
 	if d := task.FailureDiagnostics; d != nil && isInputRejectedCode(d.ProviderCode) {
 		return out("failed", "confirm", "input_rejected")
 	}
+	// 上游在参数校验阶段就拒绝请求（例如图生视频缺首帧）时，不存在可取回的结果，
+	// 也不产生费用。必须判成失败，否则会一直占住节点等一个永远不来的结果。
+	if d := task.FailureDiagnostics; d != nil && isParamRejectedCode(d.ProviderCode) {
+		return out("failed", "allowed", ReasonInputInvalid)
+	}
+	// 在 HTTP 阶段就被上游拒绝的请求拿不到 ProviderCode，只留下任务级 error_code。
+	// invalid_params 说明请求在执行前已被判参数不合法，没有产物也不产生费用，
+	// 不应该再让用户先核对扣费。
+	if isParamRejectedCode(task.ErrorCode) {
+		return out("failed", "allowed", ReasonInputInvalid)
+	}
 	if task.RecoveryOutcome != nil {
 		switch *task.RecoveryOutcome {
 		case RecoveryUnrecoverable:
@@ -102,6 +114,16 @@ func provablyNotSubmitted(task model.Task, facts OutcomeFacts) bool {
 
 func isInputRejectedCode(code string) bool {
 	return code == "content_policy_violation" || code == "content_moderation" || strings.HasPrefix(code, "SAFETY.INPUT.")
+}
+
+// isParamRejectedCode 只匹配上游对请求参数的硬性拒绝。
+// 这类失败没有产物、不产生费用，可以直接重新生成。
+func isParamRejectedCode(code string) bool {
+	switch strings.ToLower(strings.TrimSpace(code)) {
+	case "invalid_parameter", "invalid_parameters", "invalidparameter", "invalid_params", "missing_parameter", "missingparameter", "invalid_request", "param_invalid":
+		return true
+	}
+	return false
 }
 
 func computeProviderSettlementOutcome(task model.Task) (Outcome, bool) {

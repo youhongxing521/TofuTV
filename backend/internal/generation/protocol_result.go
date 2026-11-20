@@ -334,10 +334,11 @@ func RetryableProtocolMediaDownload(err error) bool {
 
 func ProtocolResultError(message, taskID string, bodies ...[]byte) error {
 	// Keep structured failure codes instead of flattening them to plugin prose.
+	requestID := ""
 	if len(bodies) > 0 {
 		var payload map[string]interface{}
 		if json.Unmarshal(bodies[0], &payload) == nil {
-			requestID := firstNonEmpty(stringField(payload, "request_id"), stringField(payload, "requestId"))
+			requestID = firstNonEmpty(stringField(payload, "request_id"), stringField(payload, "requestId"))
 			if nested, ok := payload["data"].(map[string]interface{}); ok {
 				payload = nested
 			}
@@ -368,8 +369,36 @@ func ProtocolResultError(message, taskID string, bodies ...[]byte) error {
 	if message == "" {
 		message = "上游返回失败状态"
 	}
+	// 上游只回文案、没有结构化 code 时，必填字段缺失属于确定的请求参数错误：
+	// 补一个标准错误码，下游才能判定"没有结果可取回"，而不是一直等它。
+	if code := parameterFailureCode(message); code != "" {
+		envelope := map[string]interface{}{
+			"request_id": requestID,
+			"error": map[string]string{
+				"code":    code,
+				"message": message,
+			},
+		}
+		if taskID != "" {
+			envelope["task_id"] = taskID
+		}
+		raw, _ := json.Marshal(envelope)
+		return NewRawPayloadError(string(raw))
+	}
 	if taskID == "" {
 		return errors.New(message)
 	}
 	return fmt.Errorf("声明式协议任务失败（任务 %s）：%s", taskID, message)
+}
+
+// parameterFailureCode 只识别上游对请求结构的硬性拒绝（缺必填字段）。
+// 刻意不覆盖内容审核与计费文案：那两类另有语义，不能在这里混判。
+func parameterFailureCode(message string) string {
+	lower := strings.ToLower(message)
+	for _, marker := range []string{"field required", "missing required", "required field", "is required"} {
+		if strings.Contains(lower, marker) {
+			return "invalid_parameter"
+		}
+	}
+	return ""
 }

@@ -16,7 +16,7 @@ import { ModelServiceEditor } from "./model-service-editor";
 import { ChannelRequestAddressLines } from "./channel-request-addresses";
 import { currentModelConnectionReceipt, useModelConnectionTests } from "@/stores/use-model-connection-tests";
 import { ModelLogo } from "@/components/model-logo";
-import beefTVAppIcon from "../../../../assets/app-icon.png";
+import { PRODUCT_MARK_URL } from "@/lib/product-brand";
 import { MODEL_SERVICE_PRESETS, isTopazUpscaleChannel, channelAllowsEmptyAPIKey, mergeSavedServiceChannel, pluginServices, servicePresetFor } from "@/lib/model-service-presets";
 import { workspaceCapabilities } from "@/services/workspace-mode";
 import { localWorkspaceConfig } from "@/lib/user-session";
@@ -280,7 +280,7 @@ export function ChannelSettingsPane({ onOpenDiagnostics, onOpenModels }: Channel
                     <Button className="h-10 flex-1 sm:h-8 sm:flex-none" icon={<RefreshCw className="size-4" />} loading={loadingChannelIds.includes("all")} disabled={loadingChannelIds.some((id) => id !== "all") || !userChannels.some(channel => !isTopazUpscaleChannel(channel))} onClick={() => void refreshAllModels()}>
                         拉取全部渠道模型
                     </Button>
-                    <Button type="primary" className="h-10 flex-1 sm:h-8 sm:flex-none" icon={<Plus className="size-4" />} onClick={addChannel}>
+                    <Button type="primary" data-onboarding="add-model-service" className="h-10 flex-1 sm:h-8 sm:flex-none" icon={<Plus className="size-4" />} onClick={addChannel}>
                         添加模型服务
                     </Button>
                     </div>
@@ -298,7 +298,7 @@ export function ChannelSettingsPane({ onOpenDiagnostics, onOpenModels }: Channel
                                 <div className="mb-2.5 flex flex-wrap items-start justify-between gap-2.5">
                                     <div className="min-w-0 flex-1 basis-52">
                                         <h3 id={`channel-${channel.id}-title`} className="flex items-center gap-2 text-sm font-semibold">
-                                            {builtinBeefTV ? <img src={beefTVAppIcon} alt="" className="size-5 shrink-0 object-contain" draggable={false} /> : <ModelLogo icon={MODEL_SERVICE_PRESETS.find((preset) => preset.id === servicePresetFor(channel))?.icon} size={20} />}
+                                            {builtinBeefTV ? <img src={PRODUCT_MARK_URL} alt="" className="size-5 shrink-0 object-contain" draggable={false} /> : <ModelLogo icon={MODEL_SERVICE_PRESETS.find((preset) => preset.id === servicePresetFor(channel))?.icon} size={20} />}
                                             {builtinBeefTV ? "上游算力" : channel.name || "未命名渠道"}
                                         </h3>
                                         <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-foreground/55">

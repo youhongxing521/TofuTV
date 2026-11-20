@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Button, InputNumber, Select, Segmented } from "antd";
 import { Image as ImageIcon, Video, LoaderCircle } from "lucide-react";
 import type { CanvasTheme } from "@/lib/canvas-theme";
+import { PRODUCT_NAME } from "@/lib/product-brand";
 import { createDefaultUpscaleSettings, deriveUpscaleBatchState } from "@/lib/canvas/canvas-upscale";
 import { canRecoverUpscaleNode } from "@/lib/canvas/canvas-ai-upscale-task";
 import { CanvasNodeType, type CanvasNodeData } from "@/types/canvas";
@@ -173,7 +174,7 @@ export function UpscaleNodeContent({ node, theme }: { node: CanvasNodeData; them
             </> : "提交前获取费用"}</div> : null}
             {Object.keys(estimates).length ? <details><summary className="cursor-pointer" style={{ color: theme.node.muted }}>超分后的分辨率</summary><div className="mt-2 space-y-1">{inputs.map(input => { const estimate = estimates[input.id]; return estimate ? <div key={input.id} className="flex gap-2"><span className="min-w-0 flex-1 truncate">{input.title}</span><span className="shrink-0 tabular-nums">{estimate.output.width} × {estimate.output.height}</span></div> : null; })}</div></details> : null}
             <div className="space-y-3">
-                <Select getPopupContainer={trigger => trigger.parentElement || document.body} className="w-full" aria-label="超分模型" placeholder="暂无可用超分模型" disabled={!officialConnected} value={channelId || undefined} options={officialConnected ? [{ label: "BeefTV超分模型", value: "beeftv" }] : []} onChange={channelId => patch({ channelId })} />
+                <Select getPopupContainer={trigger => trigger.parentElement || document.body} className="w-full" aria-label="超分模型" placeholder="暂无可用超分模型" disabled={!officialConnected} value={channelId || undefined} options={officialConnected ? [{ label: PRODUCT_NAME + " 超分模型", value: "beeftv" }] : []} onChange={channelId => patch({ channelId })} />
                 {!officialConnected ? <p role="status" style={{ color: theme.node.muted }}>暂无可用超分模型，请连接 上游算力。<a href="#/settings?section=channels" className="ml-1 underline">连接上游算力</a></p> : capabilities && !hasAvailableMode ? <p role="status" style={{ color: theme.node.muted }}>暂无可用超分模型，请刷新模型目录或更换输入素材类型。</p> : null}
             </div>
             {notice ? <p role="alert" className="break-words" style={{ color: "var(--status-error)" }}>{notice}</p> : null}

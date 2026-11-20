@@ -6,6 +6,7 @@ import { aceternityMotion } from "@/lib/aceternity-motion";
 import { canvasThemes } from "@/lib/canvas-theme";
 import { cn } from "@/lib/utils";
 import { useActiveTheme } from "@/stores/canvas/use-canvas-theme-store";
+import { CanvasNodeType } from "@/types/canvas";
 
 export type CanvasCreateCommand = {
     id: string;
@@ -48,7 +49,6 @@ export function CanvasCreateMenu({ commands, layout = "grid", title = "添加节
                     <button
                         key={command.id}
                         type="button"
-                        data-onboarding={command.label === "图片" ? "image-option" : undefined}
                         className="inline-flex h-6 min-w-0 items-center gap-1 rounded-[var(--dock-item-radius)] px-1.5 font-medium outline-none transition-colors hover:bg-black/5 focus-visible:ring-2 dark:hover:bg-white/8 [&_svg]:size-3"
                         style={{ color: theme.node.muted, fontSize: "var(--fs-tiny)", "--tw-ring-color": theme.node.muted } as CSSProperties}
                         title={command.label}
@@ -115,7 +115,7 @@ function CanvasCreateCommandList({ commands }: { commands: CanvasCreateCommand[]
             {commands.map((command) => (
                     <button
                         key={command.id}
-                        data-onboarding={command.label === "图片" ? "image-option" : undefined}
+                        data-onboarding={command.id === CanvasNodeType.Video ? "video-option" : undefined}
                         type="button"
                         disabled={Boolean(command.disabledReason)}
                         aria-disabled={Boolean(command.disabledReason)}
@@ -143,7 +143,7 @@ function CanvasCreateCommandGrid({ commands, variant }: { commands: CanvasCreate
         <div className={cn("grid gap-1", variant === "node" ? "grid-cols-4" : variant === "workflow" ? "grid-cols-1" : "grid-cols-2")}>
             {commands.map((command) => (
                 <motion.button
-                    data-onboarding={command.label === "图片" ? "image-option" : undefined}
+                    data-onboarding={command.id === CanvasNodeType.Video ? "video-option" : undefined}
                     key={command.id}
                     type="button"
                     disabled={Boolean(command.disabledReason)}

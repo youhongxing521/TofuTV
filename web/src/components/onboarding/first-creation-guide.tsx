@@ -1,30 +1,51 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { Button } from "antd";
+import { Check, ChevronDown, Copy, GripVertical, HelpCircle, X } from "lucide-react";
+
 import { AppModal } from "@/components/ui/product/app-modal";
-import { Check, ChevronDown, ChevronLeft, ChevronRight, Copy, GripVertical, HelpCircle, X } from "lucide-react";
-import { useOnboardingStore, onboardingSteps } from "@/stores/use-onboarding-store";
-import { channelHasGenerationCredential, filterModelsByCapability, isBuiltinBeefTVChannel, modelOptionsFromChannels, useConfigStore } from "@/stores/use-config-store";
 import { useCanvasStore } from "@/stores/canvas/use-canvas-store";
+import {
+    channelHasGenerationCredential,
+    configuredModelMatchesCapability,
+    modelOptionLabel,
+    resolveModelChannel,
+    useConfigStore,
+} from "@/stores/use-config-store";
+import { useOnboardingStore, onboardingSteps, type OnboardingStep } from "@/stores/use-onboarding-store";
+import { CanvasNodeType } from "@/types/canvas";
+import { useGuideHighlight } from "./use-guide-highlight";
 import "./first-creation-guide.css";
 
-const lessons = [
-    { title: "连接算力", description: "点击连接，在浏览器确认授权。" },
-    { title: "新建项目", description: "点击侧栏「新建项目」，打开一张新画布。" },
-    { title: "添加图片", description: "点击添加按钮，选择「图片」。" },
-    { title: "生成图片", description: "选中图片节点，输入描述并生成。" },
-    { title: "查看生成历史", description: "刚生成的图片会保存在这里。" },
-    { title: "继续创作", description: "打开刚才的项目，继续编辑。" },
-];
-const sample = "一只穿着黄色雨衣的小狗，站在雨后的街道上，温暖的插画风格。";
+const modelSettings = "/settings?section=channels";
+const generationHistory = "/assets?tab=history";
+const openGuideEvent = "beeftv:open-guide";
+const sample = "雨后的城市街道，地面映着暖橙色路灯。一辆黄色有轨电车从右向左驶过，镜头缓慢向前推进，保持同一个镜头。";
+const moveGuideKeys: Partial<Record<string, [number, number]>> = {
+    ArrowLeft: [-20, 0],
+    ArrowRight: [20, 0],
+    ArrowUp: [0, -20],
+    ArrowDown: [0, 20],
+};
+
+const lessons = {
+    model: { title: "选择视频模型", description: "在「模型配置」里添加模型服务，拉取模型，再选择「默认视频模型」。" },
+    project: { title: "打开创作画布", description: "点击左侧「新建项目」，也可以打开已有项目，进入一张画布。" },
+    node: { title: "添加视频节点", description: "点击画布的「＋」，选择「视频」。也可以直接点左侧的视频图标。" },
+    reference: { title: "添加参考图（可选）", description: "把图片拖到画布，选中视频节点，点「点选连线」，再点击图片。" },
+    generate: { title: "生成第一条视频", description: "选中视频节点，输入画面和镜头动作。确认模型、比例和时长，再点击右下角的「生成」箭头。" },
+    assets: { title: "查看与下载成片", description: "生成完成后，可以直接在画布预览和下载，也可以在「资产 → 生成历史」里找到成片。" },
+} satisfies Record<OnboardingStep, { title: string; description: string }>;
 
 export function OnboardingEntry({ compact = false }: { compact?: boolean }) {
-    return <button type="button" className={`app-workspace-nav-link first-creation-entry${compact ? " is-collapsed" : ""}`} aria-label="新手引导" title="新手引导" onClick={() => window.dispatchEvent(new Event("beeftv:open-guide"))}>
-        <span className="app-workspace-nav-main flex min-w-0 items-center gap-2.5">
-            <span className="app-workspace-nav-icon" aria-hidden><HelpCircle className="size-4 shrink-0" strokeWidth={1.8} /></span>
-            {!compact && <span className="app-workspace-nav-title truncate">新手引导</span>}
-        </span>
-    </button>;
+    return (
+        <button type="button" className={`app-workspace-nav-link first-creation-entry${compact ? " is-collapsed" : ""}`} aria-label="新手引导" title="新手引导" onClick={() => window.dispatchEvent(new Event(openGuideEvent))}>
+            <span className="app-workspace-nav-main flex min-w-0 items-center gap-2.5">
+                <span className="app-workspace-nav-icon" aria-hidden><HelpCircle className="size-4 shrink-0" strokeWidth={1.8} /></span>
+                {!compact && <span className="app-workspace-nav-title truncate">新手引导</span>}
+            </span>
+        </button>
+    );
 }
 
 export function FirstCreationGuide() {
@@ -37,162 +58,198 @@ export function FirstCreationGuide() {
     const [welcome, setWelcome] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [notice, setNotice] = useState("");
-    const [finished, setFinished] = useState(false);
-    const [highlight, setHighlight] = useState<{ step: typeof onboardingSteps[number]; rect: DOMRect } | null>(null);
-    const nodeStepStartedAt = useRef<number | null>(null);
     const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
-    const [drag, setDrag] = useState<{ x: number; y: number; left: number; top: number } | null>(null);
+    const drag = useRef<{ x: number; y: number } | null>(null);
     const step = onboardingSteps[guide.step];
-    const project = projects.find((item) => item.id === guide.projectId);
-    const node = project?.nodes.find((item) => item.id === guide.nodeId);
-    const result = project?.nodes.find((item) => item.type === "image" && item.metadata?.content && (item.id === guide.nodeId || item.metadata?.generatedFromNodeId === guide.nodeId) && (item.metadata?.resultOrigin === "generated" || Boolean(item.metadata?.taskId)));
-    const official = config.channels.find(isBuiltinBeefTVChannel);
-    const connected = Boolean(official && channelHasGenerationCredential(official) && filterModelsByCapability(modelOptionsFromChannels([official]), "image", [official]).length);
-    const ready = step === "official" ? connected : step === "project" ? Boolean(project) : step === "node" ? Boolean(node) : step === "generate" ? Boolean(result) : step === "assets" ? pathname === "/assets" && new URLSearchParams(search).get("tab") === "history" && Boolean(result) : guide.visitedLibrary && Boolean(project) && pathname === `/canvas/${project?.id}`;
+    const lesson = lessons[step];
+    const active = guide.status === "active" && !welcome;
+    const canvasId = pathname.match(/^\/canvas\/([^/]+)$/)?.[1];
+    const project = projects.find((item) => item.id === (canvasId ?? guide.projectId));
+    const node = project?.id === guide.projectId ? project?.nodes.find((item) => item.id === guide.nodeId) : undefined;
+    const result = node && project?.nodes.find((item) =>
+        item.type === CanvasNodeType.Video &&
+        Boolean(item.metadata?.content || item.metadata?.storageKey) &&
+        item.metadata?.resultOrigin === "generated" &&
+        (item.id === node.id || item.metadata.generatedFromNodeId === node.id),
+    );
+    const canvasPath = project ? `/canvas/${encodeURIComponent(project.id)}` : "";
+    const inHistory = pathname === "/assets" && new URLSearchParams(search).get("tab") === "history";
+    const videoChannel = resolveModelChannel(config, config.videoModel);
+    const hasVideoModel = Boolean(videoChannel.enabled !== false && videoChannel.baseUrl.trim() &&
+        configuredModelMatchesCapability(config, config.videoModel, "video") &&
+        (videoChannel.hasApiKey || channelHasGenerationCredential(videoChannel, config.videoModel)));
+    const ready = {
+        model: hasVideoModel,
+        project: Boolean(project),
+        node: Boolean(node),
+        reference: node?.metadata?.videoEditOperation === "reference_to_video" && Boolean(project?.connections.some((connection) =>
+            connection.toNodeId === node.id && project.nodes.some((item) => item.id === connection.fromNodeId && item.type === CanvasNodeType.Image),
+        )),
+        generate: Boolean(result),
+        assets: inHistory,
+    }[step];
 
     useEffect(() => {
-        if (hydrated && !projects.length && guide.status === "new") setWelcome(true);
-    }, [hydrated, projects.length, guide.status]);
-    useEffect(() => {
-        const open = () => { guide.restart(); setCollapsed(false); setWelcome(true); };
-        window.addEventListener("beeftv:open-guide", open);
-        return () => window.removeEventListener("beeftv:open-guide", open);
-    }, [guide.restart]);
-    useEffect(() => { nodeStepStartedAt.current = step === "node" ? Date.now() : null; }, [step]);
-    useEffect(() => {
-        if (guide.status !== "active") return;
-        if (step === "project" || step === "node" || step === "generate") {
-            const id = pathname.match(/^\/canvas\/([^/]+)$/)?.[1];
-            const created = projects.find((item) => item.id === id && item.createdAt >= (guide.startedAt || ""));
-            if (created && created.id !== guide.projectId) { guide.bind({ projectId: created.id, nodeId: undefined, assetId: undefined }); return; }
-        }
-        const startedAt = nodeStepStartedAt.current;
-        if (step === "node" && project && startedAt !== null) {
-            const added = [...project.nodes].reverse().find((item) => item.type === "image" && item.metadata?.nodeRole !== "result" && item.createdAt && Date.parse(item.createdAt) >= startedAt);
-            if (added && added.id !== guide.nodeId) guide.bind({ nodeId: added.id });
-        }
-        if (step === "generate" && project && !node) {
-            const image = project.nodes.find((item) => item.type === "image" && item.metadata?.nodeRole !== "result")
-                || project.nodes.find((item) => item.type === "image" && (item.metadata?.resultOrigin === "generated" || item.metadata?.taskId));
-            if (image) guide.bind({ nodeId: image.id });
-        }
-        if (step === "return" && !guide.visitedLibrary && ["/project", "/canvas", "/projects"].includes(pathname)) guide.bind({ visitedLibrary: true });
-    }, [guide.status, step, pathname, search, projects, project, guide.projectId, guide.nodeId]);
-    useEffect(() => {
-        if (guide.status !== "active" || step !== "node" || !node?.createdAt || nodeStepStartedAt.current === null) return;
-        if (Date.parse(node.createdAt) < nodeStepStartedAt.current) return;
-        setHighlight(null);
-        guide.advance();
-    }, [guide.status, step, node, guide.advance]);
-    useEffect(() => { setNotice(""); setHighlight(null); setCollapsed(false); }, [guide.step, guide.status]);
-    useEffect(() => { const reset = () => setPosition(null); window.addEventListener("resize", reset); return () => window.removeEventListener("resize", reset); }, []);
-    useEffect(() => {
-        if (guide.status !== "active" || welcome) return;
-        const close = (event: KeyboardEvent) => { if (event.key === "Escape") { guide.pause(); setHighlight(null); } };
-        window.addEventListener("keydown", close);
-        return () => window.removeEventListener("keydown", close);
-    }, [guide.status, welcome, guide.pause]);
-    const routeFor = (lesson: typeof step) => {
-        const canvas = project ? `/canvas/${project.id}` : "/project";
-        return lesson === "official" ? "/settings?section=channels" : lesson === "assets" ? "/assets?tab=history" : lesson === "return" ? "/project" : lesson === "project" ? "/project" : canvas;
-    };
-    const goToLesson = (lesson: typeof step) => {
-        const route = routeFor(lesson);
-        if (`${pathname}${search}` !== route) navigate(route);
-    };
+        if (hydrated && !projects.length && pathname === "/" && guide.status === "new") setWelcome(true);
+    }, [hydrated, projects.length, pathname, guide.status]);
 
     useEffect(() => {
-        if (guide.status !== "active" || welcome || collapsed) { setHighlight(null); return; }
-        let timer: number | null = null;
-        let settleTimer: number | null = null;
-        let lastTarget: HTMLElement | null = null;
-        const visible = (selector: string) => [...document.querySelectorAll<HTMLElement>(selector)].find((element) => { const rect = element.getBoundingClientRect(); return rect.width > 2 && rect.height > 2; }) || null;
-        const update = () => {
-            timer = null;
-            let target: HTMLElement | null = null;
-            if (step === "official" && pathname === "/settings") target = connected ? visible('[aria-label="默认生图模型"]') || visible(".model-default-section") : visible('[data-onboarding="official-connect"]') || visible('[data-onboarding="official-channel"]');
-            if (step === "project") target = visible('[title="点击修改画布名称"]') || visible('[aria-label="画布名称"]') || visible('[data-nav-id="new"]') || visible('[aria-label="新建画布创作"]');
-            if (step === "node" && !ready) target = visible('[data-onboarding="image-option"]') || visible('[aria-label="添加节点"]') || visible('[data-onboarding="canvas-tools"]') || visible('[data-nav-id="new"]');
-            if (step === "generate") {
-                const prompt = visible('[aria-label="图片提示词"]');
-                const hasPrompt = prompt && ((prompt as HTMLTextAreaElement).value || prompt.textContent || "").trim();
-                target = hasPrompt ? visible('.canvas-node-composer-submit') : prompt;
-                target ||= guide.nodeId ? visible(`[data-node-id="${CSS.escape(guide.nodeId)}"]`) : visible('[aria-label="添加节点"]') || visible('[data-nav-id="new"]');
-            }
-            if (step === "assets" && pathname === "/assets" && new URLSearchParams(search).get("tab") === "history") {
-                const taskId = result?.metadata?.taskId;
-                target = taskId ? visible(`[data-onboarding-task-id="${CSS.escape(taskId)}"]`) : null;
-                target ||= visible(".generation-history-page .assets-library-hero") || visible(".generation-history-type-tabs");
-            }
-            if (step === "return") target = guide.projectId ? visible(`[data-onboarding-project="${CSS.escape(guide.projectId)}"]`) : visible('[data-nav-id="canvas"]');
-            if (target !== lastTarget) {
-                if (settleTimer !== null) { window.clearTimeout(settleTimer); settleTimer = null; }
-                lastTarget?.classList.remove("is-onboarding-target");
-                target?.classList.add("is-onboarding-target");
-                if (target) target.scrollIntoView({ block: "nearest", inline: "nearest" });
-                lastTarget = target;
-                // The add-node menu enters with a 320ms transform. Its first
-                // bounding box is transient, so measure the image option once
-                // after the motion ends instead of observing every style frame.
-                if (target?.matches('[data-onboarding="image-option"]')) {
-                    settleTimer = window.setTimeout(() => { settleTimer = null; update(); }, 380);
-                    return;
-                }
-            }
-            if (settleTimer !== null) return;
-            const rect = target?.getBoundingClientRect();
-            setHighlight((previous) => {
-                if (!rect || rect.bottom <= 0 || rect.top >= window.innerHeight) return null;
-                if (previous?.step === step && previous.rect.x === rect.x && previous.rect.y === rect.y && previous.rect.width === rect.width && previous.rect.height === rect.height) return previous;
-                return { step, rect };
-            });
+        const open = () => {
+            setCollapsed(false);
+            if (guide.status !== "active") setWelcome(true);
         };
-        const schedule = () => { if (timer === null) timer = window.setTimeout(update, 60); };
-        // Canvas nodes and sidebar motion update style attributes each frame.
-        // Observing those writes made the guide repaint continuously while a
-        // new project was opening. Only mounting/unmounting targets matters.
-        const observer = new MutationObserver(schedule);
-        observer.observe(document.body, { childList: true, subtree: true });
-        window.addEventListener("scroll", schedule, true);
-        window.addEventListener("resize", schedule);
-        document.addEventListener("input", schedule, true);
-        update();
-        return () => { observer.disconnect(); lastTarget?.classList.remove("is-onboarding-target"); if (timer !== null) window.clearTimeout(timer); if (settleTimer !== null) window.clearTimeout(settleTimer); window.removeEventListener("scroll", schedule, true); window.removeEventListener("resize", schedule); document.removeEventListener("input", schedule, true); };
-    }, [step, guide.status, welcome, collapsed, pathname, search, connected, ready, guide.nodeId, guide.projectId, result?.metadata?.taskId]);
-    const dismiss = () => { setWelcome(false); guide.pause(); };
-    const advance = (skip = false) => { guide.advance(skip); if (step === "return") setFinished(true); else goToLesson(onboardingSteps[guide.step + 1]); };
-    const back = () => { guide.back(); goToLesson(onboardingSteps[guide.step - 1]); };
-    const highlightRect = highlight?.step === step ? highlight.rect : null;
-    const spotlight = highlightRect && guide.status === "active" && !collapsed && !(step === "node" && ready) && {
-        left: Math.max(0, highlightRect.left - 8),
-        top: Math.max(0, highlightRect.top - 8),
-        right: Math.min(window.innerWidth, highlightRect.right + 8),
-        bottom: Math.min(window.innerHeight, highlightRect.bottom + 8),
+        window.addEventListener(openGuideEvent, open);
+        return () => window.removeEventListener(openGuideEvent, open);
+    }, [guide.status]);
+
+    useEffect(() => {
+        if (!active || !canvasId || !project) return;
+        const savedNode = project.id === guide.projectId && node?.type === CanvasNodeType.Video ? node : undefined;
+        const latestVideo = project.nodes.findLast((item) => item.type === CanvasNodeType.Video && item.metadata?.nodeRole !== "result");
+        const videoNode = step === "node" ? latestVideo ?? savedNode : savedNode ?? latestVideo;
+        if (guide.projectId !== project.id || guide.nodeId !== videoNode?.id) {
+            guide.bind({ projectId: project.id, nodeId: videoNode?.id });
+        }
+    }, [active, canvasId, project, node, step, guide.projectId, guide.nodeId, guide.bind]);
+
+    useEffect(() => { setNotice(""); }, [step, guide.status]);
+    useEffect(() => {
+        const reset = () => setPosition(null);
+        window.addEventListener("resize", reset);
+        return () => window.removeEventListener("resize", reset);
+    }, []);
+
+    const highlight = useGuideHighlight({
+        step, pathname, enabled: active && !collapsed, canvasId,
+        ready: Boolean(ready), hasVideoModel, inHistory,
+        nodeId: node?.id, resultId: result?.id, taskId: result?.metadata?.taskId,
+    });
+    const goTo = (route: string) => {
+        if (`${pathname}${search}` !== route && pathname !== route) navigate(route);
     };
-    return <>
-        <AppModal open={finished} transitionName="" maskTransitionName="" title="引导已结束" onCancel={() => setFinished(false)} footer={<Button type="primary" onClick={() => setFinished(false)}>继续使用 TofuTV</Button>} width={420}>
-            <p className="first-creation-intro">随时从侧栏重新打开引导。</p>
-        </AppModal>
-        <AppModal open={welcome} transitionName="" maskTransitionName="" title="完成第一次创作" onCancel={dismiss} footer={null} width={420} destroyOnHidden>
-            <p className="first-creation-intro">跟着高亮操作，点击引导卡上的箭头按钮切换步骤。</p>
-            <div className="first-creation-actions"><Button onClick={dismiss}>稍后</Button><Button type="primary" onClick={() => { guide.restart(); goToLesson(onboardingSteps[0]); setWelcome(false); setCollapsed(false); }}>开始</Button></div>
-        </AppModal>
-        {guide.status === "active" && !welcome && <aside className={`first-creation-guide${/^\/canvas\/[^/]+/.test(pathname) ? " is-canvas" : ""}${collapsed ? " is-collapsed" : ""}`} style={position ? { left: position.x, top: position.y, right: "auto", bottom: "auto" } : undefined} aria-label="新手引导" data-step={step} data-canvas-no-zoom onPointerDown={(event) => event.stopPropagation()} onWheel={(event) => event.stopPropagation()}>
-            <div className="first-creation-heading"><button type="button" className="first-creation-move" aria-label="移动引导卡，可拖动或使用方向键" title="拖动以移动引导" onPointerDown={(event) => { const bounds = event.currentTarget.closest("aside")!.getBoundingClientRect(); setDrag({ x: event.clientX, y: event.clientY, left: bounds.left, top: bounds.top }); event.currentTarget.setPointerCapture(event.pointerId); }} onPointerMove={(event) => { if (!drag) return; const bounds = event.currentTarget.closest("aside")!.getBoundingClientRect(); setPosition({ x: Math.max(8, Math.min(window.innerWidth - bounds.width - 8, drag.left + event.clientX - drag.x)), y: Math.max(8, Math.min(window.innerHeight - bounds.height - 8, drag.top + event.clientY - drag.y)) }); }} onPointerUp={() => setDrag(null)} onPointerCancel={() => setDrag(null)} onKeyDown={(event) => { const delta: Record<string, [number, number]> = { ArrowUp: [0, -20], ArrowDown: [0, 20], ArrowLeft: [-20, 0], ArrowRight: [20, 0] }; if (!delta[event.key]) return; event.preventDefault(); const bounds = event.currentTarget.closest("aside")!.getBoundingClientRect(); setPosition({ x: Math.max(8, Math.min(window.innerWidth - bounds.width - 8, bounds.left + delta[event.key][0])), y: Math.max(8, Math.min(window.innerHeight - bounds.height - 8, bounds.top + delta[event.key][1])) }); }}><GripVertical size={15} /></button><button type="button" className="first-creation-expand" onClick={() => setCollapsed(!collapsed)} aria-expanded={!collapsed}><span>{collapsed ? lessons[guide.step].title : `新手引导 · ${guide.step + 1} / ${lessons.length}`}</span><ChevronDown size={15} /></button><button type="button" className="first-creation-close" aria-label="关闭引导" title="关闭引导" onClick={() => guide.pause()}><X size={17} /></button></div>
-            {!collapsed && <><h2>{lessons[guide.step].title}{ready && <Check size={16} className="first-creation-check" aria-label="已完成" />}</h2><p>{step === "official" && connected ? "已连接，选择你要使用的默认模型。" : step === "project" && project ? "点击项目名称，为它起个名字。" : lessons[guide.step].description}</p>
-                {notice && <p role="status">{notice}</p>}
-                <div className="first-creation-footer"><div className="first-creation-secondary">
-                    {step === "generate" && <button type="button" className="first-creation-copy" title={sample} onClick={() => { void navigator.clipboard.writeText(sample).then(() => setNotice("已复制，粘贴到提示词输入框。")).catch(() => setNotice("复制失败，请手动输入描述。")); }}><Copy size={13} />示例提示词</button>}
-                    {step === "generate" && <small>生成按模型计费</small>}
-                </div><div className="first-creation-navigation"><button type="button" disabled={guide.step === 0} aria-label="上一步" title="上一步" onClick={back}><ChevronLeft size={18} /></button><button type="button" className="is-next" aria-label={step === "return" ? "结束引导" : "下一步"} title={step === "return" ? "结束引导" : "下一步"} onClick={() => advance(!ready)}><ChevronRight size={18} /></button></div></div>
-            </>}
-        </aside>}
-        {spotlight && <>
-            <div className="first-creation-dim" aria-hidden style={{ inset: "0 0 auto 0", height: spotlight.top }} />
-            <div className="first-creation-dim" aria-hidden style={{ left: 0, top: spotlight.top, width: spotlight.left, height: spotlight.bottom - spotlight.top }} />
-            <div className="first-creation-dim" aria-hidden style={{ right: 0, top: spotlight.top, left: spotlight.right, height: spotlight.bottom - spotlight.top }} />
-            <div className="first-creation-dim" aria-hidden style={{ inset: `${spotlight.bottom}px 0 0 0` }} />
-            <div className="first-creation-highlight" aria-hidden style={{ left: highlightRect.left - 4, top: highlightRect.top - 4, width: highlightRect.width + 8, height: highlightRect.height + 8 }} />
-        </>}
-    </>;
+    const goToLesson = (next: OnboardingStep) => {
+        if (next === "model") goTo(modelSettings);
+        else if (next === "assets") goTo(generationHistory);
+        else goTo(canvasPath || "/project");
+    };
+    const changeStep = (direction: -1 | 1) => {
+        const next = onboardingSteps[guide.step + direction];
+        if (direction === -1) guide.back();
+        else guide.advance(!ready);
+        if (next) goToLesson(next);
+    };
+    const start = (resume: boolean) => {
+        if (resume) guide.begin();
+        else guide.restart();
+        setWelcome(false);
+        setPosition(null);
+        if (resume) goToLesson(step);
+        else if (!hasVideoModel) goTo(modelSettings);
+    };
+    const dismissWelcome = () => {
+        setWelcome(false);
+        if (guide.status === "new") guide.pause();
+    };
+    const copyExample = async () => {
+        try {
+            await navigator.clipboard.writeText(sample);
+            setNotice("已复制，粘贴到视频提示词输入框。");
+        } catch {
+            setNotice("可选中上方示例并手动复制。");
+        }
+    };
+    const movePanel = (bounds: DOMRect, x: number, y: number) => {
+        setPosition({
+            x: Math.max(8, Math.min(window.innerWidth - bounds.width - 8, x)),
+            y: Math.max(8, Math.min(window.innerHeight - bounds.height - 8, y)),
+        });
+    };
+    const dragPanel = (event: PointerEvent<HTMLButtonElement>) => {
+        const bounds = event.currentTarget.closest("aside")?.getBoundingClientRect();
+        if (drag.current && bounds) movePanel(bounds, event.clientX - drag.current.x, event.clientY - drag.current.y);
+    };
+    const resumeAvailable = guide.status === "paused" && (guide.step > 0 || Boolean(guide.projectId));
+    const nextLabel = step === "assets" ? "完成引导" : step === "reference" && !ready ? "跳过参考图" : step === "generate" && !ready ? "跳过生成" : "下一步";
+    const returnToCanvas = () => {
+        goTo(canvasPath);
+        guide.advance(!ready);
+    };
+
+    return (
+        <>
+            <AppModal open={welcome} title="在 TofuTV 生成第一条视频" onCancel={dismissWelcome} width={440}
+                footer={[
+                    <Button key="later" onClick={dismissWelcome}>稍后</Button>,
+                    ...(resumeAvailable ? [<Button key="restart" onClick={() => start(false)}>从头开始</Button>] : []),
+                    <Button key="start" type="primary" onClick={() => start(resumeAvailable)}>{resumeAvailable ? "继续引导" : "开始引导"}</Button>,
+                ]}>
+                <p className="first-creation-intro">从配置模型、添加视频节点，到用角色参考图生成视频。你可以跳过参考图和生成，先熟悉操作位置。</p>
+            </AppModal>
+            {active && (
+                <aside
+                    className={`first-creation-guide${canvasId ? " is-canvas" : ""}${collapsed ? " is-collapsed" : ""}`}
+                    style={position ? { left: position.x, top: position.y, right: "auto", bottom: "auto" } : undefined}
+                    aria-label="新手引导" data-step={step} data-canvas-no-zoom
+                    onPointerDown={(event) => event.stopPropagation()} onWheel={(event) => event.stopPropagation()}
+                >
+                    <div className="first-creation-heading">
+                        <button type="button" className="first-creation-move" aria-label="移动引导卡，可拖动或使用方向键" title="移动引导卡"
+                            onPointerDown={(event) => {
+                                const bounds = event.currentTarget.closest("aside")?.getBoundingClientRect();
+                                if (event.button !== 0 || !bounds) return;
+                                drag.current = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+                                event.currentTarget.setPointerCapture(event.pointerId);
+                            }}
+                            onPointerMove={dragPanel} onLostPointerCapture={() => { drag.current = null; }}
+                            onKeyDown={(event) => {
+                                const delta = moveGuideKeys[event.key];
+                                const bounds = event.currentTarget.closest("aside")?.getBoundingClientRect();
+                                if (!delta || !bounds) return;
+                                event.preventDefault();
+                                event.stopPropagation();
+                                movePanel(bounds, bounds.left + delta[0], bounds.top + delta[1]);
+                            }}>
+                            <GripVertical size={15} aria-hidden />
+                        </button>
+                        <button type="button" className="first-creation-expand" onClick={() => setCollapsed(!collapsed)} aria-expanded={!collapsed}>
+                            <span>{collapsed ? lesson.title : `新手引导 · ${guide.step + 1} / ${onboardingSteps.length}`}</span>
+                            <ChevronDown size={15} aria-hidden />
+                        </button>
+                        <button type="button" className="first-creation-close" aria-label="暂停引导" title="暂停引导" onClick={guide.pause}><X size={17} aria-hidden /></button>
+                    </div>
+                    {!collapsed && (
+                        <>
+                            <div aria-live="polite">
+                                <h2>{lesson.title}{ready && <Check size={16} className="first-creation-check" aria-label="已完成" />}</h2>
+                                <p>{step === "model" && hasVideoModel ? <>当前默认视频模型是 <strong>{modelOptionLabel(config, config.videoModel)}</strong>，可以开始创作。</> : lesson.description}</p>
+                                {step === "model" && <p>可使用自己的模型渠道。只有选用上游算力时才需要连接它。</p>}
+                                {step === "reference" && <p>如果模型支持「全能参考」，选它就能只参考人物或风格。确认「首帧」「尾帧」角标消失。需要指定开场或结尾画面时，选「首尾帧」。</p>}
+                                {step === "generate" && !result && <p>生成费用以所选模型为准。</p>}
+                                {step === "generate" && result && <p>成片已在画布中，可前往生成历史查看。</p>}
+                            </div>
+                            {!canvasId && (step === "node" || step === "reference" || step === "generate") && (
+                                <button type="button" className="first-creation-link" onClick={() => goTo(canvasPath || "/project")}>{canvasPath ? "打开创作画布" : "前往项目页"}</button>
+                            )}
+                            {step === "model" && pathname !== "/settings" && <button type="button" className="first-creation-link" onClick={() => goTo(modelSettings)}>打开模型配置</button>}
+                            {step === "generate" && !result && (
+                                <div className="first-creation-example">
+                                    <p>{sample}</p>
+                                    <button type="button" className="first-creation-link" onClick={() => void copyExample()}><Copy size={14} aria-hidden />复制示例提示词</button>
+                                    {notice && <p role="status">{notice}</p>}
+                                </div>
+                            )}
+                            <div className="first-creation-footer">
+                                <Button size="small" disabled={guide.step === 0} onClick={() => changeStep(-1)}>上一步</Button>
+                                {step === "assets" && canvasPath && <Button size="small" onClick={returnToCanvas}>返回画布</Button>}
+                                <Button size="small" type="primary" onClick={() => changeStep(1)}>{nextLabel}</Button>
+                            </div>
+                        </>
+                    )}
+                </aside>
+            )}
+            {active && !collapsed && highlight && (
+                <div className="first-creation-highlight" aria-hidden style={{ left: highlight.left - 4, top: highlight.top - 4, width: highlight.width + 8, height: highlight.height + 8 }} />
+            )}
+        </>
+    );
 }

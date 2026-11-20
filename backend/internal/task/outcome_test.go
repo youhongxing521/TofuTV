@@ -52,6 +52,20 @@ func TestComputeOutcome(t *testing.T) {
 		{"内容审核失败不当成没扣钱", with(func(t *model.Task) {
 			t.FailureDiagnostics = &model.TaskFailureDiagnostics{ProviderCode: "content_policy_violation"}
 		}), "", OutcomeFacts{DispatchState: "not_sent"}, want("failed", "confirm", "input_rejected")},
+		{"视频缺必填参数不再占住节点", with(func(t *model.Task) {
+			t.Type = "canvas_video"
+			t.ProviderRequestID = "original"
+			t.FailureDiagnostics = &model.TaskFailureDiagnostics{ExecutionResult: "failed", ProviderCode: "invalid_parameter"}
+		}), "", OutcomeFacts{}, want("failed", "allowed", "input_invalid")},
+		{"图片缺必填参数不再等待取回", with(func(t *model.Task) {
+			t.ProviderRequestID = "img-job"
+			t.FailureDiagnostics = &model.TaskFailureDiagnostics{ExecutionResult: "failed", ProviderCode: "MissingParameter"}
+		}), "", OutcomeFacts{DispatchState: "accepted"}, want("failed", "allowed", "input_invalid")},
+		{"HTTP 阶段参数拒绝不必核对扣费", with(func(t *model.Task) {
+			t.Type = "canvas_video"
+			t.FailureDiagnostics = &model.TaskFailureDiagnostics{ExecutionResult: "failed"}
+			t.ErrorCode = "invalid_params"
+		}), "", OutcomeFacts{}, want("failed", "allowed", "input_invalid")},
 		{"深度本地不收费", with(func(t *model.Task) { t.Type = model.TaskTypeDepthCapture }), "", OutcomeFacts{}, want("failed", "allowed", "task_failed")},
 		{"计费不明", failed, "", OutcomeFacts{}, want("failed", "confirm", "task_failed")},
 		{"接受证据覆盖旧未发出阶段", with(func(t *model.Task) { t.Stage = "request_not_sent"; t.RecoveryOutcome = &noResult }), "", OutcomeFacts{DispatchState: "accepted", ImageResponseAccepted: true}, want("failed", "confirm", "no_result")},
