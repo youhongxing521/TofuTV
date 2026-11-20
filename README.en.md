@@ -1,31 +1,69 @@
 # TofuTV
 
-<img src="assets/app-icon.png" width="96" height="96" alt="TofuTV app icon">
+[简体中文](README.md) · [Quick start](#quick-start) · [Documentation](docs/index.md)
 
-An AI video creation workspace. Write scripts, build storyboards, and generate shots on one canvas.
+![TofuTV AI video creation workspace](web/public/tofutv-startup.png)
 
-[简体中文](README.md) · [Documentation](docs/index.md) · [Gitee repository](https://gitee.com/hongxingyou/beeftv)
+**Go from an idea to a finished video, with every shot on an editable canvas.**
 
-## Creative workspace
+TofuTV is a workspace for AI short films, product videos, and storyboard previews. Break a script into shots, attach visual references, and generate clips on the same canvas. Assemble the clips with narration and subtitles on the timeline. When a shot needs changes, return to its node and pick up with the prompt and references already in place.
 
-- Organize scripts, storyboards, and assets on a canvas and connect image, video, text, and audio models.
-- Manage content in projects and the asset library. Save repeatable steps as workflows.
-- Add your own providers in Model Configuration, such as local Ollama or Alibaba Cloud Model Studio. The upstream compute channel is a separate service with its own accounts and billing.
+## One canvas for video creation
 
-## Run locally
+| What you want to do | How TofuTV helps |
+| --- | --- |
+| **Build a storyboard** | Organize shots with text, image, video, and audio nodes. Connect dialogue, character images, and other assets to downstream nodes. |
+| **Direct a shot** | On supported models, use general references to guide appearance and style, or assign first and last frames to shape the opening and ending. |
+| **Edit and add sound** | Arrange shots on the timeline, add narration, music, and subtitles, then preview and export the video. |
+| **Reuse your work** | Find results in **Assets → Generation History** and save useful node combinations as workflows for the next project. |
+| **Work with an assistant** | Ask TofuTV Agent to draft a storyboard or organize assets. Connect TofuTV MCP to use workspace tools from an external assistant. |
 
-On Windows, run the following command from the repository root. The script requires Go and Bun.
+Add your own providers in **Model Configuration** and choose defaults for text, images, video, and audio. Available reference modes, settings, and billing depend on the model and provider. [Feature guide](docs/content/docs/overview/features.mdx)
+
+## Quick start
+
+### Start TofuTV
+
+To run from source on Windows, install Go 1.26, Bun, and a GCC toolchain for CGO. Run these commands in PowerShell.
 
 ```powershell
+git clone https://gitee.com/hongxingyou/tofu-tv.git
+cd tofu-tv
 .\scripts\start-local.ps1
 ```
 
-Open [http://localhost:3000](http://localhost:3000) after startup. See [local development](docs/content/docs/backend/local-development.mdx) and the [Docker Compose configuration](docker-compose.dev.yml) for other ways to run the app.
+Open the [local TofuTV workspace](http://localhost:3000) after startup. To stop it, press `Ctrl+C` in both development windows.
 
-The local workspace stores model keys and project data. See the [security guidance](SECURITY.md) for access and credential management.
+For an existing Windows workspace with the local Docker backend, Node.js, and web dependencies configured, use `启动TofuTV.bat` to start it and `关闭TofuTV.bat` to stop it.
+
+### Generate your first clip
+
+1. Add a provider in **Model Configuration** and choose the default video model.
+2. Create a project, click **+** on the canvas, and add a **Video** node.
+3. Describe the scene, movement, and camera. For image references, connect the pictures to the video node and select a mode your model supports.
+4. Set the aspect ratio and duration, then click **Generate**. Preview the clip on the canvas or download it from **Assets → Generation History**.
+
+Try this prompt to get started.
+
+> Warm orange streetlights reflect in a rain-soaked city street. A yellow tram crosses from right to left as the camera slowly moves forward.
+
+You can also open the first-creation guide at the bottom of the home sidebar and follow its highlighted controls.
+
+## Deployment and data
+
+- **Local Docker deployment.** In an environment with Bash and Docker Compose, run `./scripts/beeftv-docker.sh build` and then `./scripts/beeftv-docker.sh start`. [Local development and Docker configuration](docs/content/docs/backend/local-development.mdx#docker-开发)
+- **Desktop builds.** Build the desktop app from source with the dependencies for your platform. [Desktop quick start](QUICKSTART.md)
+- **Data and credentials.** Local mode stores projects, assets, and model settings in the workspace. When you use an external model, its request and relevant references go to the provider you configured. Keep API keys and workspace data on your machine. [Security guidance](SECURITY.md)
+
+## Documentation
+
+- [Creation and workflow examples](docs/content/docs/overview/examples.mdx)
+- [Model and protocol plugin integration](docs/content/docs/plugins/plugin-generation.mdx)
+- [Connect Codex and other external assistants](docs/content/docs/backend/external-agents.mdx)
+- [Browse the Gitee repository](https://gitee.com/hongxingyou/tofu-tv)
 
 ## Upstream project and license
 
-TofuTV is a derivative of [glanderness/BeefTV](https://github.com/glanderness/BeefTV). This version changes the workspace branding, app icon, desktop window title, and repository links. BeefTV names, installers, and release notes in the upstream documentation refer to the original project.
+TofuTV is based on [glanderness/BeefTV](https://github.com/glanderness/BeefTV). This version updates the workspace branding and icon, canvas controls, first-creation guide, and Windows launch scripts. The upstream repository contains the original project's releases and installers.
 
-The [BeefTV Source Available License 1.0](LICENSE) governs eligible upstream additions. Prior MIT material and third-party components retain their licenses. See section 5 for commercial distribution and services offered to third parties, and [NOTICE](NOTICE) and the [third-party notices](THIRD_PARTY_NOTICES.md) for attribution.
+Eligible BeefTV-authored material is governed by the [BeefTV Source Available License 1.0](LICENSE). Earlier MIT material and third-party components retain their respective licenses. See sections 4 and 5 of `LICENSE` for distribution and hosting terms. [Attribution](NOTICE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
