@@ -1,6 +1,6 @@
 # TofuTV
 
-[简体中文](README.md) · [Quick start](#quick-start) · [Documentation](docs/index.md)
+[简体中文](README.md) · [Case study](#case-study) · [Quick start](#quick-start) · [Documentation](docs/index.md)
 
 ![TofuTV AI video creation workspace](web/public/tofutv-startup.png)
 
@@ -19,6 +19,24 @@ TofuTV is a workspace for AI short films, product videos, and storyboard preview
 | **Work with an assistant** | Ask TofuTV Agent to draft a storyboard or organize assets. Connect TofuTV MCP to use workspace tools from an external assistant. |
 
 Add your own providers in **Model Configuration** and choose defaults for text, images, video, and audio. Available reference modes, settings, and billing depend on the model and provider. [Feature guide](docs/content/docs/overview/features.mdx)
+
+## Case study
+
+**Blue ceramic cup product demo.** A five-second product shot at 720p in 16:9. The camera pans right. The shot and the narration were generated separately and combined into one MP4.
+
+![Complete blue ceramic cup recap canvas, with the shot and narration connected to the final clip](docs/public/images/blue-mug-canvas.jpg)
+
+*This recap canvas was assembled from the actual task records and media. GPT Image 2 produced the standalone product still in the lower right.*
+
+**Generate the shot.** Use Seedance 2.0 Fast through Qiniu for text-to-video. The prompt describes a blue ceramic cup on a light gray tabletop and a slow pan to the right.
+
+![The Seedance 2.0 Fast prompt and settings for 720p, 16:9, and five seconds](docs/public/images/blue-mug-motion.jpg)
+
+**Generate the narration.** Alibaba Cloud Model Studio’s Qwen3-TTS Flash read a short Mandarin line introducing the cup and returned a WAV file.
+
+![The Mandarin product copy connected to its Qwen3-TTS narration node](docs/public/images/blue-mug-voice.jpg)
+
+**Export the clip.** FFmpeg kept the original video stream and encoded the narration as AAC in the MP4.
 
 ## Quick start
 

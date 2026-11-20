@@ -1,6 +1,6 @@
 # TofuTV
 
-[English](README.en.md) · [快速开始](#快速开始) · [项目文档](docs/index.md)
+[English](README.en.md) · [制作案例](#制作案例) · [快速开始](#快速开始) · [项目文档](docs/index.md)
 
 ![TofuTV AI 视频创作工作台](web/public/tofutv-startup.png)
 
@@ -19,6 +19,24 @@ TofuTV 面向 AI 短剧、产品视频和分镜预演。你可以在同一张画
 | **调用创作助手** | 让 TofuTV Agent 起草分镜或整理素材。也可以通过 TofuTV MCP 把工作区工具接入外部助手。 |
 
 在「模型配置」添加自己的服务渠道，分别为文本、图片、视频和音频选择默认模型。模型和渠道决定可用的参考模式、生成参数及计费方式。 [功能清单](docs/content/docs/overview/features.mdx)
+
+## 制作案例
+
+**蓝色陶瓷杯产品解说**是一条约 5 秒、720p、16:9 的短片。镜头从左向右横移，旁白与画面分别生成，最后合成一个 MP4。
+
+![蓝色陶瓷杯的完整复盘画布，镜头和配音两条支路汇入成片](docs/public/images/blue-mug-canvas.jpg)
+
+*画布根据真实任务记录与产物整理。右下角的产品静帧由 GPT Image 2 并行生成，用于独立展示。*
+
+**生成镜头。** 用七牛 Seedance 2.0 Fast 直接从文字生成视频。提示词描述浅灰桌面上的蓝色陶瓷杯，镜头缓慢向右横移。
+
+![Seedance 2.0 Fast 的实际镜头提示词和 720p、16:9、5 秒参数](docs/public/images/blue-mug-motion.jpg)
+
+**生成配音。** 将「这款蓝色陶瓷杯，造型简洁，给日常添一抹清爽」交给百炼 Qwen3-TTS Flash，得到约 5 秒的 WAV 旁白。
+
+![从蓝色陶瓷杯的解说文案连到 Qwen3-TTS 配音节点](docs/public/images/blue-mug-voice.jpg)
+
+**合成导出。** 使用 FFmpeg 保留原视频流，把 WAV 旁白编码为 AAC 并写入成片。
 
 ## 快速开始
 
